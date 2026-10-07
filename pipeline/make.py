@@ -88,11 +88,12 @@ def main():
         if "hero" in views:
             t = time.time()
             render.render_hero(glb, renders / f"{a.species}_hero.png",
-                               res=(960, 540) if a.fast else (1920, 1080), samples=24 if a.fast else 96)
+                               res=(960, 540) if a.fast else (1920, 1080), samples=24 if a.fast else 96, **cfg.get("render", {}).get("hero", {}))
             print(f"hero render {time.time() - t:.0f}s")
         if "head" in views:
             render.render_closeup(glb, renders / f"{a.species}_head.png",
-                                  res=(1000, 640) if a.fast else (1800, 1150), samples=24 if a.fast else 96)
+                                  res=(1000, 640) if a.fast else (1800, 1150), samples=24 if a.fast else 96,
+                                  **cfg.get("render", {}).get("head", {}))
         for v in ("side", "top"):
             if v in views:
                 render.render_silhouette(glb, renders / f"{a.species}_{v}_silhouette.png", view=v,

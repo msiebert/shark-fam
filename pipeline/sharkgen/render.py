@@ -78,7 +78,7 @@ def _scene_common(res, samples):
     return sc
 
 
-def render_hero(glb, out_png, res=(1600, 900), samples=64, yaw=0.0, pitch=0.0):
+def render_hero(glb, out_png, res=(1600, 900), samples=64, yaw=0.0, cam_z=-0.07):
     meshes, lo, hi = _reset_and_import(glb)
     sc = _scene_common(res, samples)
     c = (lo + hi) / 2
@@ -93,7 +93,7 @@ def render_hero(glb, out_png, res=(1600, 900), samples=64, yaw=0.0, pitch=0.0):
     sc.camera = cam
     a = math.radians(-62 + yaw)  # side-three-quarter, nose toward right of frame
     dist = L * 2.3
-    cam.location = c + Vector((math.cos(a) * dist, math.sin(a) * dist, -L * 0.07 + pitch))
+    cam.location = c + Vector((math.cos(a) * dist, math.sin(a) * dist, cam_z * L))
     _look_at(cam, c + Vector((L * 0.04, 0, L * 0.01)))
     _area("Key", c + Vector((L * 0.35, -L * 0.9, L * 1.0)), c, L * 1.2, L ** 2 * 48, (1.0, 0.97, 0.92))
     _area("Rim", c + Vector((-L * 0.9, L * 0.9, L * 0.55)), c, L * 0.8, L ** 2 * 55, (0.55, 0.78, 1.0))
@@ -140,7 +140,7 @@ def render_silhouette(glb, out_png, view="side", res=(1600, 700), samples=4):
     bpy.ops.render.render(write_still=True)
 
 
-def render_closeup(glb, out_png, res=(1400, 900), samples=64, focus=0.11, yaw=-48.0, dist_frac=0.42, lift=0.0):
+def render_closeup(glb, out_png, res=(1400, 900), samples=64, focus=0.11, yaw=-48.0, dist_frac=0.42, lift=0.0, cam_z=-0.01):
     """Close-up of the head (focus = fraction of length back from the nose)."""
     meshes, lo, hi = _reset_and_import(glb)
     sc = _scene_common(res, samples)
@@ -155,7 +155,7 @@ def render_closeup(glb, out_png, res=(1400, 900), samples=64, focus=0.11, yaw=-4
     sc.camera = cam
     a = math.radians(yaw)
     d = L * dist_frac
-    cam.location = target + Vector((math.cos(a) * d, math.sin(a) * d, -0.01 * L))
+    cam.location = target + Vector((math.cos(a) * d, math.sin(a) * d, cam_z * L))
     _look_at(cam, target)
     _area("Key", target + Vector((L * 0.2, -L * 0.45, L * 0.5)), target, L * 0.7, L ** 2 * 14, (1.0, 0.97, 0.92))
     _area("Rim", target + Vector((-L * 0.4, L * 0.5, L * 0.3)), target, L * 0.5, L ** 2 * 14, (0.55, 0.78, 1.0))

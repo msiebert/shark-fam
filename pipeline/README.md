@@ -24,5 +24,9 @@ Requires Python 3.13 (the pinned `bpy` wheel is cp313) and no GPU or display.
 - `sharkgen/export.py` – bpy: materials + GLB export; `sharkgen/render.py` – studio rig
 - `make.py` – build, validate, render
 
+## Species
+- `great_white` (4.5 m)
+- `great_hammerhead` (4.2 m) – uses per-species `stations` density and `render.hero` / `render.head` camera overrides
+
 ## Adding a species
 Copy `species/great_white.json`, change the numbers, run `make.py <name>`, and check the silhouettes first.

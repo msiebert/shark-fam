@@ -107,11 +107,16 @@ class Body:
 
     # -- mesh -----------------------------------------------------------
     def build(self, n_ring=72):
-        xs = np.concatenate([
-            np.linspace(0.0015, 0.12, 55),
-            np.linspace(0.12, 0.30, 150)[1:],
-            np.linspace(0.30, self.x_end, 95)[1:],
-        ])
+        st = self.cfg["body"].get("stations")
+        if st:
+            parts = [np.linspace(a, b, n)[(0 if i == 0 else 1):] for i, (a, b, n) in enumerate(st)]
+            xs = np.concatenate(parts)
+        else:
+            xs = np.concatenate([
+                np.linspace(0.0015, 0.12, 55),
+                np.linspace(0.12, 0.30, 150)[1:],
+                np.linspace(0.30, self.x_end, 95)[1:],
+            ])
         S, M = len(xs), n_ring + 1          # last column duplicates the first (UV seam)
         phi = np.linspace(0, 2 * np.pi, M)
         X, PHI = np.meshgrid(xs, phi, indexing="ij")
