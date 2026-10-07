@@ -11,7 +11,7 @@
     "content": "tsx scripts/build-content.ts",
     "models": "tsx scripts/optimize-models.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "npm run content && vitest run",
     "e2e": "tsx scripts/e2e.ts"
   },
   "dependencies": {
