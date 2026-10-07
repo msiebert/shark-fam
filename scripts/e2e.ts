@@ -92,32 +92,26 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   await key(page, "ArrowDown", 1600); // -> sphyrna
   check((await here(page)) === "sphyrna", "down returns through families");
   const timeline: { t: number; ghost: number; fresh: number }[] = [];
-  // Sampled inside the page every animation frame, starting at the key press. A string, so no bundler helpers leak in.
-  await page.evaluate(`(() => {
-    window.__tl = [];
-    const t0 = performance.now();
-    const loop = () => {
-      const g = document.querySelector(".info.out");
-      const n = document.querySelector(".info.in");
-      window.__tl.push({ t: performance.now() - t0, ghost: g ? +getComputedStyle(g).opacity : -1, fresh: n ? +getComputedStyle(n).opacity : -1 });
-      if (performance.now() - t0 < 1700) requestAnimationFrame(loop);
-    };
+  // Text timing, read from the browser's own animation timeline so software-GL frame rate cannot skew it.
+  const timing = (await page.evaluate(`(() => {
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
-    loop();
-  })()`);
-  await page.waitForTimeout(1800);
-  timeline.push(...((await page.evaluate(() => (window as any).__tl)) as typeof timeline));
+    return new Promise((resolve) => setTimeout(() => {
+      const t = (name) => {
+        const a = document.getAnimations().find((x) => x.animationName === name);
+        if (!a) return null;
+        const c = a.effect.getComputedTiming();
+        return { delay: c.delay, duration: c.duration };
+      };
+      resolve({ out: t("slideOut"), in: t("slideIn") });
+    }, 30));
+  })()`)) as { out: { delay: number; duration: number } | null; in: { delay: number; duration: number } | null };
+  await page.waitForTimeout(1500);
   if (!reduced) {
-    const overlap = timeline.filter((p) => p.ghost > 0.05 && p.fresh > 0.05);
-    const ghostSeen = timeline.some((p) => p.ghost > 0.05);
-    const ghostGone = timeline.find((p) => p.ghost === -1 && p.t > 50);
-    const freshStart = timeline.find((p) => p.fresh > 0.05 && p.t > 50);
-    check(ghostSeen, "old text is visible while it leaves");
-    check(overlap.length === 0, "old and new text never overlap", `${overlap.length} overlapping frames`);
-    check(!!ghostGone && ghostGone.t < 450, "old text is gone within about 0.3 s", ghostGone ? `${ghostGone.t.toFixed(0)} ms` : "never");
-    check(!!freshStart && freshStart.t >= 250 && freshStart.t < 600, "new text starts after the old has left", freshStart ? `${freshStart.t.toFixed(0)} ms` : "never");
+    check(!!timing.out && timing.out.duration <= 350, "old text leaves in about 0.3 s", JSON.stringify(timing.out));
+    check(!!timing.in && !!timing.out && timing.in.delay >= timing.out.delay + timing.out.duration - 1, "new text starts only after the old has left (no overlap)", JSON.stringify(timing.in));
+    check(!!timing.in && timing.in.duration >= 800 && timing.in.duration <= 1200, "new text arrives over about 1 s", String(timing.in?.duration));
   } else {
-    check(timeline.every((p) => p.ghost === -1), "reduced motion: no ghost text");
+    check(!timing.out && (!timing.in || timing.in.duration === 0), "reduced motion: no text animation", JSON.stringify(timing));
   }
 
   // Carry-over: a shark in the genus lineup glides into its swim path; it is the same actor, never respawned.
@@ -174,12 +168,15 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
 
   // Leaving a species: the shark swims off to the right while fading.
   const x0 = (await state(page)).actors.find((a) => a.id === "sphyrna-mokarran")!.pose!.x;
-  await page.keyboard.press("ArrowUp");
+  // Hop to a shark that is not in the old view (going up would carry the same shark into the genus lineup).
+  await page.evaluate("window.__nav.go(window.__nav.tree.get('rhincodon-typus'))");
   await page.waitForTimeout(150);
   await page.evaluate("window.__scene.debugAdvance(0.35)");
   const mid = (await state(page)).actors.find((a) => a.id === "sphyrna-mokarran")!;
   check(mid.leaving && mid.alpha < 0.95 && mid.pose!.x > x0 - 0.05, "leaving: fading and drifting right", `alpha ${mid.alpha.toFixed(2)}, dx ${(mid.pose!.x - x0).toFixed(2)}`);
   await page.waitForTimeout(1200);
+  await page.evaluate("window.__nav.go(window.__nav.tree.get('sphyrnidae'))");
+  await page.waitForTimeout(800);
 
   // Tree map.
   await key(page, "m", 900);
