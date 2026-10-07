@@ -23,7 +23,8 @@ const readDir = (dir: string) =>
     });
 
 try {
-  const modelsDir = join(root, "models");
+  // What ships is public/models (optimized); a species pointing at a model that is missing there would 404 at runtime.
+  const modelsDir = join(root, "public/models");
   const models = new Set(existsSync(modelsDir) ? readdirSync(modelsDir).filter((f) => f.endsWith(".glb")).map((f) => f.replace(/\.glb$/, "")) : []);
   const { index, details, warnings } = compileContent({ clades: readDir("content/clades"), species: readDir("content/species"), models });
 

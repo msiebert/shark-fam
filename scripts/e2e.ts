@@ -4,10 +4,12 @@
  *   E2E_URL=http://localhost:5173/ npm run e2e   # or point at a running dev server
  */
 import { spawn, type ChildProcess } from "node:child_process";
-import { mkdirSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import { chromium, type Browser, type Page } from "playwright-core";
 
-const CHROME = process.env.CHROME_PATH ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
+// CHROME_PATH wins; otherwise the sandbox browser if present; otherwise the one `playwright-core install chromium` fetched.
+const SANDBOX_CHROME = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
+const CHROME = process.env.CHROME_PATH ?? (existsSync(SANDBOX_CHROME) ? SANDBOX_CHROME : undefined);
 const OUT = ".e2e";
 mkdirSync(OUT, { recursive: true });
 

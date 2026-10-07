@@ -56,7 +56,7 @@ export const SpeciesSource = z.object({
   /** Wikipedia article slug, e.g. "Great_white_shark". */
   wikipedia: z.string().regex(/^[^\s/]+$/),
   distribution: Distribution,
-  /** Base name of a GLB in `models/` (and `public/models/` once optimized). Omit if there is no model yet. */
+  /** Base name of a GLB in `public/models/` (made from `models/` by `npm run models`). Omit if there is no model yet. */
   model: z.string().regex(/^[a-z0-9_-]+$/).optional(),
   swim: SwimParams.optional(),
   /** Hand-picked to represent its clade in lineups. See docs/ARCHITECTURE.md. */

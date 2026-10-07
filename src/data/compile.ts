@@ -71,7 +71,7 @@ export function compileContent(input: CompileInput): CompileResult {
   for (const s of species) link(s, s.genus, "species");
 
   if (input.models) {
-    for (const s of species) if (s.model && !input.models.has(s.model)) problems.push(`${s.id}: model "${s.model}" not found in models/`);
+    for (const s of species) if (s.model && !input.models.has(s.model)) problems.push(`${s.id}: model "${s.model}" not found in public/models/ (run: npm run models ${s.model})`);
   }
 
   const rankOf = (n: CladeSource | SpeciesSource) => ("rank" in n ? n.rank : "species");

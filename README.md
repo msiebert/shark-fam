@@ -30,6 +30,10 @@ BASE_PATH=/shark-fam/ npm run build && BASE_PATH=/shark-fam/ npx vite preview   
 
 Navigation uses the URL hash, so deep links like `.../shark-fam/#carcharodon-carcharias` work on Pages without any redirect rules.
 
+## Continuous integration
+
+`.github/workflows/ci.yml` runs on every pull request and every push to a branch other than `main` (`main` is covered by the deploy workflow, which runs the same tests before publishing). From a clean checkout it: validates content, typechecks, runs the unit tests, builds, builds again with the Pages sub-path, then runs the browser checks (`npm run e2e`) at desktop and phone sizes and uploads the screenshots. A clean checkout has none of the generated files, so code that quietly depends on something only on a developer's machine fails here. Content also fails if a species names a model that is missing from `public/models/`.
+
 ## Add a species
 
 Everything about a species is data. You need an ancestor chain, one JSON file, and (to draw it) a model.

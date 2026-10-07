@@ -1,0 +1,64 @@
+name: CI
+
+# Runs on every pull request and on pushes to any branch except main (main is covered by the deploy workflow).
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Typecheck, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # A fresh checkout has none of the generated files (public/data), which is the point: it catches code that
+      # quietly depends on something only present on a developer's machine.
+      - name: Validate content
+        run: npm run content
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit tests
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Build for GitHub Pages (sub-path)
+        run: npm run build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+
+  e2e:
+    name: Browser checks (desktop and phone)
+    runs-on: ubuntu-latest
+    needs: check
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright-core install --with-deps chromium
+      - run: npm run build
+      - run: npm run e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-screenshots
+          path: .e2e/*.png
+          if-no-files-found: ignore
+          retention-days: 7
