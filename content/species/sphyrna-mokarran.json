@@ -1,0 +1,41 @@
+{
+  "id": "sphyrna-mokarran",
+  "genus": "sphyrna",
+  "latin": "Sphyrna mokarran",
+  "common": "Great hammerhead",
+  "description": "The largest hammerhead. Its head is wide and almost straight across the front, and its tall, sickle-shaped first dorsal fin gives it away from a distance. It hunts stingrays, pinning them to the seabed with the edge of its head.",
+  "lengthM": 4.2,
+  "depth": "Surface to about 300 m",
+  "eats": "Stingrays, fish, squid and other sharks",
+  "wikipedia": "Great_hammerhead",
+  "model": "great_hammerhead",
+  "representative": true,
+  "swim": {
+    "cruise": 0.6,
+    "beatHz": 0.8,
+    "amplitude": 0.13
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [
+          -180,
+          -36
+        ],
+        [
+          180,
+          -36
+        ],
+        [
+          180,
+          40
+        ],
+        [
+          -180,
+          40
+        ]
+      ]
+    ]
+  }
+}

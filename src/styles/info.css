@@ -1,0 +1,185 @@
+/* The name block is centred on the stage; the sharks swim above it. */
+.info {
+  left: 50%;
+  top: 66%;
+  width: min(38rem, calc(100% - 2 * var(--edge)));
+  transform: translate(-50%, -50%);
+  text-align: center;
+  text-shadow: 0 0 26px rgba(1, 10, 15, 0.75);
+}
+.info.sp {
+  top: 65%;
+}
+.rank {
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  margin: 0 0 6px;
+}
+.latin {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(2rem, 5.6cqw, 4.8rem);
+  line-height: 0.98;
+  margin: 0;
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.latin.sp {
+  font-style: italic;
+}
+.common {
+  font-family: var(--display);
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  color: var(--shaft);
+  margin: 8px 0 14px;
+}
+.desc {
+  margin: 0 auto;
+  max-width: 30rem;
+  color: var(--silver);
+  opacity: 0.88;
+  text-wrap: pretty;
+}
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 22px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: var(--muted);
+}
+.facts b {
+  color: var(--silver);
+  font-weight: 500;
+}
+.wiki {
+  display: inline-block;
+  vertical-align: 0.12em;
+  margin-left: 0.18em;
+  width: 0.28em;
+  height: 0.28em;
+  min-width: 15px;
+  min-height: 15px;
+  font-style: normal;
+  opacity: 0.6;
+  transition: opacity 0.25s, transform 0.25s;
+}
+.wiki:hover,
+.wiki:focus-visible {
+  opacity: 1;
+  transform: scale(1.12);
+}
+.wiki svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.wiki path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Species: a shaded range map under the facts, with no label. */
+.range {
+  margin: 14px auto 0;
+  width: min(18rem, 100%);
+}
+@media (max-height: 720px) {
+  .range {
+    width: min(13rem, 100%);
+    margin-top: 10px;
+  }
+}
+.range svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.rg-sea {
+  fill: rgba(111, 201, 196, 0.07);
+}
+.rg-land {
+  fill: #0b2b36;
+  stroke: rgba(111, 201, 196, 0.42);
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+}
+.rg-grid {
+  fill: none;
+  stroke: rgba(111, 201, 196, 0.2);
+  stroke-width: 0.6;
+  stroke-dasharray: 4 5;
+}
+.rg-fs {
+  fill: var(--gold);
+}
+.rg-ss {
+  fill: none;
+  stroke: var(--gold);
+}
+
+/* Text leaves first (0.3 s), then the new text arrives (about 1 s). */
+.info.in {
+  animation: slideIn 0.95s cubic-bezier(0.16, 0.85, 0.2, 1) both;
+}
+.info.in.seq {
+  animation-delay: 0.3s;
+}
+.info.out {
+  animation: slideOut 0.3s cubic-bezier(0.4, 0, 0.8, 0.5) both;
+  pointer-events: none;
+}
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))) scale(0.9);
+    filter: blur(10px);
+  }
+  45% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0);
+  }
+}
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(calc(-50% - var(--dx, 0px)), calc(-50% - var(--dy, 0px))) scale(0.9);
+    filter: blur(10px);
+  }
+}
+@container stage (max-width: 700px) {
+  .latin {
+    font-size: clamp(1.5rem, 6.6cqw, 2.6rem);
+  }
+  .range {
+    width: min(15rem, 100%);
+    margin-top: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .info.in,
+  .info.out {
+    animation: none;
+  }
+}

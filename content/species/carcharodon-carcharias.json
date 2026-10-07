@@ -1,0 +1,149 @@
+{
+  "id": "carcharodon-carcharias",
+  "genus": "carcharodon",
+  "latin": "Carcharodon carcharias",
+  "common": "Great white shark",
+  "description": "An ambush hunter that rises from below to take seals and sea lions. Its white belly stops in a sharp line against a grey back, and its teeth are triangular and serrated.",
+  "lengthM": 4.5,
+  "depth": "Surface to about 1,200 m",
+  "eats": "Seals, sea lions, large fish",
+  "wikipedia": "Great_white_shark",
+  "model": "great_white",
+  "representative": true,
+  "swim": {
+    "cruise": 0.5,
+    "beatHz": 0.65,
+    "amplitude": 0.11
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [
+          -140,
+          18
+        ],
+        [
+          -105,
+          18
+        ],
+        [
+          -105,
+          52
+        ],
+        [
+          -140,
+          52
+        ]
+      ],
+      [
+        [
+          -98,
+          25
+        ],
+        [
+          -52,
+          25
+        ],
+        [
+          -52,
+          48
+        ],
+        [
+          -98,
+          48
+        ]
+      ],
+      [
+        [
+          -6,
+          30
+        ],
+        [
+          36,
+          30
+        ],
+        [
+          36,
+          46
+        ],
+        [
+          -6,
+          46
+        ]
+      ],
+      [
+        [
+          -82,
+          -45
+        ],
+        [
+          -66,
+          -45
+        ],
+        [
+          -66,
+          -6
+        ],
+        [
+          -82,
+          -6
+        ]
+      ],
+      [
+        [
+          10,
+          -36
+        ],
+        [
+          41,
+          -36
+        ],
+        [
+          41,
+          -20
+        ],
+        [
+          10,
+          -20
+        ]
+      ],
+      [
+        [
+          112,
+          -47
+        ],
+        [
+          180,
+          -47
+        ],
+        [
+          180,
+          -17
+        ],
+        [
+          112,
+          -17
+        ]
+      ],
+      [
+        [
+          126,
+          31
+        ],
+        [
+          142,
+          31
+        ],
+        [
+          142,
+          42
+        ],
+        [
+          126,
+          42
+        ]
+      ]
+    ]
+  }
+}

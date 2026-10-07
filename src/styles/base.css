@@ -1,0 +1,292 @@
+:root {
+  --abyss: #010a0f;
+  --deep: #04202b;
+  --mid: #0b4756;
+  --shaft: #6fc9c4;
+  --silver: #d4e6e8;
+  --muted: #86a5ad;
+  --gold: #e9cf94;
+  --line: rgba(111, 201, 196, 0.18);
+  --panel: #03141c;
+  --display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --w1: rgb(11, 71, 86);
+  --w2: rgb(4, 32, 43);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+body {
+  background: var(--abyss);
+  color: var(--silver);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.55;
+}
+#app {
+  height: 100%;
+  height: 100dvh;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* One full-bleed water column. The window never scrolls. */
+#stage {
+  --edge: 200px;
+  container: stage / inline-size;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  background: radial-gradient(ellipse 70% 60% at 50% 44%, var(--w1) 0%, var(--w2) 42%, var(--abyss) 100%);
+}
+#gl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.nogl {
+  position: absolute;
+  top: 56px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+.shafts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.5;
+}
+.shafts i {
+  position: absolute;
+  top: -10%;
+  width: 14%;
+  height: 120%;
+  background: linear-gradient(180deg, rgba(160, 235, 230, 0.34), rgba(160, 235, 230, 0) 78%);
+  filter: blur(18px);
+  transform-origin: 50% 0;
+}
+.shafts i:nth-child(1) {
+  left: 30%;
+  transform: rotate(9deg);
+}
+.shafts i:nth-child(2) {
+  left: 44%;
+  width: 18%;
+  transform: rotate(2deg);
+  opacity: 0.8;
+}
+.shafts i:nth-child(3) {
+  left: 60%;
+  transform: rotate(-8deg);
+  opacity: 0.6;
+}
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 58% 56% at 50% 45%, rgba(1, 10, 15, 0) 0%, rgba(1, 10, 15, 0.55) 62%, var(--abyss) 100%);
+}
+.ui {
+  position: absolute;
+  z-index: 2;
+}
+
+#mapBtn {
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  left: 20px;
+  background: rgba(3, 20, 28, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--silver);
+}
+#mapBtn:hover {
+  border-color: var(--shaft);
+}
+
+/* Neighbours at the left and right edges, at the same rank. */
+.nb {
+  top: 58%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 170px;
+  background: none;
+  border: 0;
+  padding: 14px 8px;
+  color: var(--silver);
+  transition: opacity 0.3s;
+}
+.nb.left {
+  left: 18px;
+  align-items: flex-start;
+  text-align: left;
+  --nx: -60px;
+}
+.nb.right {
+  right: 88px;
+  align-items: flex-end;
+  text-align: right;
+  --nx: 60px;
+}
+.nb .chev {
+  font-size: 30px;
+  line-height: 0.8;
+  color: var(--shaft);
+}
+.nb .name {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  line-height: 1.1;
+  opacity: 0.75;
+  overflow-wrap: anywhere;
+  transition: opacity 0.3s;
+}
+.nb .name.sp {
+  font-style: italic;
+}
+.nb .com {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.3;
+}
+.nb:hover .name {
+  opacity: 1;
+}
+.nbin {
+  animation: nbIn 0.9s cubic-bezier(0.16, 0.85, 0.2, 1) 0.25s both;
+}
+@keyframes nbIn {
+  from {
+    opacity: 0;
+    translate: var(--nx, 0px) 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* Names that follow the sharks in a lineup. The scene sets their transform every frame. */
+.lbl {
+  left: 0;
+  top: 0;
+  background: none;
+  border: 0;
+  padding: 0 0 4px;
+  text-align: left;
+  color: var(--silver);
+  white-space: nowrap;
+  text-shadow: 0 0 10px var(--abyss);
+  transition: opacity 0.4s;
+}
+.lbl .n {
+  display: block;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.1;
+  opacity: 0.88;
+  transition: color 0.3s;
+}
+.lbl .c {
+  display: block;
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.3;
+}
+.lbl.hov .n {
+  color: var(--gold);
+  opacity: 1;
+}
+.lbl.off {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s, visibility 0s 0.3s;
+}
+
+@container stage (max-width: 700px) {
+  #stage,
+  .info {
+    --edge: 84px;
+  }
+  .nb {
+    top: auto;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    transform: none;
+    max-width: 46%;
+    padding: 10px 6px;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .nb.left {
+    left: 6px;
+    text-align: left;
+  }
+  .nb.right {
+    right: 22px;
+    text-align: right;
+    flex-direction: row-reverse;
+  }
+  .nb .name {
+    font-size: 1.05rem;
+  }
+  .nb .com {
+    display: none;
+  }
+  .nb .chev {
+    font-size: 26px;
+    line-height: 1;
+  }
+  .lbl .c {
+    display: none;
+  }
+  .lbl .n {
+    font-size: 0.95rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nbin {
+    animation: none;
+  }
+}

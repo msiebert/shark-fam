@@ -2,3 +2,7 @@
 pipeline/.cache/
 __pycache__/
 *.pyc
+node_modules/
+dist/
+public/data/
+.e2e/

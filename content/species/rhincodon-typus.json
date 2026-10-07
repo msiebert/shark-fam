@@ -1,0 +1,41 @@
+{
+  "id": "rhincodon-typus",
+  "genus": "rhincodon",
+  "latin": "Rhincodon typus",
+  "common": "Whale shark",
+  "description": "The largest living fish. It cruises slowly with its wide mouth open, straining plankton and small fish from the water. Every individual has its own spot pattern.",
+  "lengthM": 10,
+  "depth": "Surface to about 1,900 m",
+  "eats": "Plankton and small fish",
+  "wikipedia": "Whale_shark",
+  "model": "whale_shark",
+  "representative": true,
+  "swim": {
+    "cruise": 0.22,
+    "beatHz": 0.4,
+    "amplitude": 0.09
+  },
+  "distribution": {
+    "mode": "open",
+    "polygons": [
+      [
+        [
+          -180,
+          -32
+        ],
+        [
+          180,
+          -32
+        ],
+        [
+          180,
+          32
+        ],
+        [
+          -180,
+          32
+        ]
+      ]
+    ]
+  }
+}

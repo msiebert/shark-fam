@@ -1,0 +1,102 @@
+/* The rail is the tree in miniature: one row of dots per rank, joined to their parents. */
+.gauge {
+  right: 10px;
+  top: 16%;
+  bottom: 16%;
+  width: 56px;
+}
+.gauge svg {
+  display: block;
+  overflow: visible;
+}
+.rl {
+  fill: none;
+  stroke: var(--shaft);
+  stroke-opacity: 0.2;
+  stroke-width: 1;
+  transition: stroke-opacity 0.7s, stroke 0.7s;
+}
+.rl.path {
+  stroke: var(--gold);
+  stroke-opacity: 0.85;
+  stroke-width: 1.4;
+}
+.rn {
+  fill: var(--muted);
+  opacity: 0.5;
+  r: 3px;
+  transition: fill 0.6s, opacity 0.6s, r 0.6s;
+}
+.rn.path {
+  fill: var(--silver);
+  opacity: 0.95;
+}
+.rn.on {
+  fill: var(--gold);
+  opacity: 1;
+  r: 4.8px;
+}
+.rh {
+  fill: transparent;
+  pointer-events: all;
+  cursor: pointer;
+}
+g[role="button"]:focus-visible {
+  outline: none;
+}
+g[role="button"]:focus-visible .rh {
+  stroke: var(--gold);
+  stroke-width: 1.5;
+}
+.rm {
+  fill: var(--muted);
+  opacity: 0.55;
+}
+.railsvg {
+  animation: railIn 0.5s ease both;
+}
+@keyframes railIn {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.pulse {
+  fill: #fff6dc;
+  opacity: 0;
+  filter: drop-shadow(0 0 5px var(--gold));
+  pointer-events: none;
+}
+.rlab {
+  position: absolute;
+  right: 64px;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(--gold);
+  white-space: nowrap;
+  pointer-events: none;
+  transition: top 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.rlab.anc {
+  color: var(--muted);
+  font-size: 11px;
+  opacity: 0.8;
+}
+.rlab.anc.sp {
+  font-style: italic;
+}
+@container stage (max-width: 700px) {
+  .gauge {
+    right: 6px;
+  }
+  .rlab {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .railsvg {
+    animation: none;
+  }
+}
