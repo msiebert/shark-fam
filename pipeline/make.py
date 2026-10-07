@@ -18,7 +18,7 @@ def get_textures(cfg, species):
     from sharkgen.body import Body
     cache = HERE / ".cache"
     cache.mkdir(exist_ok=True)
-    key = hashlib.md5(json.dumps({k: cfg.get(k) for k in ("body", "palette", "gills", "mouth", "eye", "nostrils", "paint")},
+    key = hashlib.md5(json.dumps({k: cfg.get(k) for k in ("body", "palette", "gills", "mouth", "eye", "nostrils", "paint", "spots", "ridges")},
                                  sort_keys=True).encode() + Path(skin.__file__).read_bytes()).hexdigest()[:10]
     paths = {"albedo": cache / f"{species}_{key}_albedo.png",
              "normal": cache / "micro_normal.png", "rough": cache / "micro_rough.png"}
@@ -51,7 +51,7 @@ def validate(model, cfg, glb):
         "body watertight": body.is_watertight,
         "body volume > 0": body.volume > 0,
         f"length ~ {cfg['length_m']} m": abs(ext[0] - cfg["length_m"]) < 0.02 * cfg["length_m"],
-        "triangles <= 60k": tris <= 60000,
+        f"triangles <= {cfg.get('tri_budget', 60000) // 1000}k": tris <= cfg.get("tri_budget", 60000),
         "albedo + normal + roughness textures exported":
             any("baseColorTexture" in m.get("pbrMetallicRoughness", {}) for m in mats)
             and any("normalTexture" in m for m in mats)

@@ -77,7 +77,7 @@ def export_glb(model, cfg, path, tex):
 
     bv, bf, buv = model["body"]
     body = _mesh_obj(nm + "_Body", bv, bf, buv)
-    body.data.materials.append(_skin_material(tex, (TILES_AROUND, TILES_ALONG)))
+    body.data.materials.append(_skin_material(tex, model.get("tiles", (TILES_AROUND, TILES_ALONG))))
 
     fv, ff, fc, fuv = model["fins"]
     fins = _mesh_obj(nm + "_Fins", fv, ff, fuv)

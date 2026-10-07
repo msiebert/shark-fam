@@ -28,5 +28,7 @@ Requires Python 3.13 (the pinned `bpy` wheel is cp313) and no GPU or display.
 - `great_white` (4.5 m)
 - `great_hammerhead` (4.2 m) – uses per-species `stations` density and `render.hero` / `render.head` camera overrides
 
+- `whale_shark` (10 m) – uses `ridges`, `spots` (pale spot/stripe painter) and a terminal mouth; texture v follows surface distance so blunt noses stay sharp
+
 ## Adding a species
 Copy `species/great_white.json`, change the numbers, run `make.py <name>`, and check the silhouettes first.

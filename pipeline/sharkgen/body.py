@@ -36,6 +36,27 @@ class Body:
         self.z0 = curve(zx, zz)
         self.x_end = xs[-1]
         self.cfg = cfg
+        # texture v follows distance along the body surface (not x) so blunt noses keep texel density
+        xd = np.linspace(0.0, self.x_end, 20001)
+        hh = (self.up(xd) + self.down(xd)) / 2
+        ds = np.sqrt(np.diff(xd) ** 2 + np.diff(self.w(xd)) ** 2 + np.diff(hh) ** 2)
+        sd = np.concatenate([[0.0], np.cumsum(ds)])
+        self.s_total = float(sd[-1])
+        self._xd, self._vd = xd, sd / sd[-1]
+
+    def v_of_x(self, x):
+        return np.interp(x, self._xd, self._vd)
+
+    def x_of_v(self, v):
+        return np.interp(v, self._vd, self._xd)
+
+    def tiles(self, length_m, total_norm, tile_m=0.25):
+        """(around, along) micro-detail tile counts for the body UVs."""
+        sc = length_m / total_norm
+        xd = np.linspace(0.0, self.x_end, 400)
+        a, b = self.w(xd), (self.up(xd) + self.down(xd)) / 2
+        per = np.pi * (3 * (a + b) - np.sqrt((3 * a + b) * (a + 3 * b)))
+        return max(1, round(float(per.max()) * sc / tile_m)), max(1, round(self.s_total * sc / tile_m))
 
     # -- geometry -------------------------------------------------------
     def _base(self, x, phi):
@@ -94,14 +115,20 @@ class Body:
             sock = np.exp(-0.5 * d2 / e["socket_sigma"] ** 2)
         out["socket"] = sock
 
-        k = 0.0
+        ridge = np.zeros_like(x)
+        for rd in cfg.get("ridges", []):
+            w_x = smoothstep(rd["x0"], rd["x0"] + 0.06, x) * smoothstep(rd["x1"], rd["x1"] - 0.08, x)
+            ridge = ridge + np.exp(-0.5 * ((theta - np.radians(rd["theta"])) * r_loc / rd["sigma"]) ** 2) * w_x * rd["k"]
+        out["ridge"] = ridge
+
+        k = -ridge
         if g:
             k = k + g["k"] * slit
         if m:
             k = k + m["k"] * mouth
         if e:
             k = k + e["socket_k"] * sock
-        out["shrink"] = np.clip(k, 0.0, 0.5)
+        out["shrink"] = np.clip(k, -0.3, 0.5)
         out["theta"] = theta
         return out
 
@@ -147,7 +174,7 @@ class Body:
 
         # UVs: u = phi / 2pi (wraps around), v = x / x_end (nose -> tail)
         uv = np.concatenate([[[0.5, 0.0]],
-                             np.stack([PHI / (2 * np.pi), X / self.x_end], -1).reshape(-1, 2),
+                             np.stack([PHI / (2 * np.pi), self.v_of_x(X)], -1).reshape(-1, 2),
                              [[0.5, 1.0]]])
         faces = orient_outward(verts, faces, self)
         return verts, faces, uv

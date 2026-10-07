@@ -120,5 +120,6 @@ def build_shark(cfg):
         "fins": (to_world(fins_v, cfg, total, bend), fins_f, fins_c, fins_uv * sc / TILE_M),
         "eye": (to_world(eye_v, cfg, total, bend) if len(eye_v) else eye_v, eye_f),
         "body_obj": body,
+        "tiles": body.tiles(cfg["length_m"], total),
         "total_norm": total,
     }

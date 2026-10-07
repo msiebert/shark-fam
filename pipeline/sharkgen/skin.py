@@ -49,12 +49,16 @@ def paint_body(body, cfg, W=2048, H=4096, chunk=256):
 
     for r0 in range(0, H, chunk):
         rows = np.arange(r0, min(H, r0 + chunk))
-        x1 = (rows + 0.5) / H * body.x_end
+        x1 = body.x_of_v((rows + 0.5) / H)
         X, PHI = np.meshgrid(x1, phi_row, indexing="ij")
         X = X.astype(np.float32)
         PHI = PHI.astype(np.float32)
         theta = np.minimum(PHI, TWO_PI - PHI)
         y, z = body._base(X, PHI)
+        half = W // 2
+        seg = np.hypot(np.diff(y[:, :half], axis=1), np.diff(z[:, :half], axis=1))
+        arc_half = np.concatenate([np.zeros((len(rows), 1), np.float32), np.cumsum(seg, axis=1)], axis=1)
+        arc = np.concatenate([arc_half, arc_half[:, ::-1]], axis=1)      # surface distance from the dorsal midline
         n_low, n_mid, n_fine = _noise(X, PHI, w_low), _noise(X, PHI, w_mid), _noise(X, PHI, w_fine)
 
         # countershading with a ragged, irregular demarcation line
@@ -69,6 +73,12 @@ def paint_body(body, cfg, W=2048, H=4096, chunk=256):
 
         dark_b = np.broadcast_to(dark, X.shape + (3,))
         r_loc = np.sqrt(np.maximum(body.w(X), 1e-3) * np.maximum((body.up(X) + body.down(X)) / 2, 1e-3))
+
+        # pale spot-and-stripe pattern (whale shark style)
+        sp = cfg.get("spots")
+        if sp:
+            col = _spots(col, (body.v_of_x(X) * body.s_total).astype(np.float32), arc, theta, bnd, n_low, sp,
+                         hex_to_linear(sp["color"]))
 
         # gill slits: thin crisp dark lines
         if g:
@@ -102,6 +112,38 @@ def paint_body(body, cfg, W=2048, H=4096, chunk=256):
             col = mix(col, dark_b, 0.22 * np.exp(-0.5 * brow))
         img[r0:r0 + len(rows)] = col
     return img
+
+
+def _hash(a, b, salt):
+    return np.mod(np.sin(a * 127.1 + b * 311.7 + salt * 74.7) * 43758.5453, 1.0)
+
+
+def _spots(col, X, arc, theta, bnd, n_brk, sp, spot_col):
+    """Staggered jittered pale spots plus broken horizontal/vertical pale stripes."""
+    x = X.astype(np.float64)
+    c = arc.astype(np.float64)
+    cy = c / sp["sc"]
+    iy = np.floor(cy)
+    cx = x / sp["sx"] + 0.5 * np.mod(iy, 2)
+    ix = np.floor(cx)
+    fx, fy = cx - ix - 0.5, cy - iy - 0.5
+    jx, jy = (_hash(ix, iy, 1) - 0.5) * 0.45, (_hash(ix, iy, 2) - 0.5) * 0.45
+    r0, r1 = sp["r"]
+    rr = r0 + (r1 - r0) * _hash(ix, iy, 3)
+    d = np.sqrt((fx - jx) ** 2 + (fy - jy) ** 2)
+    spot = smoothstep(rr, rr * 0.45, d) * (_hash(ix, iy, 4) < sp.get("keep", 0.93)) * (0.65 + 0.35 * _hash(ix, iy, 5))
+    st = sp.get("stripes")
+    stripe = 0.0
+    if st:
+        dh = np.abs(np.mod(c / st["spacing"] + 0.5, 1.0) - 0.5) * st["spacing"]
+        dv = np.abs(np.mod(x / st["spacing"] + 0.5, 1.0) - 0.5) * st["spacing"]
+        line = np.exp(-0.5 * (dh / st["width"]) ** 2)
+        if st.get("vertical", False):
+            line = np.maximum(line, np.exp(-0.5 * (dv / st["width"]) ** 2))
+        stripe = line * smoothstep(-0.6, 0.0, n_brk) * st["strength"] * (1 - smoothstep(0.9, 1.5, theta))
+    zone = 1 - smoothstep(bnd - 0.16, bnd + 0.02, theta)
+    m = np.clip(np.maximum(spot, stripe) * zone * sp["strength"], 0, 1).astype(np.float32)
+    return mix(col, np.broadcast_to(spot_col, col.shape), m)
 
 
 def _tileable_noise(n, beta, seed):
