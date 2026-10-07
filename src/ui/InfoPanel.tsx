@@ -60,7 +60,10 @@ export function InfoPanel() {
   const prev = useRef<TreeNode | null>(null);
   const [ghost, setGhost] = useState<{ node: TreeNode; move: Move; key: number } | null>(null);
   const el = useRef<HTMLElement>(null);
-  const seq = !!prev.current && prev.current !== current && !reducedMotion;
+  // Decided once per node: a later re-render (say, detail arriving) must not change the animation delay mid-run.
+  const seqFor = useRef({ id: "", seq: false });
+  if (seqFor.current.id !== current.id) seqFor.current = { id: current.id, seq: !!prev.current && prev.current !== current && !reducedMotion };
+  const seq = seqFor.current.seq;
 
   useLayoutEffect(() => {
     const before = prev.current;
