@@ -141,23 +141,26 @@
   "theta1": 124,
   "lean": 0.008,
   "sigma": 0.0012,
-  "k": 0.03
+  "k": 0.025
  },
  "mouth": {
-  "x0": 0.048,
-  "curve_k": 0.058,
-  "curve_p": 2.2,
-  "ymax": 0.047,
-  "sigma": 0.003,
-  "k": 0.03
+  "x0": 0.036,
+  "x_peak": 0.092,
+  "x1": 0.114,
+  "theta_peak": 124,
+  "theta_corner": 129,
+  "p": 1.5,
+  "sigma": 0.0022,
+  "k": 0.02
  },
  "eye": {
   "x": 0.088,
   "theta": 80,
-  "radius": 0.0062,
-  "inset": 0.0028,
-  "socket_sigma": 0.01,
-  "socket_k": 0.06
+  "radius": 0.0064,
+  "inset": 0.005,
+  "socket_sigma": 0.0085,
+  "socket_k": 0.09,
+  "elong": 1.2
  },
  "palette": {
   "dorsal": "slate-dorsal",
@@ -199,7 +202,7 @@
      95
     ]
    ],
-   "softness": 0.055,
+   "softness": 0.045,
    "wave": 2.5
   }
  },
@@ -358,5 +361,20 @@
    "emb": 0.03,
    "edge_dark": 0.6
   }
- ]
+ ],
+ "nostrils": [
+  {
+   "x": 0.027,
+   "theta": 150,
+   "len": 0.0042,
+   "wid": 0.0013
+  }
+ ],
+ "paint": {
+  "ragged_deg": 1.1,
+  "mottle": 0.05,
+  "speckle": 0.025,
+  "gill_sigma": 0.0007,
+  "mouth_sigma": 0.0011
+ }
 }

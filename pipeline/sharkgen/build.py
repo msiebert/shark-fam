@@ -6,25 +6,6 @@ from .util import curve, hex_to_linear, mix, smoothstep
 
 
 # ---------------------------------------------------------------- colours
-def body_colors(attr, pal):
-    x, th = attr["x"], attr["theta"]
-    dorsal, deep = hex_to_linear(pal["dorsal"]), hex_to_linear(pal["deep"])
-    ventral, dark = hex_to_linear(pal["ventral"]), hex_to_linear(pal["edge"])
-    dem = pal["demarcation"]
-    px, pd = zip(*dem["points"])
-    bnd = np.radians(curve(px, pd)(x) + dem.get("wave", 0.0) * np.sin(17 * x + 0.7) * np.sin(7 * x + 0.4))
-    t = smoothstep(bnd - dem["softness"], bnd + dem["softness"], th)
-    top = mix(np.broadcast_to(deep, (len(x), 3)), np.broadcast_to(dorsal, (len(x), 3)),
-              smoothstep(0.05, 1.25, th))
-    noise = 1 + 0.05 * np.sin(61 * x + 3 * th) * np.sin(23 * x - 2 * th + 1.7)
-    top = top * noise[:, None]
-    col = mix(top, np.broadcast_to(ventral, (len(x), 3)), t)
-    col = mix(col, np.broadcast_to(dark, (len(x), 3)), 0.80 * attr["gill"])
-    col = mix(col, np.broadcast_to(dark, (len(x), 3)), 0.70 * attr["mouth"])
-    col = mix(col, np.broadcast_to(dark, (len(x), 3)), 0.35 * attr["socket"])
-    return col
-
-
 def fin_colors(f, attr, pal):
     n = len(attr["v"])
     base = hex_to_linear(pal["dorsal"] if f.get("color", "dorsal") == "dorsal" else pal["ventral"])
@@ -89,26 +70,28 @@ def to_world(verts, cfg, total, bend):
 
 
 # ---------------------------------------------------------------- main
+TILE_M = 0.25   # metres per tile of the fin micro-detail UVs
+
+
 def build_shark(cfg):
     body = Body(cfg)
     pal = cfg["palette"]
-    bv, bf, battr = body.build(cfg.get("ring", 64))
-    pieces = [(bv, bf)]
-    colors = [body_colors(battr, pal)]
-    # nose pole should sit on the dorso-ventral transition rather than the dark back
-    colors[0][0] = colors[0][1]
+    bv, bf, buv = body.build(cfg.get("ring", 72))
 
+    fin_pieces, fin_colors_l, fin_uv = [], [], []
     for f in cfg["fins"]:
         att = f["attach"]
         root = body.axis(att["x"]) if att.get("axis") else body.surface(att["x"], np.radians(att["theta"]))
         for mirror in ([False, True] if f.get("paired") else [False]):
             fv, ff, fa = make_fin(f, root, mirror)
-            pieces.append((fv, ff))
-            colors.append(fin_colors(f, fa, pal))
-    skin_v, skin_f = merge(pieces)
-    skin_c = np.vstack(colors)
+            fin_pieces.append((fv, ff))
+            fin_colors_l.append(fin_colors(f, fa, pal))
+            fin_uv.append(np.stack([fa["uu"], fa["ww"]], 1))
+    fins_v, fins_f = merge(fin_pieces)
+    fins_c = np.vstack(fin_colors_l)
+    fins_uv = np.vstack(fin_uv)
 
-    # eyes
+    # eyes: low, slightly elongated ellipsoids sunk into the socket
     eyes = []
     e = cfg.get("eye")
     if e:
@@ -123,15 +106,19 @@ def build_shark(cfg):
         c = surf + inward * e["inset"]
         for sgn in (1, -1):
             cc = c * np.array([1, sgn, 1.0])
-            eyes.append(uv_sphere(cc, e["radius"]))
+            ev, ef = uv_sphere(cc, e["radius"])
+            ev = cc + (ev - cc) * np.array([e.get("elong", 1.25), 1.0, 0.9])
+            eyes.append((ev, ef))
     eye_v, eye_f = merge(eyes) if eyes else (np.zeros((0, 3)), [])
 
-    total = float(skin_v[:, 0].max() - skin_v[:, 0].min())
+    allv = np.vstack([bv, fins_v])
+    total = float(allv[:, 0].max() - allv[:, 0].min())
     bend = cfg.get("bend")
-    skin_w = to_world(skin_v, cfg, total, bend)
+    sc = cfg["length_m"] / total
     return {
-        "skin": (skin_w, skin_f, skin_c),
+        "body": (to_world(bv, cfg, total, bend), bf, buv),
+        "fins": (to_world(fins_v, cfg, total, bend), fins_f, fins_c, fins_uv * sc / TILE_M),
         "eye": (to_world(eye_v, cfg, total, bend) if len(eye_v) else eye_v, eye_f),
-        "body_only": (to_world(bv, cfg, total, bend), bf),
+        "body_obj": body,
         "total_norm": total,
     }

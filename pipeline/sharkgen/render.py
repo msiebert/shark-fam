@@ -138,3 +138,27 @@ def render_silhouette(glb, out_png, view="side", res=(1600, 700), samples=4):
         cam.rotation_euler = (0, 0, 0)
     sc.render.filepath = str(out_png)
     bpy.ops.render.render(write_still=True)
+
+
+def render_closeup(glb, out_png, res=(1400, 900), samples=64, focus=0.11, yaw=-48.0, dist_frac=0.42, lift=0.0):
+    """Close-up of the head (focus = fraction of length back from the nose)."""
+    meshes, lo, hi = _reset_and_import(glb)
+    sc = _scene_common(res, samples)
+    L = hi.x - lo.x
+    target = Vector((hi.x - focus * L, 0, lo.z * 0 + (-0.01 + lift) * L))
+    _world_gradient(top=hex_to_linear("#1F3446"), bottom=hex_to_linear("#0A141C"),
+                    ambient=hex_to_linear("#2A4A63"), ambient_strength=0.3)
+    cd = bpy.data.cameras.new("Cam")
+    cd.lens, cd.sensor_width = 85, 36
+    cam = bpy.data.objects.new("Cam", cd)
+    sc.collection.objects.link(cam)
+    sc.camera = cam
+    a = math.radians(yaw)
+    d = L * dist_frac
+    cam.location = target + Vector((math.cos(a) * d, math.sin(a) * d, -0.01 * L))
+    _look_at(cam, target)
+    _area("Key", target + Vector((L * 0.2, -L * 0.45, L * 0.5)), target, L * 0.7, L ** 2 * 14, (1.0, 0.97, 0.92))
+    _area("Rim", target + Vector((-L * 0.4, L * 0.5, L * 0.3)), target, L * 0.5, L ** 2 * 14, (0.55, 0.78, 1.0))
+    _area("Fill", target + Vector((L * 0.4, -L * 0.3, -L * 0.2)), target, L * 0.8, L ** 2 * 2.5, (0.7, 0.85, 1.0))
+    bpy.context.scene.render.filepath = str(out_png)
+    bpy.ops.render.render(write_still=True)

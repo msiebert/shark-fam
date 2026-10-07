@@ -88,13 +88,19 @@ def make_fin(f, root, mirror=False, nr=22, ns=24):
     vv = np.zeros(len(verts))
     ss = np.zeros(len(verts))
     up = np.zeros(len(verts))
+    uu = np.zeros(len(verts))
+    ww = np.zeros(len(verts))
+    U = x_le[:, None] + s[None, :] * chord[:, None]      # position along the chord
     vv[:nrows * ns] = np.repeat(v, ns)
     ss[:nrows * ns] = np.tile(s, nrows)
+    uu[:nrows * ns] = U.ravel()
+    ww[:nrows * ns] = np.repeat(span * v, ns)
     up_top = float(n_hat[2])
     up[:nrows * ns] = np.where((np.tile(k, nrows) == 0) | (np.tile(k, nrows) == ns - 1), 0.0, up_top)
     j = nrows * ns
     for i in range(nrows - 1):
         for kk in range(1, ns - 1):
             vv[j], ss[j], up[j] = v[i], s[kk], -up_top
+            uu[j], ww[j] = U[i, kk], span * v[i]
             j += 1
-    return verts, top_f + bot_f, {"v": vv, "s": ss, "upfacing": up}
+    return verts, top_f + bot_f, {"v": vv, "s": ss, "upfacing": up, "uu": uu, "ww": ww}
