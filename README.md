@@ -16,6 +16,20 @@ Controls: arrow keys (up/down change rank, left/right move between siblings), En
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how it is built and why.
 
+## Deploy (GitHub Pages)
+
+Every push to `main` runs `.github/workflows/deploy.yml`: install, unit tests, build, publish to Pages. The site appears at `https://<owner>.github.io/<repo>/` (for this repo, `https://msiebert.github.io/shark-fam/`).
+
+One-time setup: in the repo on GitHub, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
+The workflow builds with `BASE_PATH=/<repo>/`, because a project site is served from a sub-path. To try that build locally, set it for both steps:
+
+```bash
+BASE_PATH=/shark-fam/ npm run build && BASE_PATH=/shark-fam/ npx vite preview   # http://localhost:4173/shark-fam/
+```
+
+Navigation uses the URL hash, so deep links like `.../shark-fam/#carcharodon-carcharias` work on Pages without any redirect rules.
+
 ## Add a species
 
 Everything about a species is data. You need an ancestor chain, one JSON file, and (to draw it) a model.
