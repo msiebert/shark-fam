@@ -26,10 +26,10 @@ proportions and form*, not from noisy detail.
 | Aspect | Standard |
 |---|---|
 | Construction | Body lofted from elliptical cross-sections along a spline spine; fins as separate thin-airfoil meshes blended at the root |
-| Topology | Quad-dominant, watertight, no n-gons on the body, manifold |
-| Smoothing | Subdivision level 2 baked in for export; smooth shading everywhere |
+| Topology | Body is one quad-dominant, watertight, manifold mesh; fins are separate closed airfoil shells with roots buried in the body (merged into one skin mesh on export) |
+| Smoothing | Body is lofted dense enough (~300 stations x 64) to need no subdivision; smooth shading everywhere |
 | Fin profile | Tapered airfoil section — thick leading edge, razor-thin trailing edge; slight sweep and curved trailing edge (falcate) |
-| Budget | 20k–60k triangles hero model; 5k–10k low-poly LOD |
+| Budget | <= 60k triangles hero model (currently ~57k); 5k–10k low-poly LOD planned |
 | Scale | 1 unit = 1 metre, real species length (e.g. great white ≈ 4.5 m); origin at centre of mass, nose along +X, up is +Z (Blender) / +Y (glTF export) |
 | Format | glTF 2.0 binary (`.glb`), embedded textures, plus `.blend`/source script kept in repo |
 
@@ -91,10 +91,10 @@ little for the species.
 
 ## 6. Per-species spec (parametric)
 
-Each species is a small data file (YAML/JSON) so the style stays consistent and
+Each species is a small JSON file (`pipeline/species/*.json`) so the style stays consistent and
 new sharks are cheap to add:
 
-```yaml
+```text
 name: Great White
 latin: Carcharodon carcharias
 length_m: 4.5
@@ -117,5 +117,5 @@ markings: []
 2. Watertight + manifold check passes; no flipped normals.
 3. Within triangle budget; GLB loads in a stock glTF viewer with correct scale.
 4. Matches palette tokens and pose standard.
-5. Rendered with the standard presentation rig and compared against reference
-   photos of the species.
+5. Rendered with the standard presentation rig (`pipeline/make.py`) and compared
+   against reference photos of the species.
