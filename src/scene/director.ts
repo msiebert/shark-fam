@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { layoutLineup } from "../core/lineup";
 import { displayLength, trackPose, trackShape } from "../core/racetrack";
 import { SharkActor, type Mode } from "./actor";
-import { Diver } from "./diver";
+import { Diver, DIVER_CENTRE_M } from "./diver";
 import { clamp, easeOut, framing, FOV, TAN, ZS } from "./frame";
 import { ModelLibrary } from "./models";
 import { School } from "./school";
@@ -367,9 +367,12 @@ export class SharkScene {
     let dTarget: { x: number; y: number; z: number; s: number } | null = null;
     if (species) {
       const comp = (f.camZ + 1.15) / (f.camZ + 0.25);
-      const hh = (f.camZ + 1.15) * TAN;
       const mpu = displayLength(species.lengthM) / species.lengthM;
-      dTarget = { x: -hh * this.camera.aspect * 0.95 + pan, y: 0.3 * hh, z: -1.15, s: mpu * comp };
+      // Centred over the text, a little above where it starts. The model's origin is at its feet, so shift by the
+      // middle of its head-to-fin length to centre it.
+      const textTop = this.safeBottomPx > 0 ? this.safeBottomPx / this.h : 0.42;
+      const scale = mpu * comp;
+      dTarget = { x: pan - DIVER_CENTRE_M * scale, y: this.yAtScreenFraction(clamp(textTop - 0.04, 0.12, 0.6), -1.15, f), z: -1.15, s: scale };
     } else if (this.view.kind === "lineup") {
       const row = this.lineupFor(this.view.sharks).diver;
       dTarget = { x: row.tailX, y: row.y + 0.06 * row.unitsPerM, z: ZS, s: row.unitsPerM };
