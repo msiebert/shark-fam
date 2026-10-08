@@ -33,7 +33,7 @@ export class Navigator {
   private readonly lastChild = new Map<TreeNode, TreeNode>();
   private readonly listeners = new Set<NavListener>();
 
-  constructor(readonly tree: Tree, start: TreeNode = tree.root) {
+  constructor(readonly tree: Tree, start: TreeNode = tree.roots[0]!) {
     this.cur = start;
     this.remember(start);
   }

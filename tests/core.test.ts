@@ -12,35 +12,38 @@ const real = (): Tree => new Tree(JSON.parse(readFileSync("public/data/index.jso
 
 /** A synthetic tree: `shape` is branching per level (order, family, genus, species). */
 function synth(shape: number[], lengths: (i: number) => number = (i) => 2 + i): Tree {
-  const ranks: Rank[] = ["superorder", "order", "family", "genus", "species"];
+  const ranks: Rank[] = ["order", "family", "genus", "species"];
   const nodes: IndexNode[] = [];
   let sp = 0;
   const make = (id: string, depth: number, parent: string | null): number => {
     const rank = ranks[depth]!;
     const n: IndexNode = { id, rank, parent, latin: id, common: id, children: [], speciesCount: 0 };
     nodes.push(n);
-    if (depth === 4) {
+    if (depth === 3) {
       n.lengthM = lengths(sp++);
       n.model = "m";
       n.speciesCount = 1;
       return 1;
     }
-    for (let i = 0; i < (shape[depth] ?? 1); i++) {
+    for (let i = 0; i < (shape[depth + 1] ?? 1); i++) {
       const cid = `${id}.${i}`;
       n.children.push(cid);
       n.speciesCount += make(cid, depth + 1, id);
     }
     return n.speciesCount;
   };
-  make("r", 0, null);
-  return new Tree({ version: 1, root: "r", nodes });
+  const roots: string[] = [];
+  for (let i = 0; i < (shape[0] ?? 1); i++) {
+    roots.push(`r${i}`);
+    make(`r${i}`, 0, null);
+  }
+  return new Tree({ version: 1, roots, nodes });
 }
 
 describe("navigation", () => {
   it("goes down to the first child, then back to the last visited one", () => {
     const t = real();
     const nav = new Navigator(t);
-    nav.down();
     expect(nav.current.id).toBe("lamniformes");
     nav.step(1);
     expect(nav.current.id).toBe("carcharhiniformes");
@@ -51,19 +54,19 @@ describe("navigation", () => {
     nav.up();
     nav.up();
     nav.up();
-    nav.up();
-    expect(nav.current.id).toBe("selachimorpha");
-    nav.down();
     expect(nav.current.id).toBe("carcharhiniformes");
+    expect(nav.up()).toBe(false);
+    nav.step(-1);
+    nav.step(1);
+    nav.down();
+    expect(nav.current.id).toBe("sphyrnidae");
   });
 
   it("remembers the whole path after a jump", () => {
     const t = real();
     const nav = new Navigator(t);
     nav.go(t.get("rhincodon-typus")!);
-    nav.go(t.root);
-    nav.down();
-    expect(nav.current.id).toBe("orectolobiformes");
+    nav.go(t.get("orectolobiformes")!);
     nav.down();
     nav.down();
     expect(nav.current.id).toBe("rhincodon");
@@ -82,8 +85,9 @@ describe("navigation", () => {
     expect(o.step(1)).toBe(false);
   });
 
-  it("cannot go up from the root or down from a species", () => {
+  it("cannot go up from an order or down from a species", () => {
     const t = real();
+    expect(new Navigator(t).current.rank).toBe("order");
     expect(new Navigator(t).up()).toBe(false);
     expect(new Navigator(t, t.get("rhincodon-typus")!).down()).toBe(false);
   });
@@ -97,7 +101,7 @@ describe("navigation", () => {
     nav.go(t.get("rhincodon-typus")!);
     nav.down(); // no-op
     expect(moves[0]).toMatchObject({ kind: "sibling", up: 1, down: 1, dx: 1, dy: 0 });
-    expect(moves[0]!.via.id).toBe("selachimorpha");
+    expect(moves[0]!.via).toBe(t.root);
     expect(moves[1]).toMatchObject({ kind: "jump", up: 1, down: 4, dx: 1, dy: 1 });
     expect(moves).toHaveLength(2);
     nav.go(t.get("lamniformes")!);
@@ -130,7 +134,7 @@ describe("lineup selection", () => {
 
   it("prefers curated representatives over bigger sharks", () => {
     const t = synth([1, 1, 1, 8]);
-    const genus = t.get("r.0.0.0")!;
+    const genus = t.get("r0.0.0")!;
     genus.childNodes[2]!.representative = true;
     const picks = selectLineup(t, genus, 3);
     expect(picks.map((p) => p.id)).toContain(genus.childNodes[2]!.id);
@@ -139,7 +143,7 @@ describe("lineup selection", () => {
 
   it("sorts shortest first and skips species without a model", () => {
     const t = synth([1, 1, 1, 4], (i) => [5, 1, 3, 2][i]!);
-    const genus = t.get("r.0.0.0")!;
+    const genus = t.get("r0.0.0")!;
     delete genus.childNodes[1]!.model;
     expect(selectLineup(t, genus).map((s) => s.lengthM)).toEqual([2, 3, 5]);
   });
@@ -211,39 +215,39 @@ describe("racetrack", () => {
 describe("rail", () => {
   it("fans out only the current level and shows one dot above and below", () => {
     const t = synth([5, 1, 1, 1]);
-    const cur = t.get("r.2")!;
-    const m = buildRail(cur, 5, cur.childNodes[0]);
+    const cur = t.get("r2")!;
+    const m = buildRail(cur, 4, cur.childNodes[0]);
     const byKind = (k: string) => m.dots.filter((d) => d.kind === k);
     expect(byKind("current")).toHaveLength(1);
     expect(byKind("sibling")).toHaveLength(4);
-    expect(byKind("path")).toHaveLength(1);
+    expect(byKind("path")).toHaveLength(0);
     expect(byKind("next")).toHaveLength(1);
-    expect(m.dots.filter((d) => d.row === 0)).toHaveLength(1);
+    expect(m.dots.filter((d) => d.row === 0)).toHaveLength(5);
     expect(m.more).toHaveLength(0);
   });
   it("marks siblings beyond the fan", () => {
     const t = synth([12, 1, 1, 1]);
-    const m = buildRail(t.get("r.5")!, 5, undefined);
-    expect(m.more).toEqual([{ row: 1, side: -1 }, { row: 1, side: 1 }]);
-    expect(m.dots.filter((d) => d.row === 1)).toHaveLength(5);
+    const m = buildRail(t.get("r5")!, 4, undefined);
+    expect(m.more).toEqual([{ row: 0, side: -1 }, { row: 0, side: 1 }]);
+    expect(m.dots.filter((d) => d.row === 0)).toHaveLength(5);
   });
 });
 
 describe("map layout", () => {
   it("lays out only unfolded branches and centres parents", () => {
     const t = synth([3, 3, 3, 3]);
-    const closed = layoutMap(t, new Set([t.root]));
-    expect(closed.slots).toHaveLength(4);
-    const open = layoutMap(t, pathOpenSet(t.get("r.1.1.1.1")!));
+    const closed = layoutMap(t, new Set());
+    expect(closed.slots).toHaveLength(3);
+    const open = layoutMap(t, pathOpenSet(t.get("r1.1.1.1")!));
     expect(open.slots.length).toBeLessThan(t.size);
-    const root = open.byNode.get(t.root)!;
-    const kids = t.root.childNodes.map((c) => open.byNode.get(c)!.x);
-    expect(root.x).toBeCloseTo((kids[0]! + kids[2]!) / 2);
+    const first = t.roots[1]!;
+    const kids = first.childNodes.map((c) => open.byNode.get(c)!.x);
+    expect(open.byNode.get(first)!.x).toBeCloseTo((kids[0]! + kids[2]!) / 2);
   });
   it("handles hundreds of nodes quickly", () => {
     const t = synth([8, 8, 8, 4]); // 2048 species
     const t0 = performance.now();
-    const l = layoutMap(t, pathOpenSet(t.get("r.3.3.3.3")!));
+    const l = layoutMap(t, pathOpenSet(t.get("r3.3.3.3")!));
     expect(performance.now() - t0).toBeLessThan(50);
     expect(l.slots.length).toBeLessThan(80);
   });

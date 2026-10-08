@@ -6,8 +6,8 @@ export function Neighbors() {
   const { nav, tree } = useServices();
   const { current } = useNav();
   const sibs = tree.siblings(current);
-  const prev = current.parentNode ? sibs[current.index - 1] : undefined;
-  const next = current.parentNode ? sibs[current.index + 1] : undefined;
+  const prev = sibs[current.index - 1];
+  const next = sibs[current.index + 1];
   const one = (side: "left" | "right", n: typeof prev) =>
     n && (
       <button
