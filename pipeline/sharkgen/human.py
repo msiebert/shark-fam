@@ -299,9 +299,16 @@ def build_diver():
         leg.add(v, f, mix(c, np.broadcast_to(C["bcd_trim"], (len(v), 3)), band * 0.9), "Suit")
         bv_, bf_ = ball(hip, 0.082)
         leg.add(bv_, bf_, seam_dark(bv_, hip[0], 0.085, C["suit"], C["suit_dark"], side), "Suit")
-        bv_, bf_ = ball(knee, 0.066)
+        bv_, bf_ = ball(knee, 0.08)
         shin.add(bv_, bf_, seam_dark(bv_, knee[0], 0.07, C["suit"], C["suit_dark"], side), "Suit")
-        sp = [(0, 0, 0, 0), (.03, .058, .056, .058), (.15, .062, .074, .066), (.32, .058, .078, .068), (.7, .043, .05, .048), (.95, .036, .036, .038), (1, 0, 0, 0)]
+        # A short sleeve of shin above the knee and of thigh below it, so the two overlap and no gap opens when it bends.
+        v, f = loft(0.07, [(0, 0, 0, 0), (.12, .062, .06, .062), (.6, .066, .064, .066), (1, .062, .06, .062)], n=8, ring=28)
+        v, f = place(v, f, UP, knee + [0, -0.01, 0])
+        shin.add(v, f, seam_dark(v, knee[0], 0.07, C["suit"], C["suit_dark"], side), "Suit")
+        v, f = loft(0.07, [(0, .062, .06, .062), (.4, .066, .064, .066), (.88, .062, .06, .062), (1, 0, 0, 0)], n=8, ring=28)
+        v, f = place(v, f, DOWN, knee + [0, 0.065, 0])
+        leg.add(v, f, seam_dark(v, hip[0], 0.085, C["suit"], C["suit_dark"], side), "Suit")
+        sp = [(0, 0, 0, 0), (.03, .066, .066, .066), (.15, .066, .076, .068), (.32, .058, .078, .068), (.7, .043, .05, .048), (.95, .036, .036, .038), (1, 0, 0, 0)]
         v, f = loft(0.43, sp, n=22, ring=28)
         v, f = place(v, f, DOWN, knee)
         c = seam_dark(v, knee[0], 0.07, C["suit"], C["suit_dark"], side)
