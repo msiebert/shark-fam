@@ -42,10 +42,12 @@ function css(): string {
   const out = [`@keyframes introDot{0%{transform:translate(${lx}px,${ly}px)}${dot.join("")}100%{transform:translate(${lx}px,${ly}px)}}`];
 
   for (const d of ["up", "down", "left", "right"] as Dir[]) {
-    const frames: string[] = ["0%{}"];
+    // --on is a registered number (see rail.css), so it ramps between frames instead of flipping at the midpoint.
+    const frames: string[] = ["0%{--on:0}"];
     WALK.forEach((w, i) => {
       if (w.dir !== d) return;
-      frames.push(`${pct(i * PCT)},${pct(i * PCT + PCT * 0.85)}{--on:1}`, `${pct(i * PCT + PCT * 0.86)}{--on:0}`);
+      const t = (f: number) => pct(i * PCT + PCT * f);
+      frames.push(`${t(0)}{--on:0}`, `${t(0.12)}{--on:1}`, `${t(0.4)}{--on:1}`, `${t(0.6)}{--on:0}`);
     });
     out.push(`@keyframes introKey-${d}{${frames.join("")}100%{--on:0}}`);
     const [sx, sy] = SWIPE[d];

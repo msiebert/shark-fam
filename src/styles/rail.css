@@ -115,6 +115,11 @@ g[role="button"]:focus-visible .rh {
   opacity: 0;
   pointer-events: none;
 }
+@property --on {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 .introbody {
   display: flex;
   flex-direction: column;
@@ -146,7 +151,6 @@ g[role="button"]:focus-visible .rh {
   color: var(--muted);
 }
 .key {
-  --on: 0;
   grid-area: var(--a);
   width: 40px;
   height: 40px;
