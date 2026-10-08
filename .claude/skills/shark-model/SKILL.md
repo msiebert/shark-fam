@@ -115,6 +115,21 @@ body/palette/gills/mouth/eye/nostrils/paint/spots/ridges repaints (~20 s).
    fin-ray texture, no scars/individual marks, no teeth/open mouth, proportions are from memory and
    have not been checked against reference photos.
 
+## The diver (and other props)
+The scale-reference diver is built by the same pipeline: `pipeline/make_diver.py` (geometry in `sharkgen/human.py`,
+hierarchy export in `sharkgen/export.py:export_diver_glb`, studio shots via `render.render_prop`). Run it from `pipeline/`
+with `python -I`, then `npm run models diver` for the web copy. Lessons: author in the app's space (+y up, +z front,
+head 1.83 m) and give Blender Z-up coordinates so the glTF exporter's Y-up conversion is a no-op; keep joints as nodes
+with pivots at the joint (the app animates `ArmL/R`, `ForearmL/R`, `LegL/R`, `ShinL/R` by rotation); weld the loft's UV-seam
+duplicates or shading splits along it; overlapping shells (a BCD over a torso) must be larger than what they cover or the
+inner colour pokes through; fit straps and masks to the real head width or they float; `render_prop`'s `focus` is in
+Blender axes (z is up). A diver in swim trim extends about 0.57 m of fin below the origin; that is expected.
+
+## App-side behaviour tied to the models (`src/scene/`)
+- Swim = vertex-shader wave (`sharkMaterial.ts`, amplitude per species in `content/species/*.json`, typically 0.12-0.17).
+- Turns bend the body, bank it and strengthen the beat, driven by turn tightness (`actor.ts`); the e2e script checks it.
+- Speeds are scaled with visible width (`speedScale`) so phones are not frantic. If you add motion, test at a phone size.
+
 ## Ideas not yet done
 Hammerhead front-view render; fin-ray striations; scars and per-individual marks; LOD variants (5-10k
 tris); a spine rig for swim animation; whale-shark mouth as a true wide front slot; thresher (very long

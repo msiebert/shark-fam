@@ -22,10 +22,22 @@ export interface TrackPose {
   yaw: number;
 }
 
+/** Half the visible width at the swim depth on a wide desktop view (16:9). Speeds are tuned for this. */
+export const REF_HALF_W = 2.4;
+
+/**
+ * On a phone the camera is backed off but the view is still only a few body lengths wide, so the same world speed
+ * crosses the screen several times faster. Slow down with the visible width (less than proportionally, so the
+ * tail beat and the forward speed still look like they belong together).
+ */
+export function speedScale(halfW: number): number {
+  return Math.min(1, Math.max(0.4, Math.pow(halfW / REF_HALF_W, 0.75)));
+}
+
 export function trackShape(length: number, cruiseBodyLengths: number, halfW: number): TrackShape {
   const half = length * 0.55;
   const r = 0.28 * length;
-  const v = cruiseBodyLengths * length;
+  const v = cruiseBodyLengths * length * speedScale(halfW);
   // On a narrow screen the shark is wider than the view, so the turns run partly off screen.
   const ext = Math.max(0.3 * halfW, halfW - half - 0.08, Math.min(0.75 * length, halfW));
   const xs = Math.max(0.05, ext - r);

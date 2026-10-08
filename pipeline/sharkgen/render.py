@@ -162,3 +162,29 @@ def render_closeup(glb, out_png, res=(1400, 900), samples=64, focus=0.11, yaw=-4
     _area("Fill", target + Vector((L * 0.4, -L * 0.3, -L * 0.2)), target, L * 0.8, L ** 2 * 2.5, (0.7, 0.85, 1.0))
     bpy.context.scene.render.filepath = str(out_png)
     bpy.ops.render.render(write_still=True)
+
+
+def render_prop(glb, out_png, res=(1200, 1200), samples=64, yaw=-35.0, elev=0.1, dist=2.6, focus=(0.5, 0.5, 0.5), lens=70):
+    """Studio render of any single upright prop (the diver).  `focus` is a point in the bounding box (0..1 each axis),
+    `dist` is camera distance in bounding-box heights, `yaw` is degrees around the vertical axis (0 = looking along +y... see below)."""
+    meshes, lo, hi = _reset_and_import(glb)
+    sc = _scene_common(res, samples)
+    size = max(hi - lo)
+    target = Vector([lo[i] + focus[i] * (hi[i] - lo[i]) for i in range(3)])
+    _world_gradient(top=hex_to_linear("#1F3446"), bottom=hex_to_linear("#0A141C"),
+                    ambient=hex_to_linear("#2A4A63"), ambient_strength=0.45)
+    cd = bpy.data.cameras.new("Cam")
+    cd.lens, cd.sensor_width = lens, 36
+    cam = bpy.data.objects.new("Cam", cd)
+    sc.collection.objects.link(cam)
+    sc.camera = cam
+    a = math.radians(yaw)
+    d = size * dist
+    cam.location = target + Vector((math.cos(a) * d, math.sin(a) * d, elev * size))
+    _look_at(cam, target)
+    k = size ** 2
+    _area("Key", target + Vector((size * 0.7, -size * 1.0, size * 1.0)), target, size * 1.2, k * 55, (1.0, 0.97, 0.92))
+    _area("Rim", target + Vector((-size * 1.0, size * 0.9, size * 0.6)), target, size * 0.9, k * 60, (0.55, 0.78, 1.0))
+    _area("Fill", target + Vector((size * 0.9, size * 0.4, -size * 0.2)), target, size * 1.5, k * 8, (0.7, 0.85, 1.0))
+    bpy.context.scene.render.filepath = str(out_png)
+    bpy.ops.render.render(write_still=True)
