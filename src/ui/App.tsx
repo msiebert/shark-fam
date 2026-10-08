@@ -4,6 +4,7 @@ import { useNav, useServices } from "../app/context";
 import { useAmbient } from "./Ambient";
 import { InfoPanel } from "./InfoPanel";
 import { LineupLabels } from "./LineupLabels";
+import { Intro } from "./Intro";
 import { Neighbors } from "./Neighbors";
 import { Rail } from "./Rail";
 import { SceneBridge } from "./SceneBridge";
@@ -63,6 +64,7 @@ export function App() {
         {current.rank} {current.latin}
       </p>
       <p class="sr">Arrow keys move through the tree: up and down change rank, left and right move between siblings. Press M for the tree map.</p>
+      <Intro />
       {mapOpen && <TreeMap closing={mapState === "closing"} onClose={closeMap} />}
     </main>
   );
