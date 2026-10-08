@@ -29,6 +29,16 @@ const wanted = process.argv.slice(2);
 const files = readdirSync(src).filter((f) => f.endsWith(".glb") && (!wanted.length || wanted.includes(f.replace(/\.glb$/, ""))));
 for (const f of files) {
   const doc = await io.read(join(src, f));
+  if (f === "diver.glb") {
+    // Quantization writes its offset and scale onto the node that owns a mesh. The diver's joint nodes own their meshes, so
+    // that would move their pivots (the knee would bend about a point half a metre away). Give each mesh its own child node.
+    for (const node of doc.getRoot().listNodes()) {
+      const mesh = node.getMesh();
+      if (!mesh) continue;
+      node.setMesh(null);
+      node.addChild(doc.createNode(`${node.getName()}Mesh`).setMesh(mesh));
+    }
+  }
   await doc.transform(
     dedup(),
     prune(),
