@@ -86,4 +86,4 @@ A lineup draws at most six sharks (`MAX_LINEUP` in `core/lineup.ts`) because eac
 
 Options considered: largest only (boring, and every order looks like "the big ones"), most famous only (needs a popularity source, and one branch can hog the lineup), or curated per clade. The rule above is curated-first with a size fallback, which keeps it working before anyone has curated anything. It is a one-function change if you prefer another.
 
-**Open question for you:** is "one per branch, curated first, largest second" the right default? Or should an order's lineup be a hand-written list per clade?
+**Decided:** "one per branch, curated first, largest second" is the default for every clade, orders included. Hand-written per-clade lists were rejected: more upkeep, and they break when a listed species has no model yet. To steer an order's lineup, set `"representative": true` on the species you want to stand for its branch.
