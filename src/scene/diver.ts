@@ -1,60 +1,58 @@
 import * as THREE from "three";
-import { DIVER_M } from "../core/lineup";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
+
+const BASE = import.meta.env.BASE_URL;
 
 /**
- * A six-foot diver, built in metres with the feet at the origin and the head at 1.83 m, then laid flat to swim
- * to the right. One diver lives for the whole session: it moves between poses, it is never rebuilt.
+ * A six-foot scuba diver from `public/models/diver.glb` (built by `pipeline/make_diver.py`), in metres with the head at
+ * 1.83 m, laid flat to swim to the right. One diver lives for the whole session: it moves between poses, it is never
+ * rebuilt. The model is a small joint hierarchy (shoulders, elbows, hips, knees) that is posed here, with no skeleton.
  */
 export class Diver {
   readonly group = new THREE.Group();
   private readonly body = new THREE.Group();
-  private readonly legs: THREE.Group[] = [];
-  private readonly arms: THREE.Group[] = [];
-  private readonly geos: THREE.BufferGeometry[] = [];
-  private readonly mats: THREE.Material[] = [];
+  private readonly joint: Partial<Record<"ArmL" | "ArmR" | "ForearmL" | "ForearmR" | "LegL" | "LegR" | "ShinL" | "ShinR", THREE.Object3D>> = {};
+  private model: THREE.Object3D | null = null;
+  private disposed = false;
   /** 0 hidden, 1 fully shown. */
   presence = 0;
   pose: { x: number; y: number; z: number; s: number } | null = null;
 
   constructor() {
-    const { body, group } = this;
-    group.add(body);
-    body.rotation.set(0.95, 0, -Math.PI / 2);
-    // Muted grey-blue suit with ochre fins and tank: readable against dark water without shouting.
-    const mat = (color: number, emissive: number, roughness: number) => {
-      const m = new THREE.MeshStandardMaterial({ color, emissive, roughness, metalness: 0 });
-      this.mats.push(m);
-      return m;
-    };
-    const suit = mat(0x8097a0, 0x142428, 0.6);
-    const hood = mat(0x26363c, 0x0a161a, 0.6);
-    const ochre = mat(0xa88f55, 0x201a0a, 0.5);
-    const glass = mat(0x9fd0cc, 0x2f6e69, 0.25);
-    const put = (geo: THREE.BufferGeometry, m: THREE.Material, x: number, y: number, z: number, parent: THREE.Object3D = body) => {
-      this.geos.push(geo);
-      const o = new THREE.Mesh(geo, m);
-      o.position.set(x, y, z);
-      parent.add(o);
-      return o;
-    };
-    const cyl = (rt: number, rb: number, h: number) => new THREE.CylinderGeometry(rt, rb, h, 16);
-    put(cyl(0.17, 0.14, 0.56), suit, 0, 1.3, 0).scale.z = 0.68;
-    put(new THREE.SphereGeometry(0.115, 18, 14), hood, 0, DIVER_M - 0.13, 0);
-    put(new THREE.BoxGeometry(0.15, 0.07, 0.05), glass, 0, DIVER_M - 0.12, 0.1);
-    put(cyl(0.085, 0.085, 0.64), ochre, 0, 1.3, -0.2);
-    put(cyl(0.03, 0.03, 0.08), hood, 0, DIVER_M - 0.17, -0.2);
-    const limb = (x: number, y: number, rx: number, rz: number, len: number, r0: number, r1: number) => {
-      const pivot = new THREE.Group();
-      pivot.position.set(x, y, 0);
-      pivot.rotation.set(rx, 0, rz);
-      body.add(pivot);
-      put(cyl(r0, r1, len), suit, 0, -len / 2, 0, pivot);
-      return pivot;
-    };
-    this.arms.push(limb(-0.21, 1.5, -0.35, 0.22, 0.56, 0.055, 0.045), limb(0.21, 1.5, -0.35, -0.22, 0.56, 0.055, 0.045));
-    this.legs.push(limb(-0.09, 1.04, 0, 0.04, 0.62, 0.078, 0.055), limb(0.09, 1.04, 0, -0.04, 0.62, 0.078, 0.055));
-    for (const leg of this.legs) put(new THREE.BoxGeometry(0.2, 0.46, 0.025), ochre, 0, -0.84, -0.04, leg).rotation.x = 0.3;
-    group.visible = false;
+    this.group.add(this.body);
+    this.body.rotation.set(0.95, 0, -Math.PI / 2);
+    this.group.visible = false;
+  }
+
+  /** Fetch the model. The diver stays hidden until it arrives; a failed load just leaves the shark on its own. */
+  load(): Promise<void> {
+    return new GLTFLoader()
+      .setMeshoptDecoder(MeshoptDecoder)
+      .loadAsync(`${BASE}models/diver.glb`)
+      .then((g) => this.attach(g.scene))
+      .catch((e) => console.warn("diver model failed to load", e));
+  }
+
+  private attach(root: THREE.Object3D): void {
+    if (this.disposed) return;
+    root.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (!m.isMesh) return;
+      m.frustumCulled = false;
+      const mat = m.material as THREE.MeshStandardMaterial;
+      // A little self-light keeps the suit readable against dark water; the mask lens glows a touch more.
+      if (mat.name === "Glass") {
+        mat.emissive.setHex(0x2f6e69);
+        mat.emissiveIntensity = 0.7;
+      } else mat.emissive.setHex(0x1b2b30);
+    });
+    for (const k of Object.keys(this.joint) as (keyof typeof this.joint)[]) this.joint[k] = undefined;
+    for (const k of ["ArmL", "ArmR", "ForearmL", "ForearmR", "LegL", "LegR", "ShinL", "ShinR"] as const) {
+      this.joint[k] = root.getObjectByName(k) ?? undefined;
+    }
+    this.model = root;
+    this.body.add(root);
   }
 
   /** Ease toward a pose; the first call snaps. */
@@ -70,21 +68,35 @@ export class Diver {
       p.z += (target.z - p.z) * e;
       p.s += (target.s - p.s) * e;
     }
-    this.group.visible = this.presence > 0.03 && !!this.pose;
+    this.group.visible = this.presence > 0.03 && !!this.pose && !!this.model;
     if (!this.group.visible || !this.pose) return;
     const p = this.pose;
     this.group.scale.setScalar(p.s * this.presence);
     this.group.position.set(p.x + (bob ? Math.sin(t * 0.35) * 0.03 : 0), p.y + (bob ? Math.sin(t * 0.6) * 0.025 : 0), p.z);
     this.body.rotation.z = -Math.PI / 2 + Math.sin(t * 0.7) * 0.05;
-    this.legs[0]!.rotation.x = Math.sin(t * 2.2) * 0.3;
-    this.legs[1]!.rotation.x = -Math.sin(t * 2.2) * 0.3;
-    this.arms[0]!.rotation.x = -0.35 + Math.sin(t * 0.9) * 0.1;
-    this.arms[1]!.rotation.x = -0.35 - Math.sin(t * 0.9) * 0.1;
+
+    // A slow, relaxed flutter kick: the thighs swing, the knees bend a little and follow through. Arms hang forward
+    // and slightly out, elbows soft.
+    const { ArmL, ArmR, ForearmL, ForearmR, LegL, LegR, ShinL, ShinR } = this.joint;
+    const kick = Math.sin(t * 2.2);
+    if (LegL) LegL.rotation.set(kick * 0.3, 0, 0.03);
+    if (LegR) LegR.rotation.set(-kick * 0.3, 0, -0.03);
+    if (ShinL) ShinL.rotation.x = 0.3 + 0.22 * Math.sin(t * 2.2 - 1.1);
+    if (ShinR) ShinR.rotation.x = 0.3 + 0.22 * Math.sin(t * 2.2 + Math.PI - 1.1);
+    if (ArmL) ArmL.rotation.set(-0.3 + Math.sin(t * 0.9) * 0.1, 0, -0.16);
+    if (ArmR) ArmR.rotation.set(-0.3 - Math.sin(t * 0.9) * 0.1, 0, 0.16);
+    if (ForearmL) ForearmL.rotation.x = -0.55 + Math.sin(t * 0.9 + 1) * 0.08;
+    if (ForearmR) ForearmR.rotation.x = -0.55 - Math.sin(t * 0.9 + 1) * 0.08;
   }
 
   dispose(): void {
+    this.disposed = true;
     this.group.removeFromParent();
-    this.geos.forEach((g) => g.dispose());
-    this.mats.forEach((m) => m.dispose());
+    this.model?.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (!m.isMesh) return;
+      m.geometry.dispose();
+      (m.material as THREE.Material).dispose();
+    });
   }
 }

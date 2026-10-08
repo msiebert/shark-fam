@@ -6,6 +6,16 @@ import { clamp, lerp, smooth, wrapAngle } from "./frame";
 const FADE_IN = 0.6;
 const EXIT_TIME = 0.7;
 const GLIDE_TIME = 1.1;
+/**
+ * How tight a turn is, in radians of heading change per body length swum (the racetrack arcs are about 3.6). The bend
+ * and bank depend on this, not on the turn rate, so a shark that is slowed on a phone still bends as far.
+ */
+const BEND_PER_TIGHT = 0.0375; // body bend (fraction of length at nose and tail)
+const BEND_MAX = 0.14;
+const BANK_PER_TIGHT = 0.035; // roll into the turn, radians
+const BANK_MAX = 0.22;
+/** How fast the body follows the turn (1/s): it bends a moment before and after the arc, not as a switch. */
+const TURN_RESPONSE = 3.2;
 
 const copyPose = (p: Pose): Pose => ({ ...p });
 
@@ -41,6 +51,13 @@ export class SharkActor {
   private glide: { from: Pose; t: number } | null = null;
   private exit: { t: number; pose: Pose } | null = null;
   private applied = -1;
+  private lastYaw: number | null = null;
+  private lastX = 0;
+  private lastZ = 0;
+  private lastTime: number | null = null;
+  /** Smoothed turn tightness (rad per body length): negative turns toward the shark's local +z side. */
+  private turn = 0;
+  private phase = 0;
 
   constructor(
     readonly spec: SharkSpec,
@@ -82,6 +99,8 @@ export class SharkActor {
     this.alpha = fade ? 0 : 1;
     this.applied = -1;
     this.fade = null;
+    this.lastYaw = null;
+    this.turn = 0;
     if (fade) this.fadeTo(1, FADE_IN);
   }
 
@@ -140,15 +159,41 @@ export class SharkActor {
       else this.pose = blend(this.pose, target, smoothing);
       p = this.pose;
     }
+    this.swim(dt, time, p);
     this.group.position.set(p.x, p.y, p.z);
-    this.group.rotation.set(0, p.yaw, p.pitch);
     this.group.scale.setScalar(p.s);
-    this.uniforms.uPhase.value = 2 * Math.PI * this.spec.beatHz * time;
     this.shown = p;
   }
 
   /** The pose actually drawn this frame. */
   shown: Pose | null = null;
+
+  /**
+   * Swimming from the pose. How tight the turn is comes from how the heading changes over the distance swum, so any
+   * manoeuvre (a racetrack arc, a glide, the swim-off) bends the body into the turn, rolls it inward and beats the tail harder.
+   */
+  private swim(dt: number, time: number, p: Pose): void {
+    let tight = 0;
+    if (this.lastYaw !== null && dt > 1e-5) {
+      const rate = wrapAngle(p.yaw - this.lastYaw) / dt;
+      const speed = Math.hypot(p.x - this.lastX, p.z - this.lastZ) / dt;
+      if (speed > 1e-3 * p.s) tight = (rate * p.s) / speed;
+    }
+    this.lastYaw = p.yaw;
+    this.lastX = p.x;
+    this.lastZ = p.z;
+    this.turn += (clamp(tight, -6, 6) - this.turn) * (1 - Math.exp(-dt * TURN_RESPONSE));
+    const bend = clamp(-this.turn * BEND_PER_TIGHT, -BEND_MAX, BEND_MAX);
+    const effort = Math.abs(bend) / BEND_MAX;
+    this.uniforms.uBend.value = bend;
+    this.uniforms.uAmp.value = this.spec.amplitude * (1 + 0.45 * effort);
+    // The beat is integrated so that quickening it in a turn never makes the tail jump.
+    const dts = this.lastTime === null ? 0 : Math.max(0, time - this.lastTime);
+    this.lastTime = time;
+    this.phase += 2 * Math.PI * this.spec.beatHz * (1 + 0.35 * effort) * dts;
+    this.uniforms.uPhase.value = this.phase;
+    this.group.rotation.set(clamp(-this.turn * BANK_PER_TIGHT, -BANK_MAX, BANK_MAX), p.yaw, p.pitch);
+  }
 
   private applyAlpha(): void {
     if (this.applied === this.alpha) return;

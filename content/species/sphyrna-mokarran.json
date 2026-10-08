@@ -13,7 +13,7 @@
   "swim": {
     "cruise": 0.6,
     "beatHz": 0.8,
-    "amplitude": 0.13
+    "amplitude": 0.17
   },
   "distribution": {
     "mode": "coast",

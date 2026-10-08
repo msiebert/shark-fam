@@ -84,6 +84,7 @@ export class SharkScene {
     const rim = new THREE.DirectionalLight(0x3fb9b0, 0.55 * Math.PI);
     rim.position.set(2, 0.5, -3);
     this.scene.add(sun, rim, this.diver.group, this.school.mesh, this.snow.points);
+    void this.diver.load();
 
     this.ro = new ResizeObserver(() => this.resize());
     this.ro.observe(opts.host);
@@ -182,7 +183,7 @@ export class SharkScene {
     return {
       time: this.time,
       view: this.view.kind,
-      actors: [...this.actors.values()].map((a) => ({ id: a.id, mode: a.mode, alpha: a.alpha, leaving: a.leaving, gone: a.gone, visible: a.group.visible, pose: a.shown && { ...a.shown } })),
+      actors: [...this.actors.values()].map((a) => ({ id: a.id, mode: a.mode, alpha: a.alpha, leaving: a.leaving, gone: a.gone, visible: a.group.visible, pose: a.shown && { ...a.shown }, bend: a.uniforms.uBend.value, roll: a.group.rotation.x })),
       diver: this.diver.pose && { ...this.diver.pose, presence: this.diver.presence },
     };
   }

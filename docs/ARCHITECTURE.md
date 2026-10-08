@@ -21,6 +21,7 @@ Pushback on the brief: the lean toward Vite + TS + three + a custom state machin
 The repo already has a parametric Blender pipeline (`pipeline/`) that writes a GLB per species. We use those, not the prototype's hand-built geometry.
 
 - **No skeleton.** The GLBs are static meshes. Swimming is a travelling sine wave applied in the vertex shader (`scene/sharkMaterial.ts`): sideways offset that grows from nose to tail, with matching normal tilt. It costs nothing on the CPU, works for any model, and needs no rig per species. The prototype did this on the CPU with `computeVertexNormals` every frame, which would not survive six sharks.
+- **Turns bend the body.** The shader also takes a bend uniform (a C-curve, nose and tail toward the centre of the turn). `scene/actor.ts` derives how tight the turn is (radians of heading change per body length swum) from the pose, eases it, and sets the bend, a roll into the turn and a harder, slightly quicker tail beat. Using tightness rather than turn rate keeps a slowed phone shark bending as far as a desktop one.
 - **Normalized at load** (`scene/models.ts`): bake node transforms, find which way the shark faces from its eye mesh, scale to one unit long, centre it. A new model needs no per-species orientation or scale data; the real length lives in the species record.
 - **Optimized for the web** (`scripts/optimize-models.ts`): textures to WebP at 1024x2048 (albedo) and 512 (micro detail), geometry meshopt-compressed. About 2 MB per GLB becomes about 0.5 MB. A six-shark lineup is about 3 MB, loaded in parallel, cached, and prefetched one step ahead along the path you are most likely to take.
 - **Materials are cloned per shark** (textures and geometry stay shared) so each fades on its own.
@@ -64,6 +65,7 @@ The director owns all motion. The UI says what to show (`setView`) and how the m
 - Left/right stop at the ends of the siblings. Cousins are reached by going up, stepping, and coming down, or through the rail and the tree map.
 - A move is described as "up N to the shared ancestor, then down M". The rail pulse, the water brightness and the camera dolly all follow that same description.
 - Text: the old copy leaves in 0.3 s, then the new copy arrives over about 1 s, never overlapping.
+- Shark speed follows the visible width (`speedScale` in `core/racetrack.ts`): a phone view is only a few body lengths wide, so full world speed crossed it about three times as fast as on desktop.
 - Sharks fade, they never slide. A departing shark swims off to the right while it fades. A shark that is in both views (a genus lineup and its species) is the same actor: it glides from its lineup pose onto its racetrack.
 - `prefers-reduced-motion`: no ghost text, no dolly, no camera swing, no pulse, half-speed scene.
 

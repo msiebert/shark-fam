@@ -43,6 +43,8 @@ interface Actor {
   gone: boolean;
   visible: boolean;
   pose: { x: number; y: number; z: number; yaw: number; s: number } | null;
+  bend: number;
+  roll: number;
 }
 const state = (page: Page) => page.evaluate(() => (window as any).__scene.debugState()) as Promise<{ time: number; view: string; actors: Actor[] }>;
 const here = (page: Page) => page.evaluate(() => (window as any).__nav.current.id as string);
@@ -149,6 +151,8 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   const zs: number[] = [];
   const ys: number[] = [];
   const yaws: number[] = [];
+  const bends: number[] = [];
+  const rolls: number[] = [];
   for (let i = 0; i < 80; i++) {
     await page.evaluate("window.__scene.debugAdvance(0.25)"); // scene time, not wall time: software GL is slow
     const a = (await state(page)).actors.find((x) => x.id === "sphyrna-mokarran" && x.visible)!;
@@ -156,9 +160,14 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
     zs.push(a.pose!.z);
     ys.push(a.pose!.y);
     yaws.push(a.pose!.yaw);
+    bends.push(a.bend);
+    rolls.push(a.roll);
   }
   check(Math.max(...ys) - Math.min(...ys) < 0.2, "species: depth stays roughly constant", `y range ${(Math.max(...ys) - Math.min(...ys)).toFixed(3)}`);
   check(Math.min(...yaws) < -Math.PI * 1.5, "species: it completes the turns (yaw passes a half turn and beyond)");
+  check(Math.max(...bends.map(Math.abs)) > 0.08, "species: the body bends into the turns", `peak bend ${Math.max(...bends.map(Math.abs)).toFixed(3)}`);
+  check(bends.every((b) => Math.abs(b) <= 0.141) && bends.some((b) => Math.abs(b) < 0.01), "species: the bend is bounded and relaxes on the straights");
+  check(Math.max(...rolls.map(Math.abs)) > 0.08 && Math.max(...rolls.map(Math.abs)) <= 0.221, "species: it banks into the turns", `peak roll ${Math.max(...rolls.map(Math.abs)).toFixed(3)}`);
   check(Math.max(...zs) - Math.min(...zs) > 0.2, "species: the shark swims toward and away from the camera (racetrack)", `z range ${(Math.max(...zs) - Math.min(...zs)).toFixed(2)}`);
   check(Math.max(...xs) - Math.min(...xs) > 0.8, "species: the shark crosses the view", `x range ${(Math.max(...xs) - Math.min(...xs)).toFixed(2)}`);
 

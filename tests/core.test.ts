@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { Tree } from "../src/core/tree";
 import { Navigator, type Move } from "../src/core/nav";
 import { layoutLineup, selectLineup, DIVER_M } from "../src/core/lineup";
-import { trackPose, trackShape } from "../src/core/racetrack";
+import { REF_HALF_W, speedScale, trackPose, trackShape } from "../src/core/racetrack";
 import { buildRail } from "../src/core/rail";
 import { layoutMap, pathOpenSet } from "../src/core/maplayout";
 import type { TaxonomyIndex, IndexNode, Rank } from "../src/data/schema";
@@ -185,6 +185,20 @@ describe("racetrack", () => {
     const p = trackPose(shape, -shape.lead / shape.v);
     expect(p.x).toBeLessThan(-2.2 - 1.15 * 0.5);
     expect(p.z).toBeLessThan(0);
+  });
+  it("keeps full speed on a wide view and slows down on a narrow one", () => {
+    expect(speedScale(REF_HALF_W)).toBe(1);
+    expect(speedScale(5)).toBe(1);
+    const phone = speedScale(0.85);
+    expect(phone).toBeLessThan(0.6);
+    expect(phone).toBeGreaterThanOrEqual(0.4);
+    expect(trackShape(1.15, 0.5, 0.85).v).toBeCloseTo(0.5 * 1.15 * phone, 6);
+  });
+  it("crosses a phone screen no faster than about twice as fast (in screen widths) as a desktop one", () => {
+    const desktop = trackShape(1.15, 0.5, 2.4);
+    const phone = trackShape(1.15, 0.5, 0.85);
+    const perSecond = (s: { v: number }, halfW: number) => s.v / (2 * halfW);
+    expect(perSecond(phone, 0.85) / perSecond(desktop, 2.4)).toBeLessThan(2.2);
   });
   it("runs partly off screen on a narrow view", () => {
     const narrow = trackShape(1.44, 0.22, 0.85);

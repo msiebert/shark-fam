@@ -107,3 +107,78 @@ def export_glb(model, cfg, path, tex):
     if "export_jpeg_quality" in props:
         kw["export_jpeg_quality"] = 92
     bpy.ops.export_scene.gltf(**kw)
+
+
+# ------------------------------------------------------------------ diver (jointed, multi-material)
+_DIVER_MATS = {
+    # name: (roughness, metallic, vertex colours?, base colour if not)
+    "Suit": (0.72, 0.0, True, None),
+    "Gear": (0.42, 0.1, True, None),
+    "Tank": (0.34, 0.35, True, None),
+    "Metal": (0.28, 0.9, True, None),
+    "Glass": (0.08, 0.0, True, None),
+}
+
+
+def export_diver_glb(parts, path):
+    """Write the diver hierarchy: one node per Part, each with a multi-material mesh and a pivot at its joint."""
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    mats = {}
+    for name, (rough, metal, _, _) in _DIVER_MATS.items():
+        m = bpy.data.materials.new(name)
+        m.use_nodes = True
+        nt = m.node_tree
+        b = nt.nodes["Principled BSDF"]
+        vc = nt.nodes.new("ShaderNodeVertexColor")
+        vc.layer_name = "Col"
+        nt.links.new(vc.outputs["Color"], b.inputs["Base Color"])
+        b.inputs["Roughness"].default_value = rough
+        b.inputs["Metallic"].default_value = metal
+        mats[name] = m
+    objs = {}
+    for name, part in parts.items():
+        subs = part.subs
+        verts, faces, cols, midx, order = [], [], [], [], list(mats)
+        off = 0
+        for v, f, c, mname in subs:
+            verts.append(v - part.pivot)
+            cols.append(c)
+            faces += [tuple(i + off for i in q) for q in f]
+            midx += [order.index(mname)] * len(f)
+            off += len(v)
+        verts, cols = np.vstack(verts), np.vstack(cols)
+        mesh = bpy.data.meshes.new(name)
+        mesh.from_pydata(verts.tolist(), [], [list(q) for q in faces])
+        mesh.update()
+        mesh.polygons.foreach_set("use_smooth", [True] * len(mesh.polygons))
+        mesh.polygons.foreach_set("material_index", midx)
+        for mn in order:
+            mesh.materials.append(mats[mn])
+        ca = mesh.color_attributes.new("Col", "FLOAT_COLOR", "POINT")
+        ca.data.foreach_set("color", np.concatenate([cols, np.ones((len(cols), 1))], 1).astype(np.float32).ravel())
+        o = bpy.data.objects.new(name, mesh)
+        bpy.context.scene.collection.objects.link(o)
+        objs[name] = o
+    for name, part in parts.items():
+        o = objs[name]
+        if part.parent:
+            o.parent = objs[part.parent]
+            o.location = _to_blender(part.pivot - parts[part.parent].pivot)
+        else:
+            o.location = _to_blender(part.pivot)
+    bpy.context.view_layer.update()
+    # Vertices were authored in the app's Y-up space; hand them to Blender as Z-up so the exporter's Y-up conversion is a no-op.
+    for o in objs.values():
+        for v in o.data.vertices:
+            v.co = _to_blender(np.array(v.co))
+    kw = dict(filepath=str(path), export_format="GLB", export_yup=True, export_materials="EXPORT",
+              export_normals=True, export_cameras=False, export_lights=False)
+    props = bpy.ops.export_scene.gltf.get_rna_type().properties
+    if "export_vertex_color" in props:
+        kw["export_vertex_color"] = "MATERIAL"
+    bpy.ops.export_scene.gltf(**kw)
+
+
+def _to_blender(p):
+    """glTF/three Y-up (x, y, z) -> Blender Z-up (x, -z, y); the exporter maps it straight back."""
+    return (float(p[0]), float(-p[2]), float(p[1]))
