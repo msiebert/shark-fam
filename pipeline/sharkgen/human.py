@@ -131,6 +131,13 @@ DOWN = np.array([[0, 1, 0], [-1, 0, 0], [0, 0, 1.0]])     # part runs toward -y
 LAT = np.eye(3)                                            # part runs along +x, local y is vertical
 
 
+def ball(center, r, n=10, ring=20):
+    """A sphere that fills a joint, so the rounded ends of two limb segments stay joined when it bends."""
+    v, f = loft(2 * r, [(0, 0, 0, 0), (.08, .52 * r, .52 * r, .52 * r), (.25, .86 * r, .86 * r, .86 * r), (.5, r, r, r),
+                        (.75, .86 * r, .86 * r, .86 * r), (.92, .52 * r, .52 * r, .52 * r), (1, 0, 0, 0)], n=n, ring=ring, exponent=2.0)
+    return place(v, f, UP, np.asarray(center, float) - [0, r, 0])
+
+
 class Part:
     """One node of the hierarchy: sub-meshes in world coordinates, drawn relative to the pivot."""
 
@@ -254,6 +261,10 @@ def build_diver():
         c = seam_dark(v, sh[0], 0.06, C["suit"], C["suit_dark"], side)
         band = smoothstep(0.012, 0.0, np.abs(v[:, 1] - 1.30))
         arm.add(v, f, mix(c, np.broadcast_to(C["bcd_trim"], (len(v), 3)), band * 0.9), "Suit")
+        bv_, bf_ = ball(sh, 0.062)
+        arm.add(bv_, bf_, seam_dark(bv_, sh[0], 0.06, C["suit"], C["suit_dark"], side), "Suit")
+        bv_, bf_ = ball(el, 0.047)
+        fore.add(bv_, bf_, seam_dark(bv_, el[0], 0.045, C["suit"], C["suit_dark"], side), "Suit")
         fp = [(0, 0, 0, 0), (.03, .044, .044, .044), (.2, .046, .046, .046), (.55, .040, .040, .040), (.93, .034, .034, .034), (1, 0, 0, 0)]
         v, f = loft(0.27, fp, n=20, ring=24)
         v, f = place(v, f, DOWN, el)
@@ -286,6 +297,10 @@ def build_diver():
         c = seam_dark(v, hip[0], 0.085, C["suit"], C["suit_dark"], side)
         band = smoothstep(0.012, 0.0, np.abs(v[:, 1] - 0.70))
         leg.add(v, f, mix(c, np.broadcast_to(C["bcd_trim"], (len(v), 3)), band * 0.9), "Suit")
+        bv_, bf_ = ball(hip, 0.082)
+        leg.add(bv_, bf_, seam_dark(bv_, hip[0], 0.085, C["suit"], C["suit_dark"], side), "Suit")
+        bv_, bf_ = ball(knee, 0.066)
+        shin.add(bv_, bf_, seam_dark(bv_, knee[0], 0.07, C["suit"], C["suit_dark"], side), "Suit")
         sp = [(0, 0, 0, 0), (.03, .058, .056, .058), (.15, .062, .074, .066), (.32, .058, .078, .068), (.7, .043, .05, .048), (.95, .036, .036, .038), (1, 0, 0, 0)]
         v, f = loft(0.43, sp, n=22, ring=28)
         v, f = place(v, f, DOWN, knee)
@@ -310,6 +325,40 @@ def build_diver():
         edge = smoothstep(0.62, 0.9, np.abs(bv[:, 0] - ank[0]) / 0.1)
         bc = mix(np.broadcast_to(C["ochre"], (len(bv), 3)), np.broadcast_to(C["ochre_dark"], (len(bv), 3)), np.maximum(edge, smoothstep(0.22, 0.0, rel)))
         shin.add(bv, bf, bc, "Gear")
+    return parts
+
+
+# What the app does at one instant of its animation (see src/scene/diver.ts); used for the swim preview.
+APP_POSE = {
+    "LegL": (0.30, 0.0, 0.03), "LegR": (-0.30, 0.0, -0.03),
+    "ShinL": (0.52, 0.0, 0.0), "ShinR": (0.08, 0.0, 0.0),
+    "ArmL": (-0.30, 0.0, -0.16), "ArmR": (-0.30, 0.0, 0.16),
+    "ForearmL": (-0.55, 0.0, 0.0), "ForearmR": (-0.55, 0.0, 0.0),
+}
+
+
+def pose_parts(parts, angles):
+    """Bend the joints (three.js XYZ Euler, radians), each about its own pivot, parents carrying their children."""
+    orig = {n: p.pivot.copy() for n, p in parts.items()}
+    rot = {n: rot_x(a[0]) @ rot_y(a[1]) @ rot_z(a[2]) for n, a in angles.items()}
+
+    def chain(name):
+        while name:
+            yield name
+            name = parts[name].parent
+
+    for name, part in parts.items():
+        subs = []
+        for v, f, c, m in part.subs:
+            for n in chain(name):
+                if n in rot:
+                    v = orig[n] + (v - orig[n]) @ rot[n].T
+            subs.append((v, f, c, m))
+        pv = part.pivot
+        for n in chain(part.parent):
+            if n in rot:
+                pv = orig[n] + (pv - orig[n]) @ rot[n].T
+        part.subs, part.pivot = subs, pv
     return parts
 
 

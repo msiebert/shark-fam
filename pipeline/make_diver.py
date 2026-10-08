@@ -57,7 +57,7 @@ def main():
         render.render_prop(glb, renders / "diver_standing.png", res=r, samples=s, yaw=-58, elev=0.05, dist=2.2)
         render.render_prop(glb, renders / "diver_head.png", res=r, samples=s, yaw=-62, elev=0.0, dist=0.5,
                            focus=(0.5, 0.5, 0.93), lens=85)
-        swim = human.rotate_all(human.build_diver(), SWIM_ROT)
+        swim = human.rotate_all(human.pose_parts(human.build_diver(), human.APP_POSE), SWIM_ROT)
         sw = cache / "diver_swim.glb"
         export_diver_glb(swim, sw)
         render.render_prop(sw, renders / "diver_swim.png", res=(1400, 800) if not a.fast else (800, 460), samples=s,

@@ -4,6 +4,9 @@ import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.j
 
 const BASE = import.meta.env.BASE_URL;
 
+/** Metres from the model origin (the feet) to the middle of its swimming length: head at +1.83, fin tips about 0.57 behind. */
+export const DIVER_CENTRE_M = (1.83 - 0.57) / 2;
+
 /**
  * A six-foot scuba diver from `public/models/diver.glb` (built by `pipeline/make_diver.py`), in metres with the head at
  * 1.83 m, laid flat to swim to the right. One diver lives for the whole session: it moves between poses, it is never
