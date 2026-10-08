@@ -1,7 +1,7 @@
 {
   "id": "carcharhiniformes",
   "rank": "order",
-  "parent": "selachimorpha",
+  "parent": null,
   "latin": "Carcharhiniformes",
   "common": "Ground sharks",
   "order": 2,

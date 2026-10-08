@@ -31,7 +31,7 @@ If a species has no model yet it still appears in the tree and has its text; it 
 ## Data
 
 ```
-content/clades/<id>.json     one file per superorder, order, family, genus
+content/clades/<id>.json     one file per order, family, genus
 content/species/<id>.json    one file per species
         |  npm run content  (validate with zod, check references, sort, compile)
         v

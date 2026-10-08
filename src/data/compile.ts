@@ -19,7 +19,7 @@ export class ContentError extends Error {
   }
 }
 
-const RANK_BELOW: Record<string, string> = { superorder: "order", order: "family", family: "genus", genus: "species" };
+const RANK_BELOW: Record<string, string> = { order: "family", family: "genus", genus: "species" };
 
 /** Validate the content files and compile them into the index plus per-species detail. Pure: no file access. */
 export function compileContent(input: CompileInput): CompileResult {
@@ -52,8 +52,8 @@ export function compileContent(input: CompileInput): CompileResult {
   }
 
   const roots = clades.filter((c) => c.parent === null);
-  if (roots.length !== 1) problems.push(`expected exactly one root clade (parent: null), found ${roots.length}`);
-  const root = roots[0];
+  if (!roots.length) problems.push("expected at least one order with parent: null");
+  for (const r of roots) if (r.rank !== "order") problems.push(`${r.id}: only an order can have parent: null, not a ${r.rank}`);
 
   // Parent links and ranks.
   const kids = new Map<string, (CladeSource | SpeciesSource)[]>();
@@ -110,13 +110,14 @@ export function compileContent(input: CompileInput): CompileResult {
     node.speciesCount = count;
     return count;
   };
-  if (root) walk(root);
+  const orderedRoots = roots.slice().sort(cmp);
+  for (const r of orderedRoots) walk(r);
 
-  for (const n of [...clades, ...species]) if (!seen.has(n.id) && root) problems.push(`${n.id}: not reachable from the root`);
+  for (const n of [...clades, ...species]) if (!seen.has(n.id) && roots.length) problems.push(`${n.id}: not reachable from the root`);
   for (const n of nodes) {
     if (n.rank !== "species" && n.children.length === 0) warnings.push(`${n.id}: ${n.rank} has no children yet`);
   }
 
   if (problems.length) throw new ContentError(problems);
-  return { index: { version: 1, root: root!.id, nodes }, details, warnings };
+  return { index: { version: 1, roots: orderedRoots.map((r) => r.id), nodes }, details, warnings };
 }

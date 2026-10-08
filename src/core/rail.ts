@@ -10,7 +10,7 @@ export type RailKind = "current" | "path" | "sibling" | "next";
 
 export interface RailDot {
   node: TreeNode;
-  /** Row (0 = root). */
+  /** Row (0 = order). */
   row: number;
   /** Column offset from the spine. */
   col: number;
@@ -23,7 +23,7 @@ export interface RailModel {
   links: { child: TreeNode; parent: TreeNode }[];
   /** Rows where more siblings exist beyond the fan, on each side. */
   more: { row: number; side: -1 | 1 }[];
-  /** Rows in total, root to species. */
+  /** Rows in total, order to species. */
   rows: number;
 }
 
@@ -40,7 +40,7 @@ export function buildRail(current: TreeNode, rows: number, next: TreeNode | unde
 
   for (const x of spine) {
     if (x === current) {
-      const sibs = x.parentNode ? x.parentNode.childNodes : [x];
+      const sibs = x.siblingNodes;
       for (let k = -REACH; k <= REACH; k++) {
         const s = sibs[x.index + k];
         if (s) dots.push({ node: s, row: s.depth, col: k, kind: k === 0 ? "current" : "sibling" });

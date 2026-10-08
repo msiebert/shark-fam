@@ -14,7 +14,7 @@ export function syncHash(nav: Navigator): () => void {
     const want = `#${nav.current.id}`;
     if (location.hash !== want) {
       try {
-        history.replaceState(null, "", nav.current === nav.tree.root ? location.pathname + location.search : want);
+        history.replaceState(null, "", nav.current === nav.tree.roots[0] ? location.pathname + location.search : want);
       } catch {
         /* sandboxed frames may forbid it */
       }
@@ -24,7 +24,7 @@ export function syncHash(nav: Navigator): () => void {
   const onHash = () => {
     const n = nodeFromHash(nav.tree);
     if (n) nav.go(n);
-    else if (!idFromHash()) nav.go(nav.tree.root);
+    else if (!idFromHash()) nav.go(nav.tree.roots[0]!);
   };
   window.addEventListener("hashchange", onHash);
   return () => {

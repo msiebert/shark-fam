@@ -35,7 +35,7 @@ export function layoutMap(tree: Tree, open: ReadonlySet<TreeNode>): MapLayout {
     byNode.set(n, slot);
     return x;
   };
-  walk(tree.root);
+  for (const r of tree.roots) walk(r);
   slots.sort((a, b) => a.node.order - b.node.order || a.depth - b.depth);
   return { slots, byNode, width: leaf };
 }

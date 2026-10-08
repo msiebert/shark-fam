@@ -64,24 +64,21 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
 
   await page.goto(base);
   await page.waitForSelector('[data-testid="info"]');
-  await page.waitForFunction(() => (window as any).__scene?.debugState().actors.length === 3, null, { timeout: 20000 });
+  await page.waitForFunction(() => (window as any).__scene?.debugState().actors.some((a: any) => a.visible), null, { timeout: 20000 });
   await page.waitForTimeout(1200);
-  await shot("01-root");
+  await shot("01-start");
 
   // The window never scrolls.
   const scroll = await page.evaluate(() => ({ sh: document.documentElement.scrollHeight, ih: innerHeight, sw: document.documentElement.scrollWidth, iw: innerWidth }));
   check(scroll.sh <= scroll.ih && scroll.sw <= scroll.iw, "page is exactly viewport-sized", JSON.stringify(scroll));
   await page.mouse.wheel(0, 0);
-  const lineup = await state(page);
-  check(lineup.view === "lineup" && lineup.actors.filter((a) => a.visible).length === 3, "root shows a lineup of three sharks");
-  const sorted = lineup.actors.filter((a) => a.pose).sort((a, b) => b.pose!.y - a.pose!.y);
-  check(sorted.map((a) => a.id).join() === "sphyrna-mokarran,carcharodon-carcharias,rhincodon-typus", "lineup is shortest first, top to bottom");
-  const baselines = lineup.actors.map((a) => a.pose!.x - a.pose!.s / 2);
-  check(Math.max(...baselines) - Math.min(...baselines) < 0.01, "tails share a baseline");
+  const first = await state(page);
+  check((await here(page)) === "lamniformes", "the tree starts at the first order");
+  check(first.view === "lineup" && first.actors.filter((a) => a.visible).length === 1, "an order with one modelled shark shows a lineup of one");
+  await key(page, "ArrowUp", 300);
+  check((await here(page)) === "lamniformes", "up from an order goes nowhere");
 
   // Navigation model.
-  await key(page, "ArrowDown", 1600);
-  check((await here(page)) === "lamniformes", "down goes to the first child");
   await key(page, "ArrowLeft");
   check((await here(page)) === "lamniformes", "left stops at the first sibling");
   await key(page, "ArrowRight", 1600);
