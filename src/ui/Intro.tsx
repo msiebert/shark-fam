@@ -2,7 +2,7 @@ import { useEffect, useState } from "preact/hooks";
 import { useServices } from "../app/context";
 
 /** A quick "how to move" splash: the tree in miniature, with a light walking it the way the real controls would. */
-const TITLE_MS = 2800;
+const TITLE_MS = 3400;
 const SHOW_MS = 4000;
 const SEEN_KEY = "sharkfam:controls-seen";
 const FADE_MS = 600;
@@ -98,20 +98,43 @@ const KEYS: { dir: Dir; glyph: string }[] = [
   { dir: "right", glyph: "→" },
 ];
 
-/** Wordmark: a dorsal fin cuts across a waterline, its wake drawing out and revealing the name behind it. */
+/** Wordmark: a shark silhouette swims in, a family tree branches across it, then the name settles underneath. */
+const SHARK =
+  "M312 94 C290 74 255 64 218 64 C200 62 186 44 172 22 C166 44 160 62 146 66 C112 70 84 80 58 88 C44 66 30 46 12 34 C20 58 26 76 30 92 C26 108 20 128 12 150 C32 138 46 120 62 102 C96 108 130 112 160 112 C170 130 176 142 184 152 C196 138 204 122 210 112 C250 112 290 106 312 94 Z";
+// [path, delay in s]: trunk first, then each split a beat later.
+const BRANCHES: [string, number][] = [
+  ["M30 92 L100 92", 0.9],
+  ["M100 92 C125 92 135 76 160 76", 1.3],
+  ["M100 92 C125 92 135 108 160 108", 1.3],
+  ["M160 76 C185 76 195 68 225 68", 1.7],
+  ["M160 76 C185 76 195 84 225 84", 1.7],
+  ["M160 108 C185 108 195 100 225 100", 1.7],
+  ["M160 108 C185 108 195 112 225 112", 1.7],
+];
+const LEAVES: [number, number][] = [
+  [225, 68],
+  [225, 84],
+  [225, 100],
+  [225, 112],
+];
+
 function Logo() {
   return (
     <div class="logo" role="img" aria-label="Shark Fam">
-      <h1 class="introtitle">Shark Fam</h1>
-      <svg class="logowave" viewBox="0 0 300 36" aria-hidden="true">
-        <path class="wake" pathLength={1} d="M0 28 C30 24 50 32 80 28 S130 24 160 28 S230 32 300 28" />
-        <g class="finrun">
-          <g class="finbob">
-            <path class="fin" d="M0 28 C7 24 11 14 13 4 C17 14 23 24 30 28 Z" />
-          </g>
-        </g>
-        <ellipse class="ripple" cx="285" cy="28" rx="10" ry="3" />
+      <svg class="logoshark" viewBox="0 0 324 168" aria-hidden="true">
+        <path class="sharkbody" d={SHARK} />
+        {BRANCHES.map(([d, delay]) => (
+          <path key={d} class="branch" pathLength={1} d={d} style={{ animationDelay: `${delay}s` }} />
+        ))}
+        <circle class="node" cx={30} cy={92} r={3.2} style={{ animationDelay: "0.9s" }} />
+        {[160, 160].map((x, i) => (
+          <circle key={i} class="node" cx={x} cy={i ? 108 : 76} r={2.6} style={{ animationDelay: "1.6s" }} />
+        ))}
+        {LEAVES.map(([x, y]) => (
+          <circle key={y} class="node" cx={x} cy={y} r={2.4} style={{ animationDelay: "2.1s" }} />
+        ))}
       </svg>
+      <h1 class="introtitle">Shark Fam</h1>
     </div>
   );
 }
