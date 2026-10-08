@@ -220,6 +220,8 @@ g[role="button"]:focus-visible .rh {
   fill: #fff6dc;
   filter: drop-shadow(0 0 3px var(--gold));
   opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
   animation: nodeIn 0.35s ease-out forwards;
 }
 .introtitle {
