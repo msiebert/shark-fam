@@ -192,3 +192,25 @@ g[role="button"]:focus-visible .rh {
     transition: none;
   }
 }
+.introtitle {
+  margin: 0;
+  font: 500 clamp(40px, 9vw, 72px) var(--display);
+  letter-spacing: 0.04em;
+  color: var(--silver);
+  animation: titleIn 1.2s ease both;
+}
+@keyframes titleIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .introtitle {
+    animation: none;
+  }
+}
