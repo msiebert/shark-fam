@@ -100,3 +100,91 @@ g[role="button"]:focus-visible .rh {
     animation: none;
   }
 }
+
+/* Opening splash: the rail tree, enlarged, with the controls for this device. */
+.intro {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background: var(--abyss);
+  transition: opacity 0.6s ease;
+}
+.intro.out {
+  opacity: 0;
+  pointer-events: none;
+}
+.introbody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+.introtree {
+  width: 150px;
+  height: auto;
+  overflow: visible;
+}
+.introdot {
+  fill: var(--gold);
+  filter: drop-shadow(0 0 6px var(--gold));
+}
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 40px);
+  grid-template-areas: ". up ." "left down right";
+  gap: 6px;
+  justify-items: center;
+}
+.keypad span,
+.swipepad span {
+  grid-column: 1 / -1;
+  margin-top: 10px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.key {
+  --on: 0;
+  grid-area: var(--a);
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: 18px var(--body);
+  color: color-mix(in srgb, var(--gold) calc(var(--on) * 100%), var(--muted));
+  border-color: color-mix(in srgb, var(--gold) calc(var(--on) * 100%), rgba(111, 201, 196, 0.25));
+  background: color-mix(in srgb, var(--gold) calc(var(--on) * 14%), transparent);
+}
+.key.up { --a: up; }
+.key.down { --a: down; }
+.key.left { --a: left; }
+.key.right { --a: right; }
+.swipepad {
+  position: relative;
+  width: 120px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.finger {
+  position: absolute;
+  top: 18px;
+  left: calc(50% - 11px);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(233, 207, 148, 0.35);
+  border: 1px solid var(--gold);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    transition: none;
+  }
+}
