@@ -115,11 +115,6 @@ g[role="button"]:focus-visible .rh {
   opacity: 0;
   pointer-events: none;
 }
-@property --on {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0;
-}
 .introbody {
   display: flex;
   flex-direction: column;
@@ -159,9 +154,8 @@ g[role="button"]:focus-visible .rh {
   border: 1px solid var(--line);
   border-radius: 8px;
   font: 18px var(--body);
-  color: color-mix(in srgb, var(--gold) calc(var(--on) * 100%), var(--muted));
-  border-color: color-mix(in srgb, var(--gold) calc(var(--on) * 100%), rgba(111, 201, 196, 0.25));
-  background: color-mix(in srgb, var(--gold) calc(var(--on) * 14%), transparent);
+  color: var(--muted);
+  border-color: rgba(111, 201, 196, 0.25);
 }
 .key.up { --a: up; }
 .key.down { --a: down; }

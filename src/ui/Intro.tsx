@@ -62,19 +62,16 @@ function css(): string {
   ];
 
   for (const d of ["up", "down", "left", "right"] as Dir[]) {
-    // --on is a registered number (see rail.css), so it ramps between frames instead of flipping at the midpoint.
-    const frames: string[] = ["0%{--on:0}"];
+    // Animate the real properties (no custom-property tricks) so each press ramps up and back down on its own.
+    const OFF = "color:#86a5ad;border-color:rgba(111,201,196,.25);background:transparent";
+    const ON = "color:#e9cf94;border-color:#e9cf94;background:rgba(233,207,148,.14)";
+    const frames: string[] = [`0%{${OFF}}`];
     WALK.forEach((w, i) => {
       if (w.dir !== d) return;
       const t = (f: number) => pct(i * PCT + PCT * f);
-      frames.push(
-        `${t(0)}{--on:0}`,
-        `${t(0.12)}{--on:1}`,
-        `${t(0.4)}{--on:1}`,
-        `${t(0.6)}{--on:0}`,
-      );
+      frames.push(`${t(0)}{${OFF}}`, `${t(0.12)}{${ON}}`, `${t(0.4)}{${ON}}`, `${t(0.6)}{${OFF}}`);
     });
-    out.push(`@keyframes introKey-${d}{${frames.join("")}100%{--on:0}}`);
+    out.push(`@keyframes introKey-${d}{${frames.join("")}100%{${OFF}}}`);
     const [sx, sy] = SWIPE[d];
     const sw: string[] = [];
     WALK.forEach((w, i) => {
