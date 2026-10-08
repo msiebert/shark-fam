@@ -16,7 +16,7 @@ const root = document.getElementById("app")!;
 async function boot() {
   const index = await loadIndex();
   const tree = new Tree(index);
-  const nav = new Navigator(tree, nodeFromHash(tree) ?? tree.root);
+  const nav = new Navigator(tree, nodeFromHash(tree) ?? tree.roots[0]!);
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const services: AppServices = {
     tree,

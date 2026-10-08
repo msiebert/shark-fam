@@ -1,7 +1,7 @@
 {
   "id": "lamniformes",
   "rank": "order",
-  "parent": "selachimorpha",
+  "parent": null,
   "latin": "Lamniformes",
   "common": "Mackerel sharks",
   "order": 1,

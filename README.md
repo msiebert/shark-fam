@@ -51,7 +51,7 @@ Everything about a species is data. You need an ancestor chain, one JSON file, a
 }
 ```
 
-`rank` is `superorder`, `order`, `family` or `genus`; `parent` is the id of the clade one rank up. Siblings sort by the optional `order` number, then by Latin name.
+`rank` is `order`, `family` or `genus`; `parent` is the id of the clade one rank up (`null` for an order, which is the top of the tree). Siblings sort by the optional `order` number, then by Latin name.
 
 **2. Add the species** as `content/species/<id>.json` (the id is the Latin name, lowercase, dashed):
 

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 /** Ranks that appear in the explorer, from the top of the tree down. */
-export const RANKS = ["superorder", "order", "family", "genus", "species"] as const;
+export const RANKS = ["order", "family", "genus", "species"] as const;
 export type Rank = (typeof RANKS)[number];
 export const CLADE_RANKS = RANKS.slice(0, -1) as readonly Exclude<Rank, "species">[];
 
@@ -12,7 +12,7 @@ const text = z.string().trim().min(1);
 export const CladeSource = z.object({
   id,
   rank: z.enum(CLADE_RANKS as [Exclude<Rank, "species">, ...Exclude<Rank, "species">[]]),
-  /** `null` only for the root. */
+  /** `null` only for an order, the top of the tree. */
   parent: id.nullable(),
   latin: text,
   common: text,
@@ -88,7 +88,8 @@ export interface IndexNode {
 
 export interface TaxonomyIndex {
   version: number;
-  root: string;
+  /** The orders, left to right. There is no single root: the tree starts at the order level. */
+  roots: string[];
   /** Preorder, siblings already sorted. */
   nodes: IndexNode[];
 }

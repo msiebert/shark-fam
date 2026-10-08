@@ -74,10 +74,10 @@ export function Rail() {
     const total = move.up + move.down;
     const tUp = (moveMs * up) / total;
     const upChain: { node: TreeNode; rev: boolean }[] = [];
-    for (let x: TreeNode = from; x !== move.via; x = x.parentNode!) upChain.push({ node: x, rev: true });
+    for (let x: TreeNode | null = from; x && x !== move.via; x = x.parentNode) upChain.push({ node: x, rev: true });
     anim.current.pendingDown = () => {
       const chain: { node: TreeNode; rev: boolean }[] = [];
-      for (let x: TreeNode = current; x !== move.via; x = x.parentNode!) chain.unshift({ node: x, rev: false });
+      for (let x: TreeNode | null = current; x && x !== move.via; x = x.parentNode) chain.unshift({ node: x, rev: false });
       runPulse(chain, moveMs - tUp);
     };
     runPulse(upChain, tUp, () => setShown(current));
