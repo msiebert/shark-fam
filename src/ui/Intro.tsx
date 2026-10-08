@@ -2,7 +2,7 @@ import { useEffect, useState } from "preact/hooks";
 import { useServices } from "../app/context";
 
 /** A quick "how to move" splash: the tree in miniature, with a light walking it the way the real controls would. */
-const TITLE_MS = 2200;
+const TITLE_MS = 2800;
 const SHOW_MS = 4000;
 const SEEN_KEY = "sharkfam:controls-seen";
 const FADE_MS = 600;
@@ -98,6 +98,24 @@ const KEYS: { dir: Dir; glyph: string }[] = [
   { dir: "right", glyph: "→" },
 ];
 
+/** Wordmark: a dorsal fin cuts across a waterline, its wake drawing out and revealing the name behind it. */
+function Logo() {
+  return (
+    <div class="logo" role="img" aria-label="Shark Fam">
+      <h1 class="introtitle">Shark Fam</h1>
+      <svg class="logowave" viewBox="0 0 300 36" aria-hidden="true">
+        <path class="wake" pathLength={1} d="M0 28 C30 24 50 32 80 28 S130 24 160 28 S230 32 300 28" />
+        <g class="finrun">
+          <g class="finbob">
+            <path class="fin" d="M0 28 C7 24 11 14 13 4 C17 14 23 24 30 28 Z" />
+          </g>
+        </g>
+        <ellipse class="ripple" cx="285" cy="28" rx="10" ry="3" />
+      </svg>
+    </div>
+  );
+}
+
 function seenControls(): boolean {
   try {
     return localStorage.getItem(SEEN_KEY) === "1";
@@ -168,7 +186,7 @@ export function Intro() {
       aria-hidden="true"
     >
       <style>{KEYFRAMES}</style>
-      {phase === "title" && <h1 class="introtitle">Shark Fam</h1>}
+      {phase === "title" && <Logo />}
       {phase !== "title" && (
         <div class="introbody">
           <svg class="introtree" viewBox="0 0 120 190" width="120" height="190">
