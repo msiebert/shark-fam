@@ -22,7 +22,7 @@ Requires Python 3.13 (the pinned `bpy` wheel is cp313) and no GPU or display.
 - `sharkgen/body.py`, `fins.py`, `build.py` – pure numpy geometry and vertex colours
 - `sharkgen/skin.py` – body albedo painted in body space at 2048x4096 (countershading, mottling, gills, mouth, nostrils, eye socket) + tiling normal/roughness grain
 - `sharkgen/export.py` – bpy: materials + GLB export; `sharkgen/render.py` – studio rig
-- `make.py` – build, validate, render
+- `make.py` – build, validate, render; `compare.py` – side-by-side sheet of a reference photo and a render
 
 ## Species
 - `great_white` (4.5 m)

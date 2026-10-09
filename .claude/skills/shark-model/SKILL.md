@@ -63,6 +63,37 @@ body/palette/gills/mouth/eye/nostrils/paint/spots/ridges repaints (~20 s).
 - `render.hero` / `render.head`: camera overrides (`yaw`, `cam_z` in length fractions; head also
   `focus`, `dist_frac`). Flat-headed species need a **higher camera** or the head is seen edge-on.
 
+## Compare against reference photos (do this before calling a model done)
+Proportions from memory are the biggest weakness, so check every new or reworked species against real photos.
+Photos are references only: keep them in the scratchpad, never commit them (licences), and note each one's
+Commons file name, author and licence in the scratch note.
+
+1. **Find photos.** WebSearch with `allowed_domains: ["commons.wikimedia.org"]` for `<species> side` and read
+   the species' Commons category. Want one near-lateral, full-body, in-water shot (nose to tail tip visible,
+   body not foreshortened), plus a head-on or three-quarter shot for the face. Prefer several animals over one.
+2. **Download.** From the file page name, `curl -sSL --max-time 60 -o ref.jpg "https://commons.wikimedia.org/wiki/Special:FilePath/<File_name>?width=1600"`
+   (it redirects to upload.wikimedia.org). Then Read the image to look at it.
+3. **If the download fails** (`CONNECT tunnel failed, response 403`), the environment's network policy blocks the host.
+   Do not retry, and do not substitute descriptions for a comparison. Tell the user that `commons.wikimedia.org` and
+   `upload.wikimedia.org` must be added under Allowed domains in the environment's Network access settings,
+   carry on with the rest, and say in the report and commit message that proportions were **not** checked
+   against photos.
+4. **Compare side by side.** Read the photo and the hero render, note pixel crops (nose to tail tip), then
+   ```bash
+   cd pipeline && ../.venv/bin/python -I compare.py <photo> ../renders/<species>_hero.png "$SCRATCH"/sheet.png \
+       --crop-photo x0,y0,x1,y1 --crop-render x0,y0,x1,y1 [--flip-photo]   # flip if the photo faces left
+   ```
+   Put the sheet in the scratchpad, not the repo. Both sharks face right with a grid of tenths labelled as a fraction of
+   length from the nose, the same `x` the configs use. The render is 1920 px wide at full quality, 960 with `--fast`,
+   so read crops off the image you actually render. Use a lateral photo only; perspective in angled photos lies.
+5. **What to check** (write each as photo vs model, as fractions of length): first dorsal origin and height; second
+   dorsal and anal positions and sizes; pectoral origin and length; pelvic position; caudal lobe lengths and ratio;
+   body depth at its deepest and where that is; snout length and profile (conical, blunt, flat); eye position and
+   size; mouth length against the eye; gill count and position; countershading line height; colour and markings.
+   Anything off by more than about 0.03 of length, or any wrong shape, gets fixed in the config and re-rendered with
+   `--fast`, then compared again. Stop after three rounds and report what is still off.
+6. Check the head against the head-on or three-quarter photo the same way (snout shape from above, eye placement, mouth).
+
 ## How it works (so you can fix it, not just run it)
 - `sharkgen/body.py` lofts superellipse cross-sections along the spine; poles at nose/tail; a duplicate
   seam column makes the UV wrap. `sharkgen/fins.py` sweeps a NACA-style section along a planform.
@@ -108,12 +139,12 @@ body/palette/gills/mouth/eye/nostrils/paint/spots/ridges repaints (~20 s).
 
 ## Verification checklist before telling the user it is done
 1. `make.py` exits 0 and all PASS lines show.
-2. Silhouettes (top + side) identify the species.
+2. Silhouettes (top + side) identify the species, and the hero render has been compared with reference photos
+   (see above) with the remaining differences listed.
 3. Hero and head renders viewed; eyes recessed, mouth calm, no streaking, no floating dark smudges.
 4. `README.md` species list updated; commit GLB + renders + config; push to the working branch.
 5. Send the hero and head PNGs to the user and list real weaknesses plainly. Known gaps: no
-   fin-ray texture, no scars/individual marks, no teeth/open mouth, proportions are from memory and
-   have not been checked against reference photos.
+   fin-ray texture, no scars/individual marks, no teeth/open mouth, proportions are only as good as the photo comparison; if it could not be done, say they are unchecked.
 
 ## The diver (and other props)
 The scale-reference diver is built by the same pipeline: `pipeline/make_diver.py` (geometry in `sharkgen/human.py`,

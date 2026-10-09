@@ -79,8 +79,8 @@ meaning, description, lengthM, depth, eats, wikipedia, model, representative, sw
 Follow the **shark-model** skill (`.claude/skills/shark-model/SKILL.md`) in full: copy the closest
 `pipeline/species/*.json`, set `length_m`, build the body from your appearance notes, iterate with
 `--fast`, then the final render. Look at the PNGs (silhouettes first, then hero, then head) and compare
-against reference photos/descriptions you found in step 1; fix anything that does not identify the
-species. Then:
+against reference photos (shark-model skill, "Compare against reference photos"); fix anything that does not
+identify the species or that is off in proportion. If photos cannot be fetched, say so in the report and commit message. Then:
 ```bash
 cd pipeline && ../.venv/bin/python -I make.py <model>     # exits 0, all PASS lines
 cd .. && npm run models <model>                           # writes public/models/<model>.glb
@@ -103,7 +103,7 @@ If a check fails, fix it before committing. Never commit a failing or unverified
 Stage only this shark's files by explicit path (never `git add -A`):
 - `content/species/<id>.json`, any new/changed `content/clades/*.json`, `tests/core.test.ts`
 - `pipeline/species/<model>.json`, `pipeline/README.md`
-- `models/<model>.glb`, `public/models/<model>.glb`, `renders/<model>_*.png`
+- `models/<model>.glb`, `public/models/<model>.glb`, `renders/<model>_*.png` (never the reference photos or comparison sheets)
 - any pipeline code changed *specifically* for this shark (if the change is general, make it a separate
   earlier commit).
 ```bash
