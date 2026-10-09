@@ -121,12 +121,12 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   await page.goto(`${base}#sphyrna`);
   await page.waitForFunction(() => (window as any).__scene?.debugState().actors.some((a: any) => a.visible && a.alpha > 0.99), null, { timeout: 20000 });
   await page.waitForTimeout(800);
-  const before = (await state(page)).actors.find((a) => a.id === "sphyrna-mokarran")!;
+  const before = (await state(page)).actors.find((a) => a.id === "sphyrna-lewini")!;
   await key(page, "ArrowDown", 60);
   const samples: { t: number; a: Actor }[] = [];
   for (let i = 0; i < 24; i++) {
     const s = await state(page);
-    const a = s.actors.find((x) => x.id === "sphyrna-mokarran")!;
+    const a = s.actors.find((x) => x.id === "sphyrna-lewini")!;
     samples.push({ t: s.time, a });
     await page.waitForTimeout(80);
   }
@@ -152,9 +152,9 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   const yaws: number[] = [];
   const bends: number[] = [];
   const rolls: number[] = [];
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 110; i++) {
     await page.evaluate("window.__scene.debugAdvance(0.25)"); // scene time, not wall time: software GL is slow
-    const a = (await state(page)).actors.find((x) => x.id === "sphyrna-mokarran" && x.visible)!;
+    const a = (await state(page)).actors.find((x) => x.id === "sphyrna-lewini" && x.visible)!;
     xs.push(a.pose!.x);
     zs.push(a.pose!.z);
     ys.push(a.pose!.y);
@@ -172,17 +172,17 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
 
   // Species facts and the Wikipedia link.
   const link = await page.locator("a.wiki").getAttribute("href");
-  check(link === "https://en.wikipedia.org/wiki/Great_hammerhead", "species: Wikipedia link", String(link));
+  check(link === "https://en.wikipedia.org/wiki/Scalloped_hammerhead", "species: Wikipedia link", String(link));
   check((await page.locator("a.wiki").getAttribute("target")) === "_blank", "species: link opens in a new tab");
   check((await page.locator(".facts li").count()) === 2 && (await page.locator(".range svg").count()) === 1, "species: Depth, Eats and a distribution map");
 
   // Leaving a species: the shark swims off to the right while fading.
-  const x0 = (await state(page)).actors.find((a) => a.id === "sphyrna-mokarran")!.pose!.x;
+  const x0 = (await state(page)).actors.find((a) => a.id === "sphyrna-lewini")!.pose!.x;
   // Hop to a shark that is not in the old view (going up would carry the same shark into the genus lineup).
   await page.evaluate("window.__nav.go(window.__nav.tree.get('rhincodon-typus'))");
   await page.waitForTimeout(150);
   await page.evaluate("window.__scene.debugAdvance(0.35)");
-  const mid = (await state(page)).actors.find((a) => a.id === "sphyrna-mokarran")!;
+  const mid = (await state(page)).actors.find((a) => a.id === "sphyrna-lewini")!;
   check(mid.leaving && mid.alpha < 0.95 && mid.pose!.x > x0 - 0.05, "leaving: fading and drifting right", `alpha ${mid.alpha.toFixed(2)}, dx ${(mid.pose!.x - x0).toFixed(2)}`);
   await page.waitForTimeout(1200);
   await page.evaluate("window.__nav.go(window.__nav.tree.get('sphyrnidae'))");

@@ -28,6 +28,7 @@ Requires Python 3.13 (the pinned `bpy` wheel is cp313) and no GPU or display.
 - `great_white` (4.5 m)
 - `great_hammerhead` (4.2 m) – uses per-species `stations` density and `render.hero` / `render.head` camera overrides
 
+- `scalloped_hammerhead` (3.0 m) – slimmer than the great hammerhead, with an arched cephalofoil (narrower, front edge curving forward), a tall slightly hooked first dorsal set further back, bronze-grey over white with dusky pectoral tips (`tip_black`) and a dark lower caudal tip. Outline fitted to three iNaturalist photos (head and trunk within about 0.02 of length; the rear trunk and fin regions are only roughly checked, and the central notch and side scallops of the head are not modelled)
 - `whale_shark` (10 m) – uses `ridges`, `spots` (pale spot/stripe painter) and a terminal mouth; texture v follows surface distance so blunt noses stay sharp
 - `sand_tiger_shark` (2.5 m) – stout grey-brown body, near-equal dorsals set well back, long upper caudal lobe with a short lower lobe; no painted spots yet
 - `tiger_shark` (3.9 m) – blunt broad head, tall first dorsal, long upper caudal lobe; uses `bars` (broken dark vertical bars painted on back and flanks, fading toward the belly)

@@ -1,0 +1,29 @@
+{
+  "id": "sphyrna-lewini",
+  "genus": "sphyrna",
+  "latin": "Sphyrna lewini",
+  "common": "Scalloped hammerhead",
+  "meaning": "Sphyrna, presumably an accidental or intentional misspelling of sphyraena, referring to the hammer-shaped head; lewini, patronym not identified, perhaps in honor of John Lewin (1770–1819), who illustrated early volumes of Australian natural history",
+  "description": "A hammerhead with a broadly arched head, a notch in the middle of its front edge and smaller scallops either side, and a tall, slightly hooked first dorsal fin. It is grey-brown to bronze above and white below, with dusky tips on the pectoral fins. Young sharks gather in large schools in shallow nurseries, and adults hunt fish and squid in open water at night.",
+  "lengthM": 3,
+  "depth": "Surface to over 500 m",
+  "eats": "Bony fish, squid, octopus, crustaceans, rays and smaller sharks",
+  "wikipedia": "Scalloped_hammerhead",
+  "model": "scalloped_hammerhead",
+  "swim": {
+    "cruise": 0.6,
+    "beatHz": 0.85,
+    "amplitude": 0.16
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [-180, -36],
+        [180, -36],
+        [180, 42],
+        [-180, 42]
+      ]
+    ]
+  }
+}
