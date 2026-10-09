@@ -25,10 +25,24 @@ export function Neighbors() {
         <span class="com">{n.common}</span>
       </button>
     );
+  // Where you are among the siblings: dots when they fit, otherwise a count.
+  const total = sibs.length;
+  const pos = (
+    <div class="sibpos ui" data-testid="sibpos" aria-hidden="true">
+      {total <= 9 ? (
+        sibs.map((s, i) => <i key={s.id} class={i === current.index ? "on" : ""} />)
+      ) : (
+        <span>
+          {current.index + 1} / {total}
+        </span>
+      )}
+    </div>
+  );
   return (
     <>
       {one("left", prev)}
       {one("right", next)}
+      {total > 1 && pos}
     </>
   );
 }

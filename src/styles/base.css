@@ -169,13 +169,33 @@ button {
 .nb .chev {
   font-size: 30px;
   line-height: 0.8;
-  color: var(--shaft);
+  color: var(--gold);
+  animation: nbNudge 2.4s ease-in-out 1.5s infinite;
+}
+.nb.left .chev {
+  --dx: -5px;
+}
+.nb.right .chev {
+  --dx: 5px;
+}
+.nb:hover .chev {
+  animation: none;
+}
+@keyframes nbNudge {
+  0%,
+  60%,
+  100% {
+    translate: 0 0;
+  }
+  80% {
+    translate: var(--dx, 0px) 0;
+  }
 }
 .nb .name {
   font-family: var(--display);
   font-size: 1.2rem;
   line-height: 1.1;
-  opacity: 0.75;
+  opacity: 0.9;
   overflow-wrap: anywhere;
   transition: opacity 0.3s;
 }
@@ -202,6 +222,30 @@ button {
     opacity: 1;
     translate: 0 0;
   }
+}
+
+/* Dots for the current clade's place among its siblings. */
+.sibpos {
+  left: 50%;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  pointer-events: none;
+  font-size: 12px;
+  color: var(--muted);
+}
+.sibpos i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: 0.45;
+}
+.sibpos i.on {
+  background: var(--gold);
+  opacity: 1;
 }
 
 /* Names that follow the sharks in a lineup. The scene sets their transform every frame. */
@@ -286,7 +330,8 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nbin {
+  .nbin,
+  .nb .chev {
     animation: none;
   }
 }
