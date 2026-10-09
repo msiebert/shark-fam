@@ -55,6 +55,8 @@ export const SpeciesSource = z.object({
   genus: id,
   latin: text.refine((s) => s.trim().split(/\s+/).length === 2, "species names are two words"),
   common: text,
+  /** What the Latin or Greek name means, shown in small text under the name. */
+  meaning: text.optional(),
   description: text,
   /** Typical adult length in metres. Drives the size of the shark and the lineup bars. */
   lengthM: z.number().positive(),
@@ -83,7 +85,7 @@ export interface IndexNode {
   parent: string | null;
   latin: string;
   common: string;
-  /** Clades only: what the name means. */
+  /** What the Latin or Greek name means. */
   meaning?: string;
   /** Clades carry their description here. Species load theirs lazily. */
   description?: string;
