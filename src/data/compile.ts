@@ -98,6 +98,7 @@ export function compileContent(input: CompileInput): CompileResult {
     nodes.push(node);
     if ("rank" in n) {
       node.description = n.description;
+      if (n.meaning) node.meaning = n.meaning;
       inherited = n.companions ?? inherited;
     } else {
       node.lengthM = n.lengthM;

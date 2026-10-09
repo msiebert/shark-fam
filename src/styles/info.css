@@ -35,6 +35,13 @@
   color: var(--shaft);
   margin: 8px 0 14px;
 }
+.meaning {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--shaft);
+  opacity: 0.75;
+  margin: -8px 0 14px;
+}
 .desc {
   margin: 0 auto;
   max-width: 30rem;

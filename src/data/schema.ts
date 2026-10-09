@@ -19,6 +19,8 @@ export const CladeSource = z.object({
   parent: id.nullable(),
   latin: text,
   common: text,
+  /** What the Latin or Greek name means, shown in small text under the name. */
+  meaning: text.optional(),
   description: text,
   /** Companions that go with every species below, before what each one eats adds its own. */
   companions: companions.optional(),
@@ -81,6 +83,8 @@ export interface IndexNode {
   parent: string | null;
   latin: string;
   common: string;
+  /** Clades only: what the name means. */
+  meaning?: string;
   /** Clades carry their description here. Species load theirs lazily. */
   description?: string;
   children: string[];
