@@ -13,6 +13,7 @@ const specOf = (n: TreeNode): SharkSpec => ({
   cruise: n.swim?.cruise ?? 0.5,
   beatHz: n.swim?.beatHz ?? 0.6,
   amplitude: n.swim?.amplitude ?? 0.1,
+  companions: n.companions ?? [],
 });
 
 /** Turn a node into what the scene should draw. */

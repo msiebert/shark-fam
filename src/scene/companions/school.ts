@@ -1,69 +1,57 @@
 import * as THREE from "three";
-import { clamp } from "./frame";
+import { clamp } from "../frame";
+import type { CompanionContext, Creature } from "./types";
 
-const COUNT = 110;
-const BASE_LENGTH = 0.084; // world length of one fish at scale 1
-const FISH_METRES = 0.18; // a baitfish is about this long
-
-export interface SchoolContext {
-  dt: number;
-  t: number;
-  /** Where the school wants to be. */
-  centre: THREE.Vector3;
-  /** Sharks the fish flee from, with their body radius. */
-  threats: { pos: THREE.Vector3; radius: number }[];
-  /** World units per metre of the shark on screen, so fish look small next to a whale shark. */
-  unitsPerM: number;
-  /** Keep every fish above this world y, so the school never drifts behind the text. */
-  floorY: number;
-  ceilY: number;
-  halfW: number;
+export interface SchoolOptions {
+  count: number;
+  /** How long one fish is, in metres. */
+  lengthM: number;
+  /** Half height and half width of the body, as a fraction of its length. */
+  thickness: [number, number];
+  color: number;
+  emissive: number;
 }
 
+/** World length of one fish at scale 1. */
+const BASE_LENGTH = 0.084;
+
 /** Small spheroids oriented by velocity. They hold near a centre and scatter from sharks. */
-export class School {
-  readonly mesh: THREE.InstancedMesh;
-  private readonly pos = new Float32Array(COUNT * 3);
-  private readonly vel = new Float32Array(COUNT * 3);
+export class School implements Creature {
+  readonly object: THREE.InstancedMesh;
+  readonly materials: THREE.Material[];
+  private readonly pos: Float32Array;
+  private readonly vel: Float32Array;
   private readonly home: THREE.Vector3[] = [];
   private readonly dummy = new THREE.Object3D();
   private readonly geo = new THREE.SphereGeometry(1, 8, 6);
   private readonly mat: THREE.MeshStandardMaterial;
-  private opacity = 0;
   private scale = 0.6;
-  /** Seconds to keep the school hidden after a change of view. */
-  hold = 0;
-  wanted = false;
 
-  constructor() {
-    this.geo.scale(BASE_LENGTH / 2, 0.011, 0.014);
-    this.mat = new THREE.MeshStandardMaterial({ color: 0xcfe3e3, emissive: 0x2c4547, roughness: 0.35, metalness: 0.5, transparent: true, opacity: 0 });
-    this.mesh = new THREE.InstancedMesh(this.geo, this.mat, COUNT);
-    this.mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-    this.mesh.frustumCulled = false;
-    this.mesh.visible = false;
+  constructor(private readonly o: SchoolOptions) {
+    this.pos = new Float32Array(o.count * 3);
+    this.vel = new Float32Array(o.count * 3);
+    this.geo.scale(BASE_LENGTH / 2, o.thickness[0] * BASE_LENGTH, o.thickness[1] * BASE_LENGTH);
+    this.mat = new THREE.MeshStandardMaterial({ color: o.color, emissive: o.emissive, roughness: 0.35, metalness: 0.5, transparent: true, opacity: 0 });
+    this.materials = [this.mat];
+    this.object = new THREE.InstancedMesh(this.geo, this.mat, o.count);
+    this.object.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    this.object.frustumCulled = false;
     this.dummy.rotation.order = "YZX";
-    for (let i = 0; i < COUNT; i++) {
-      const o = new THREE.Vector3(Math.random() - 0.5, (Math.random() - 0.5) * 0.6, Math.random() - 0.5).multiplyScalar(0.9);
-      this.home.push(o);
-      this.pos.set([o.x - 1.1, o.y, o.z - 0.4], i * 3);
+    for (let i = 0; i < o.count; i++) {
+      const h = new THREE.Vector3(Math.random() - 0.5, (Math.random() - 0.5) * 0.6, Math.random() - 0.5).multiplyScalar(0.9);
+      this.home.push(h);
+      this.pos.set([h.x - 1.1, h.y, h.z - 0.4], i * 3);
     }
   }
 
-  update(c: SchoolContext): void {
+  update(c: CompanionContext): void {
     const { dt } = c;
-    this.hold -= dt;
-    const on = this.wanted && this.hold <= 0;
-    this.opacity = clamp(this.opacity + (on ? dt / 0.8 : -dt / 0.4), 0, 1);
-    this.mat.opacity = this.opacity;
-    this.mesh.visible = this.opacity > 0.01;
-    if (!this.mesh.visible) return;
-
-    const target = clamp((FISH_METRES * c.unitsPerM) / BASE_LENGTH, 0.3, 1.2);
+    const target = clamp((this.o.lengthM * c.unitsPerM) / BASE_LENGTH, 0.3, 1.2);
     this.scale += (target - this.scale) * Math.min(1, dt * 3);
     const flee = 0.83;
     const { pos, vel } = this;
-    for (let i = 0; i < COUNT; i++) {
+    const count = this.o.count;
+    for (let i = 0; i < count; i++) {
       const b = i * 3;
       const h = this.home[i]!;
       let ax = (c.centre.x + h.x - pos[b]!) * 0.9;
@@ -102,7 +90,7 @@ export class School {
         vel[b] = -vel[b]! * 0.5;
       }
     }
-    for (let i = 0; i < COUNT; i++) {
+    for (let i = 0; i < count; i++) {
       const b = i * 3;
       const vx = vel[b]!;
       const vy = vel[b + 1]!;
@@ -111,13 +99,13 @@ export class School {
       this.dummy.scale.setScalar(this.scale);
       this.dummy.rotation.set(0, Math.atan2(-vz, vx), Math.atan2(vy, Math.hypot(vx, vz)));
       this.dummy.updateMatrix();
-      this.mesh.setMatrixAt(i, this.dummy.matrix);
+      this.object.setMatrixAt(i, this.dummy.matrix);
     }
-    this.mesh.instanceMatrix.needsUpdate = true;
+    this.object.instanceMatrix.needsUpdate = true;
   }
 
   dispose(): void {
-    this.mesh.removeFromParent();
+    this.object.removeFromParent();
     this.geo.dispose();
     this.mat.dispose();
   }

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { COMPANION_IDS, type CompanionId } from "../core/companions";
 
 /** Ranks that appear in the explorer, from the top of the tree down. */
 export const RANKS = ["order", "family", "genus", "species"] as const;
@@ -7,6 +8,8 @@ export const CLADE_RANKS = RANKS.slice(0, -1) as readonly Exclude<Rank, "species
 
 const id = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "use lowercase letters, digits and single dashes");
 const text = z.string().trim().min(1);
+/** Creatures shown with a shark. See `src/core/companions.ts`. */
+const companions = z.array(z.enum(COMPANION_IDS)).max(3);
 
 /** A clade is any node above species. One file per clade in `content/clades/`. */
 export const CladeSource = z.object({
@@ -17,6 +20,8 @@ export const CladeSource = z.object({
   latin: text,
   common: text,
   description: text,
+  /** Companions that go with every species below, before what each one eats adds its own. */
+  companions: companions.optional(),
   /** Sort key among siblings (left to right). Ties fall back to the Latin name. */
   order: z.number().optional(),
 });
@@ -59,6 +64,8 @@ export const SpeciesSource = z.object({
   /** Base name of a GLB in `public/models/` (made from `models/` by `npm run models`). Omit if there is no model yet. */
   model: z.string().regex(/^[a-z0-9_-]+$/).optional(),
   swim: SwimParams.optional(),
+  /** Overrides the companions worked out from its clade and diet. Use `[]` for none. */
+  companions: companions.optional(),
   /** Hand-picked to represent its clade in lineups. See docs/ARCHITECTURE.md. */
   representative: z.boolean().optional(),
   order: z.number().optional(),
@@ -83,6 +90,8 @@ export interface IndexNode {
   lengthM?: number;
   model?: string;
   swim?: SwimParams;
+  /** Resolved from the clade, the diet and any override. */
+  companions?: CompanionId[];
   representative?: boolean;
 }
 
