@@ -96,7 +96,10 @@ Add the species to the list in `pipeline/README.md` (name, length, what is disti
    placement, length, depth, diet, range polygon vs. a range map, Wikipedia slug resolves. Fetch the
    sources again rather than trusting your notes; fix any mismatch. Also check clade descriptions you
    touched. Record the final `fact -> source` list for the commit message.
-4. Optionally `npm run dev` and open `#<species-id>` to see it, or the `run` skill.
+4. `npm run build && npm run e2e` (Chromium is preinstalled; CI runs this and a red result blocks the merge). `scripts/e2e.ts`
+   hardcodes how many modelled sharks the first order shows ("an order with N modelled sharks..."); update N, in the same
+   commit, when the new shark is in that order. Other hardcoded lists live in `tests/`; grep for the neighbouring species ids.
+5. Optionally `npm run dev` and open `#<species-id>` to see it, or the `run` skill.
 If a check fails, fix it before committing. Never commit a failing or unverified shark.
 
 ## 6. Commit (atomic, one shark)
