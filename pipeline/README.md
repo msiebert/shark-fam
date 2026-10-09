@@ -32,6 +32,7 @@ Requires Python 3.13 (the pinned `bpy` wheel is cp313) and no GPU or display.
 - `sand_tiger_shark` (2.5 m) – stout grey-brown body, near-equal dorsals set well back, long upper caudal lobe with a short lower lobe; no painted spots yet
 - `tiger_shark` (3.9 m) – blunt broad head, tall first dorsal, long upper caudal lobe; uses `bars` (broken dark vertical bars painted on back and flanks, fading toward the belly)
 - `bull_shark` (2.4 m) – stocky grey body, short blunt snout, small eyes, tall first dorsal, no interdorsal ridge; plain grey over white with no pattern
+- `blue_shark` (3.0 m) – slender indigo-blue body, long conical snout, large eye, very long narrow pectorals, small first dorsal set well back, long lower caudal lobe; deep blue over white with a sharp demarcation, no pattern
 
 ## The diver
 `../.venv/bin/python -I make_diver.py` builds `models/diver.glb`: a six-foot scuba diver (mask, hooded face, regulator and hoses, BCD, tank, gloves, fins) as a small joint hierarchy (`Torso`, `ArmL/R` > `ForearmL/R`, `LegL/R` > `ShinL/R`, pivots at shoulder, elbow, hip, knee) that the app poses. Geometry lives in `sharkgen/human.py` (it reuses the shark `Body` loft plus a hose `tube`); colours are per-vertex. Then `npm run models diver` writes the web copy to `public/models/`. Previews: `renders/diver_{standing,swim,head}.png`. The app authors the diver upright (+y up, +z front); `make_diver.py` checks head height 1.83 m, size, node names and budget.

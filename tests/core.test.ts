@@ -118,10 +118,10 @@ describe("navigation", () => {
 });
 
 describe("lineup selection", () => {
-  it("shows every drawable species when they fit", () => {
+  it("shows the lineup of the real tree, capped at six", () => {
     const t = real();
     const ids = selectLineup(t, t.root).map((s) => s.id);
-    expect(ids).toEqual(["carcharhinus-leucas", "carcharias-taurus", "galeocerdo-cuvier", "sphyrna-mokarran", "carcharodon-carcharias", "rhincodon-typus"]);
+    expect(ids).toEqual(["carcharias-taurus", "prionace-glauca", "galeocerdo-cuvier", "sphyrna-mokarran", "carcharodon-carcharias", "rhincodon-typus"]);
   });
 
   it("caps at the maximum and represents every branch before a second pick", () => {
