@@ -121,7 +121,7 @@ describe("lineup selection", () => {
   it("shows every drawable species when they fit", () => {
     const t = real();
     const ids = selectLineup(t, t.root).map((s) => s.id);
-    expect(ids).toEqual(["sphyrna-mokarran", "carcharodon-carcharias", "rhincodon-typus"]);
+    expect(ids).toEqual(["carcharias-taurus", "sphyrna-mokarran", "carcharodon-carcharias", "rhincodon-typus"]);
   });
 
   it("caps at the maximum and represents every branch before a second pick", () => {

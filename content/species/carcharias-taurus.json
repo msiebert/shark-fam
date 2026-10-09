@@ -1,0 +1,159 @@
+{
+  "id": "carcharias-taurus",
+  "genus": "carcharias",
+  "latin": "Carcharias taurus",
+  "common": "Sand tiger shark",
+  "meaning": "Carcharias, Greek karcharos “saw-like, jagged”, for its teeth; taurus, Latin “bull”, from Pesce Tauro, the Sicilian local name for this shark",
+  "description": "A stout, slow cruiser with a flattened, pointed snout and narrow teeth that stick out of its mouth. It is the only shark known to gulp air at the surface and hold it in its stomach, which lets it hover almost weightless near the seabed.",
+  "lengthM": 2.5,
+  "depth": "Shallows to about 190 m",
+  "eats": "Fish, squid, crustaceans, skates and other sharks",
+  "wikipedia": "Sand_tiger_shark",
+  "model": "sand_tiger_shark",
+  "swim": {
+    "cruise": 0.35,
+    "beatHz": 0.5,
+    "amplitude": 0.12
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [
+          -98,
+          18
+        ],
+        [
+          -98,
+          30
+        ],
+        [
+          -66,
+          45
+        ],
+        [
+          -40,
+          45
+        ],
+        [
+          -34,
+          -5
+        ],
+        [
+          -48,
+          -30
+        ],
+        [
+          -55,
+          -45
+        ],
+        [
+          -66,
+          -45
+        ],
+        [
+          -66,
+          -10
+        ],
+        [
+          -80,
+          9
+        ],
+        [
+          -88,
+          13
+        ]
+      ],
+      [
+        [
+          -20,
+          -36
+        ],
+        [
+          -20,
+          30
+        ],
+        [
+          42,
+          30
+        ],
+        [
+          42,
+          -36
+        ]
+      ],
+      [
+        [
+          -6,
+          30
+        ],
+        [
+          36,
+          30
+        ],
+        [
+          36,
+          46
+        ],
+        [
+          -6,
+          46
+        ]
+      ],
+      [
+        [
+          124,
+          30
+        ],
+        [
+          146,
+          30
+        ],
+        [
+          146,
+          45
+        ],
+        [
+          124,
+          45
+        ]
+      ],
+      [
+        [
+          147,
+          -38
+        ],
+        [
+          154,
+          -38
+        ],
+        [
+          154,
+          -20
+        ],
+        [
+          147,
+          -20
+        ]
+      ],
+      [
+        [
+          112,
+          -36
+        ],
+        [
+          118,
+          -36
+        ],
+        [
+          118,
+          -18
+        ],
+        [
+          112,
+          -18
+        ]
+      ]
+    ]
+  }
+}
