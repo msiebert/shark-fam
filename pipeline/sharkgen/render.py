@@ -125,7 +125,10 @@ def render_silhouette(glb, out_png, view="side", res=(1600, 700), samples=4):
     bpy.context.view_layer.material_override = m
     cd = bpy.data.cameras.new("Ortho")
     cd.type = "ORTHO"
-    cd.ortho_scale = L * 1.15
+    # ortho_scale spans the image width, so the visible height is ortho_scale * h / w; widen it when the animal
+    # (tall dorsal + pectoral in the side view) would not fit, or fins get clipped at the frame edge
+    extent_v = (hi.z - lo.z) if view == "side" else (hi.y - lo.y)
+    cd.ortho_scale = max(L * 1.15, extent_v * 1.12 * res[0] / res[1])
     cam = bpy.data.objects.new("Ortho", cd)
     sc.collection.objects.link(cam)
     sc.camera = cam

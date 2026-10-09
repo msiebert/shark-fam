@@ -276,7 +276,7 @@
   {
    "name": "dorsal2",
    "attach": {
-    "x": 0.64,
+    "x": 0.6,
     "theta": 0
    },
    "span_dir": [
@@ -347,7 +347,7 @@
    "name": "anal",
    "color": "ventral",
    "attach": {
-    "x": 0.665,
+    "x": 0.625,
     "theta": 180
    },
    "span_dir": [

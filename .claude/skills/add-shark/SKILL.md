@@ -79,7 +79,8 @@ meaning, description, lengthM, depth, eats, wikipedia, model, representative, sw
 Follow the **shark-model** skill (`.claude/skills/shark-model/SKILL.md`) in full: copy the closest
 `pipeline/species/*.json`, set `length_m`, build the body from your appearance notes, iterate with
 `--fast`, then the final render. Look at the PNGs (silhouettes first, then hero, then head) and compare
-against reference photos (shark-model skill, "Compare against reference photos"); fix anything that does not
+against reference photos (shark-model skill, "Compare against reference photos": run `pipeline/fit.py` on at least three lateral
+photos so the back and belly outline is checked, not just fin positions); fix anything that does not
 identify the species or that is off in proportion. If photos cannot be fetched, say so in the report and commit message. Then:
 ```bash
 cd pipeline && ../.venv/bin/python -I make.py <model>     # exits 0, all PASS lines
