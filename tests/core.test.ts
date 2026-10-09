@@ -121,7 +121,7 @@ describe("lineup selection", () => {
   it("shows the lineup of the real tree, capped at six", () => {
     const t = real();
     const ids = selectLineup(t, t.root).map((s) => s.id);
-    expect(ids).toEqual(["ginglymostoma-cirratum", "isurus-oxyrinchus", "galeocerdo-cuvier", "sphyrna-mokarran", "carcharodon-carcharias", "rhincodon-typus"]);
+    expect(ids).toEqual(["ginglymostoma-cirratum", "galeocerdo-cuvier", "sphyrna-mokarran", "alopias-vulpinus", "carcharodon-carcharias", "rhincodon-typus"]);
   });
 
   it("caps at the maximum and represents every branch before a second pick", () => {
