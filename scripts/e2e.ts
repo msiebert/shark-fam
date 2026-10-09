@@ -89,7 +89,8 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   await key(page, "ArrowLeft", 1600);
 
   // Sibling hop timing: the old text leaves (~0.3 s) before the new text arrives, never overlapping.
-  await key(page, "ArrowDown", 1600); // carcharhiniformes -> sphyrnidae
+  await key(page, "ArrowDown", 1600); // carcharhiniformes -> galeocerdonidae
+  await key(page, "ArrowRight", 1600); // -> sphyrnidae
   await key(page, "ArrowDown", 1600); // -> sphyrna
   check((await here(page)) === "sphyrna", "down returns through families");
   const timeline: { t: number; ghost: number; fresh: number }[] = [];
