@@ -92,6 +92,7 @@ export function compileContent(input: CompileInput): CompileResult {
       parent: "rank" in n ? n.parent : n.genus,
       latin: n.latin,
       common: n.common,
+      ...(n.meaning ? { meaning: n.meaning } : {}),
       children: ordered.map((k) => k.id),
       speciesCount: 0,
     };

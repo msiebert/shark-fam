@@ -28,6 +28,7 @@ function Content({ node, ghost }: { node: TreeNode; ghost?: boolean }) {
         )}
       </h1>
       <p class="common">{node.common}</p>
+      {node.meaning && <p class="meaning">{node.meaning}</p>}
       <p class="desc">{species ? d?.description : node.description}</p>
       {species && d && (
         <ul class="facts">
