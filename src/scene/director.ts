@@ -4,8 +4,9 @@ import { displayLength, trackPose, trackShape } from "../core/racetrack";
 import { SharkActor, type Mode } from "./actor";
 import { Diver, DIVER_CENTRE_M } from "./diver";
 import { clamp, easeOut, framing, FOV, TAN, ZS } from "./frame";
+import { Companions } from "./companions";
+import type { SharkInfo } from "./companions/types";
 import { ModelLibrary } from "./models";
-import { School } from "./school";
 import { MarineSnow } from "./snow";
 import type { Pose, SceneView, SharkSpec } from "./types";
 
@@ -20,7 +21,7 @@ export interface ViewChange {
   /** Levels climbed and descended. */
   up: number;
   down: number;
-  /** Anything other than the first view fades the school out with the old view. */
+  /** Anything other than the first view fades the companions out with the old view. */
   animate: boolean;
 }
 
@@ -42,14 +43,15 @@ export class SharkScene {
   private readonly camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 40);
   private readonly actors = new Map<string, SharkActor>();
   private readonly diver = new Diver();
-  private readonly school = new School();
+  private readonly companions = new Companions();
+  private readonly sharkInfo: SharkInfo = { object: new THREE.Object3D(), lengthM: 1, length: 1, alpha: 0, pos: new THREE.Vector3(), dir: new THREE.Vector3(1, 0, 0) };
   private readonly snow = new MarineSnow();
   private last = performance.now();
   private readonly ro: ResizeObserver;
   private readonly ray = new THREE.Raycaster();
   private readonly tmp = new THREE.Vector3();
   private readonly threats = [{ pos: new THREE.Vector3(), radius: 0 }];
-  private readonly schoolCentre = new THREE.Vector3();
+  private readonly bandCentre = new THREE.Vector3();
   private readonly localRay = new THREE.Ray();
   private readonly inv = new THREE.Matrix4();
   private readonly box = new THREE.Box3(new THREE.Vector3(-0.5, -0.12, -0.12), new THREE.Vector3(0.5, 0.12, 0.12));
@@ -83,7 +85,7 @@ export class SharkScene {
     sun.position.set(-1.5, 4, 2.5);
     const rim = new THREE.DirectionalLight(0x3fb9b0, 0.55 * Math.PI);
     rim.position.set(2, 0.5, -3);
-    this.scene.add(sun, rim, this.diver.group, this.school.mesh, this.snow.points);
+    this.scene.add(sun, rim, this.diver.group, this.companions.group, this.snow.points);
     void this.diver.load();
 
     this.ro = new ResizeObserver(() => this.resize());
@@ -145,8 +147,8 @@ export class SharkScene {
       const lateral = change.up > 0 && change.down > 0;
       this.dolly = { t: 0, bump: lateral ? 0.3 * change.up : 0, settle: lateral ? 0 : change.down > 0 ? 0.55 : -0.45 };
     }
-    if (change.animate) this.school.hold = 0.5;
-    this.school.wanted = view.kind === "species";
+    if (change.animate) this.companions.hold = 0.5;
+    this.companions.want(view.kind === "species" ? view.sharks[0].companions : []);
 
     // Sharks already here: carry over, glide, or leave.
     const wanted = new Set(specs.map((s) => s.id));
@@ -173,7 +175,7 @@ export class SharkScene {
     this.ro.disconnect();
     this.actors.forEach((a) => a.dispose());
     this.diver.dispose();
-    this.school.dispose();
+    this.companions.dispose();
     this.snow.dispose();
     this.renderer.dispose();
   }
@@ -342,12 +344,14 @@ export class SharkScene {
     // Sharks.
     const species = this.view.kind === "species" ? this.view.sharks[0] : null;
     this.threats[0]!.radius = 0;
+    let focus: SharkActor | null = null;
     for (const a of this.actors.values()) {
       if (a.gone) continue;
       a.update(dt, t, this.targetPose(a), 1 - Math.exp(-dt * 5));
       if (species && a.id === species.id && a.shown) {
         this.threats[0]!.pos.set(a.shown.x, a.shown.y, a.shown.z);
         this.threats[0]!.radius = a.shown.s * 0.83;
+        focus = a;
       }
     }
 
@@ -379,21 +383,33 @@ export class SharkScene {
     }
     this.diver.update(dt, t, dTarget, !!species);
 
-    // The school lives in a band above the text.
+    // Water life lives in a band above the text.
     const topY = this.yAtScreenFraction(0.08, -0.9, f);
     const safeFrac = this.safeBottomPx > 0 ? this.safeBottomPx / this.h : 0.5;
     const floorY = this.yAtScreenFraction(clamp(safeFrac - 0.03, 0.25, 0.6), -0.9, f);
-    this.schoolCentre.set(-0.2 + Math.sin(t * 0.15) * 0.7, (topY + floorY) / 2 + Math.sin(t * 0.2) * 0.08, -0.9 + Math.cos(t * 0.11) * 0.3);
+    this.bandCentre.set(-0.2 + Math.sin(t * 0.15) * 0.7, (topY + floorY) / 2 + Math.sin(t * 0.2) * 0.08, -0.9 + Math.cos(t * 0.11) * 0.3);
     const mpu = species ? displayLength(species.lengthM) / species.lengthM : 0.25;
-    this.school.update({
-      dt,
+    let shark: SharkInfo | null = null;
+    if (focus?.shown) {
+      const info = this.sharkInfo;
+      info.object = focus.group;
+      info.lengthM = focus.spec.lengthM;
+      info.length = focus.shown.s;
+      info.alpha = focus.alpha;
+      info.pos.set(focus.shown.x, focus.shown.y, focus.shown.z);
+      info.dir.set(1, 0, 0).applyQuaternion(focus.group.quaternion);
+      shark = info;
+    }
+    this.companions.update({
+      dt: dt * (reduce ? 0.5 : 1),
       t,
-      centre: this.schoolCentre,
+      centre: this.bandCentre,
       threats: this.threats,
       unitsPerM: mpu * ((f.camZ + 0.9) / (f.camZ + 0.25)),
       floorY,
       ceilY: topY,
       halfW: (f.camZ + 0.9) * TAN * this.camera.aspect,
+      shark,
     });
     this.snow.update(dt * (reduce ? 0.5 : 1), t);
   }

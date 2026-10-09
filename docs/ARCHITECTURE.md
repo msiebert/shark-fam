@@ -7,7 +7,7 @@ Shark Fam is a static single-page app. Content is data, the tree is a pure model
 | Choice | Why |
 | --- | --- |
 | **Vite + TypeScript (strict)** | Fast dev loop, static output, no server to run. |
-| **three.js, used directly** | The scene is one animated world, not a tree of components. Every shark, the diver and the school move on their own clocks every frame. React Three Fiber would add a reconciler between us and that loop without buying anything here. |
+| **three.js, used directly** | The scene is one animated world, not a tree of components. Every shark, the diver and the companions move on their own clocks every frame. React Three Fiber would add a reconciler between us and that loop without buying anything here. |
 | **Preact** (3 KB) for the UI | The DOM around the scene (text, rail, tree map, labels) is a handful of components that re-render on a move. Preact gives declarative rendering without a framework tax. No router, no state library: one `Navigator` and a hook. |
 | **A small custom state machine** for navigation | The rules are specific (siblings only, last-visited child, shared-ancestor travel). `core/nav.ts` is 100 lines of plain TypeScript with tests, no DOM. |
 | **glTF models + a vertex-shader swim** | See below. |
@@ -51,7 +51,7 @@ src/core/      pure TypeScript, no DOM, unit tested
   racetrack.ts   the species swim path
   rail.ts        the rail model; maplayout.ts  the tree map layout
 src/data/      schema (zod), compile (pure), loader (fetch + cache)
-src/scene/     three.js: director, actor, models, swim shader, diver, school, snow
+src/scene/     three.js: director, actor, models, swim shader, diver, snow, `companions/` (one lazily loaded module per creature)
 src/ui/        Preact components; src/input/ keyboard, swipe, wheel, pinch
 src/styles/    plain CSS
 scripts/       build-content, optimize-models, e2e

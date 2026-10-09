@@ -1,3 +1,5 @@
+import type { CompanionId } from "../core/companions";
+
 export interface SharkSpec {
   id: string;
   /** Base name of the GLB in `public/models/`. */
@@ -6,6 +8,8 @@ export interface SharkSpec {
   cruise: number;
   beatHz: number;
   amplitude: number;
+  /** What shares the water with it on its own page. */
+  companions: CompanionId[];
 }
 
 /** What the scene should show for the current node. */
