@@ -74,7 +74,7 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   await page.mouse.wheel(0, 0);
   const first = await state(page);
   check((await here(page)) === "lamniformes", "the tree starts at the first order");
-  check(first.view === "lineup" && first.actors.filter((a) => a.visible).length === 2, "an order with two modelled sharks shows a lineup of two");
+  check(first.view === "lineup" && first.actors.filter((a) => a.visible).length === 3, "an order with three modelled sharks shows a lineup of three");
   await key(page, "ArrowUp", 300);
   check((await here(page)) === "lamniformes", "up from an order goes nowhere");
 
