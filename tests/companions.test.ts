@@ -7,18 +7,18 @@ import type { TaxonomyIndex } from "../src/data/schema";
 describe("companions from diet", () => {
   it("maps what a shark eats to creatures", () => {
     expect(companionsFromEats("Plankton and small fish")).toEqual(["plankton", "baitfish"]);
-    expect(companionsFromEats("Stingrays, fish, squid and other sharks")).toEqual(["ray", "baitfish"]);
+    expect(companionsFromEats("Stingrays, fish, squid and other sharks")).toEqual(["baitfish"]);
     expect(companionsFromEats("Seals, sea lions, large fish")).toEqual(["baitfish"]);
     expect(companionsFromEats("Carrion")).toEqual([]);
   });
   it("lets a species list win, then falls back to clade plus diet", () => {
-    expect(resolveCompanions(["ray"], ["remora"], "Plankton")).toEqual(["ray"]);
+    expect(resolveCompanions(["plankton"], ["remora"], "Plankton")).toEqual(["plankton"]);
     expect(resolveCompanions([], ["remora"], "Plankton")).toEqual([]);
     expect(resolveCompanions(undefined, ["remora"], "Plankton and small fish")).toEqual(["remora", "plankton", "baitfish"]);
   });
   it("drops duplicates and caps the list", () => {
     expect(resolveCompanions(undefined, ["baitfish"], "fish")).toEqual(["baitfish"]);
-    expect(resolveCompanions(undefined, ["remora", "ray"], "Plankton and fish")).toHaveLength(MAX_COMPANIONS);
+    expect(resolveCompanions(undefined, ["remora", "baitfish", "plankton"], "Plankton and fish")).toHaveLength(MAX_COMPANIONS);
   });
 });
 
@@ -48,7 +48,7 @@ describe("companions in content", () => {
     expect(compile({ companions: ["remora"] }, {}).companions).toEqual(["remora", "plankton"]);
   });
   it("lets a species override", () => {
-    expect(compile({ companions: ["remora"] }, { companions: ["ray"] }).companions).toEqual(["ray"]);
+    expect(compile({ companions: ["remora"] }, { companions: ["baitfish"] }).companions).toEqual(["baitfish"]);
     expect(compile({ companions: ["remora"] }, { companions: [] }).companions).toBeUndefined();
   });
   it("rejects a creature that does not exist", () => {
@@ -58,7 +58,7 @@ describe("companions in content", () => {
     const idx = JSON.parse(readFileSync("public/data/index.json", "utf8")) as TaxonomyIndex;
     const of = (id: string) => idx.nodes.find((n) => n.id === id)?.companions;
     expect(of("rhincodon-typus")).toEqual(["remora", "plankton", "baitfish"]);
-    expect(of("sphyrna-mokarran")).toEqual(["ray", "baitfish"]);
+    expect(of("sphyrna-mokarran")).toEqual(["baitfish"]);
     expect(of("carcharodon-carcharias")).toEqual(["baitfish"]);
   });
 });

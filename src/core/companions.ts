@@ -4,7 +4,7 @@
  */
 
 /** Every creature the scene knows how to draw. Adding one means a new entry here and one in the scene registry. */
-export const COMPANION_IDS = ["baitfish", "plankton", "remora", "ray"] as const;
+export const COMPANION_IDS = ["baitfish", "plankton", "remora"] as const;
 export type CompanionId = (typeof COMPANION_IDS)[number];
 
 /** Most kinds on screen at once, so a species page never costs more than a few flocks. */
@@ -16,7 +16,6 @@ export const MAX_COMPANIONS = 3;
  */
 const EATS_RULES: readonly { id: CompanionId; test: RegExp }[] = [
   { id: "plankton", test: /plankton|krill/i },
-  { id: "ray", test: /rays?\b|skates?\b/i },
   { id: "baitfish", test: /\bfish\b|squid|sardine|anchov/i },
 ];
 

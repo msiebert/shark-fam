@@ -80,7 +80,7 @@ Everything about a species is data. You need an ancestor chain, one JSON file, a
 - `wikipedia`: the article slug, from its URL.
 - `distribution`: polygons as `[longitude, latitude]` rings. `"coast"` shades the coastlines inside them (reef and coastal species); `"open"` shades the water itself (open-ocean species). There is no label; keep it simple and approximate.
 - `model`: base name of a GLB (see step 3). Leave it out if there is no model yet: the species still appears in the tree and has its page, but it is skipped in lineups.
-- `companions` (optional): what shares the water with it on its page. Leave it out and it is worked out for you: the nearest clade with a `companions` list (remoras for the carpet sharks) plus whatever `eats` suggests ("plankton" brings a plankton cloud, "rays" a stingray, "fish" a baitfish school), at most three. Set a list to replace that, or `[]` for none. Names are in `src/core/companions.ts`.
+- `companions` (optional): what shares the water with it on its page. Leave it out and it is worked out for you: the nearest clade with a `companions` list (remoras for the carpet sharks) plus whatever `eats` suggests ("plankton" brings a plankton cloud, "fish" a baitfish school), at most three. Set a list to replace that, or `[]` for none. Names are in `src/core/companions.ts`.
 - `swim` (optional): `cruise` in body lengths per second, `beatHz` tail beats per second, `amplitude` tail swing as a fraction of length. Slow filter feeders want small numbers; fast hunters want larger ones.
 - `representative` (optional): marks it as the pick for its clade when a lineup has to choose.
 
@@ -106,7 +106,7 @@ The build fails if an id is duplicated, a parent is missing, a rank is in the wr
 Companions are the small life that shares the water with a shark. Each one is a module in `src/scene/companions/` that is only downloaded the first time a species that uses it is shown.
 
 1. Add its id to `COMPANION_IDS` in `src/core/companions.ts`, and a diet keyword rule to `EATS_RULES` if a species' `eats` text should bring it in.
-2. Write `src/scene/companions/<id>.ts` exporting `create`. Reuse `School` (a flock that scatters from the shark) or follow `plankton.ts` (drifts and is eaten), `remora.ts` (rides the shark) or `ray.ts` (cruises on its own).
+2. Write `src/scene/companions/<id>.ts` exporting `create`. Reuse `School` (a flock that scatters from the shark) or follow `plankton.ts` (drifts and is eaten) or `remora.ts` (rides the shark).
 3. Register it in `src/scene/companions/registry.ts`.
 
 ## Layout
