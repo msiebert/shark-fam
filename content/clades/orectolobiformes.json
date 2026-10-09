@@ -4,8 +4,10 @@
   "parent": null,
   "latin": "Orectolobiformes",
   "common": "Carpet sharks",
-  "meaning": "Greek orektos “stretched out” + lobos “lobe”; -formes “shaped like”",
+  "meaning": "From Orectolobus: Greek orektos “stretched out” + Latin lobus “lobe”, for the long nasal barbels; -formes “shaped like”",
   "order": 3,
   "description": "Mostly bottom-dwelling sharks with a mouth set ahead of the eyes and whisker-like barbels by the nostrils. Wobbegongs, nurse sharks and the whale shark are included.",
-  "companions": ["remora"]
+  "companions": [
+    "remora"
+  ]
 }

@@ -22,12 +22,13 @@ describe("companions from diet", () => {
   });
 });
 
-const clade = (id: string, rank: string, parent: string | null, extra: object = {}) => ({ id, rank, parent, latin: id, common: id, description: "d", ...extra });
+const clade = (id: string, rank: string, parent: string | null, extra: object = {}) => ({ id, rank, parent, latin: id, common: id, meaning: "m", description: "d", ...extra });
 const species = (id: string, extra: object = {}) => ({
   id,
   genus: "g",
   latin: "Genus " + id,
   common: id,
+  meaning: "m",
   description: "d",
   lengthM: 3,
   depth: "x",

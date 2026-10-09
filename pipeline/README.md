@@ -22,13 +22,14 @@ Requires Python 3.13 (the pinned `bpy` wheel is cp313) and no GPU or display.
 - `sharkgen/body.py`, `fins.py`, `build.py` – pure numpy geometry and vertex colours
 - `sharkgen/skin.py` – body albedo painted in body space at 2048x4096 (countershading, mottling, gills, mouth, nostrils, eye socket) + tiling normal/roughness grain
 - `sharkgen/export.py` – bpy: materials + GLB export; `sharkgen/render.py` – studio rig
-- `make.py` – build, validate, render
+- `make.py` – build, validate, render; `compare.py` – side-by-side sheet of a reference photo and a render
 
 ## Species
 - `great_white` (4.5 m)
 - `great_hammerhead` (4.2 m) – uses per-species `stations` density and `render.hero` / `render.head` camera overrides
 
 - `whale_shark` (10 m) – uses `ridges`, `spots` (pale spot/stripe painter) and a terminal mouth; texture v follows surface distance so blunt noses stay sharp
+- `sand_tiger_shark` (2.5 m) – stout grey-brown body, near-equal dorsals set well back, long upper caudal lobe with a short lower lobe; no painted spots yet
 
 ## The diver
 `../.venv/bin/python -I make_diver.py` builds `models/diver.glb`: a six-foot scuba diver (mask, hooded face, regulator and hoses, BCD, tank, gloves, fins) as a small joint hierarchy (`Torso`, `ArmL/R` > `ForearmL/R`, `LegL/R` > `ShinL/R`, pivots at shoulder, elbow, hip, knee) that the app poses. Geometry lives in `sharkgen/human.py` (it reuses the shark `Body` loft plus a hose `tube`); colours are per-vertex. Then `npm run models diver` writes the web copy to `public/models/`. Previews: `renders/diver_{standing,swim,head}.png`. The app authors the diver upright (+y up, +z front); `make_diver.py` checks head height 1.83 m, size, node names and budget.
