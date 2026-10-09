@@ -30,7 +30,7 @@ names and classification), Florida Museum ISAF, Wikipedia (for the `wikipedia` s
 | Accepted scientific name | Current valid binomial (check WoRMS for synonyms; do not use a superseded name). Exactly two words. |
 | Order, family, genus | Current classification. This repo's tree has no superorder; it starts at order. |
 | Common name | The widely used English name; note common alternates. |
-| Etymology (`meaning`) | **Required** on every clade and species (the schema rejects a missing one). Genus and species epithets, from a source such as ETYFish or FishBase, never guessed or from memory; a Latin name copied from a parent is not enough. Mark uncertain ones with "possibly". An order or family named after a genus should say so (`From Orectolobus: ...`). Keep the repo's style: `Sphyrna “hammer” (Greek sphyra); mokarran, ...`. |
+| Etymology (`meaning`) | **Required** on every clade and species (the schema rejects a missing one). Genus and species epithets, from ETYFish (see below), never guessed or from memory; a Latin name copied from a parent is not enough. Mark uncertain ones with "possibly". An order or family named after a genus should say so (`From Orectolobus: ...`). Keep the repo's style: `Sphyrna “hammer” (Greek sphyra); mokarran, ...`. |
 | Typical adult length | Metres, typical adult (not record max). Cite which. Sets `lengthM` and `length_m`. |
 | Depth range | Matches the `depth` string style ("Surface to about 300 m"). |
 | Diet | Short list; the wording drives companions (`plankton`/`krill`, `rays`/`skates`, `fish`/`squid`). |
@@ -38,14 +38,15 @@ names and classification), Florida Museum ISAF, Wikipedia (for the `wikipedia` s
 | Wikipedia slug | Fetch `https://en.wikipedia.org/wiki/<slug>` and confirm it resolves to the right species page (not a redirect to a genus or disambiguation). |
 | Appearance | Head shape, snout, fin proportions (first dorsal, pectorals, caudal ratio), colour, pattern, countershading, eye size, mouth position, distinctive features. Needed for the model. |
 
-**Wikipedia is the reference for every `meaning`** (clades and species alike). Read the English Wikipedia
-article for each name (the species, genus, family and order articles; the etymology is usually in a
-"Taxonomy", "Etymology" or "Naming" section) and write the meaning as that article states it. Use FishBase
-and ETYFish as cross-checks, not as replacements. If they disagree with Wikipedia, keep Wikipedia's
-wording and tell the user about the disagreement (in the commit message too); do not silently override
-Wikipedia with another source. If an article does not state the etymology, say so and fall back to the
-authoritative source, marked "possibly" where uncertain. WebFetch and curl may be blocked from Wikipedia in
-cloud sessions; if so use WebSearch with `allowed_domains: ["wikipedia.org"]` and quote what comes back.
+**ETYFish is the reference for every `meaning`** (clades and species alike). Find the entry on etyfish.org
+(one page per family, e.g. etyfish.org/sphyrnidae/, covering the family, genus and species names; the
+order is covered by its families) and write the meaning as ETYFish states it, keeping its hedges
+("presumably", "possibly from"). Cross-check with the English Wikipedia article. If Wikipedia disagrees,
+keep ETYFish's wording and tell the user about the disagreement (in the commit message too). Order and
+family names are formed from a type genus: say so ("From Lamna: ..."). If ETYFish has no entry, use
+Wikipedia, then FishBase, then the original description (Biodiversity Heritage Library), marked "possibly"
+where uncertain. WebFetch and curl may be blocked from etyfish.org and Wikipedia in cloud sessions; if so
+use WebSearch with `allowed_domains: ["etyfish.org"]` (then `["wikipedia.org"]`) and quote what comes back.
 
 Write the findings to a scratch note (scratchpad dir, not the repo) as `claim -> source URL`. If two
 sources disagree on a number, use the more authoritative one and say so in the note; if a name or
