@@ -19,6 +19,10 @@ def fin_colors(f, attr, pal):
     if f.get("tip_patch"):
         w = smoothstep(0.55, 0.78, attr["v"]) * under
         col = mix(col, dark, 0.92 * w)
+    if f.get("tip_white"):
+        # pale tip patch on both faces (oceanic whitetip): the outer ~25% of the span
+        w = smoothstep(0.7, 0.82, attr["v"])
+        col = mix(col, hex_to_linear("#E9E6DC"), f["tip_white"] * w)
     return col
 
 

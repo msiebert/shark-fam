@@ -1,0 +1,29 @@
+{
+  "id": "carcharhinus-longimanus",
+  "genus": "carcharhinus",
+  "latin": "Carcharhinus longimanus",
+  "common": "Oceanic whitetip shark",
+  "meaning": "Carcharhinus, from Greek karcharias “a kind of shark” (from karcharos “saw-like, jagged”, for its teeth) + rhinus, an ancient word for sharks; longimanus, from Latin longus “long” + manus “hand”, referring to its long paddle-like pectoral fins",
+  "description": "A stocky open-ocean shark with a rounded snout, a very large rounded first dorsal fin and long paddle-shaped pectoral fins. Most fins carry white tips, set against a grey-bronze back and a white belly. It ranges through the warm upper ocean, eating mainly squid and bony fish.",
+  "lengthM": 2.7,
+  "depth": "Surface to about 150 m",
+  "eats": "Squid, bony fish, rays and sea turtles",
+  "wikipedia": "Oceanic_whitetip_shark",
+  "model": "oceanic_whitetip",
+  "swim": {
+    "cruise": 0.4,
+    "beatHz": 0.7,
+    "amplitude": 0.12
+  },
+  "distribution": {
+    "mode": "open",
+    "polygons": [
+      [
+        [-180, -40],
+        [180, -40],
+        [180, 40],
+        [-180, 40]
+      ]
+    ]
+  }
+}
