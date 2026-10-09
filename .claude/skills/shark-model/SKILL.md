@@ -66,33 +66,61 @@ body/palette/gills/mouth/eye/nostrils/paint/spots/ridges repaints (~20 s).
 ## Compare against reference photos (do this before calling a model done)
 Proportions from memory are the biggest weakness, so check every new or reworked species against real photos.
 Photos are references only: keep them in the scratchpad, never commit them (licences), and note each one's
-Commons file name, author and licence in the scratch note.
+source, author and licence in the scratch note.
 
-1. **Find photos.** WebSearch with `allowed_domains: ["commons.wikimedia.org"]` for `<species> side` and read
-   the species' Commons category. Want one near-lateral, full-body, in-water shot (nose to tail tip visible,
-   body not foreshortened), plus a head-on or three-quarter shot for the face. Prefer several animals over one.
-2. **Download.** From the file page name, `curl -sSL --max-time 60 -o ref.jpg "https://commons.wikimedia.org/wiki/Special:FilePath/<File_name>?width=1600"`
-   (it redirects to upload.wikimedia.org). Then Read the image to look at it.
-3. **If the download fails** (`CONNECT tunnel failed, response 403`), the environment's network policy blocks the host.
-   Do not retry, and do not substitute descriptions for a comparison. Tell the user that `commons.wikimedia.org` and
-   `upload.wikimedia.org` must be added under Allowed domains in the environment's Network access settings,
-   carry on with the rest, and say in the report and commit message that proportions were **not** checked
-   against photos.
-4. **Compare side by side.** Read the photo and the hero render, note pixel crops (nose to tail tip), then
+**What this check has missed before** (sand tiger): fin and gill positions, eye and total depth were compared, but
+the *outline* was not, so a model with a symmetric back and belly (no dorsal hump) passed. A uniform "make it
+deeper" scale does not fix that. Compare the back line and the belly line separately, and use at least three photos
+of different animals, because one animal can be fat, pregnant, bent or turned toward the camera.
+
+1. **Find photos.** Need 3+ near-lateral, full-body, in-water shots (nose to tail tip visible, not foreshortened,
+   tail not curled) plus a head-on or three-quarter one for the face. Reject angled, breaching, surface and
+   carcass shots; aquarium glass magnifies slightly. Sources, in the order to try them:
+   - **Wikimedia Commons**: WebSearch with `allowed_domains: ["commons.wikimedia.org"]` for `<species> side`, and the species
+     category page (curl it and grep `File:` links). Downloads start returning HTTP 429 after a handful; that is rate limiting,
+     not a block, so space requests about 10 s apart and retry later. Good for aquarium laterals.
+   - **iNaturalist** (more variety, many divers' laterals):
+     `https://api.inaturalist.org/v1/observations?taxon_name=<Latin name>&quality_grade=research&photo_license=cc0,cc-by,cc-by-sa&per_page=30&order_by=votes&photos=true`.
+     `static.inaturalist.org` is blocked here; fetch `https://inaturalist-open-data.s3.amazonaws.com/photos/<photo id>/large.jpg`
+     (`medium.jpg` if that 404s). Download thumbnails for all hits, paste them on one contact sheet with their file names,
+     look at it once, then fetch the good ones large. Keep the `attribution` field for each.
+   Records are community-identified; if a shark looks wrong for the species, drop it.
+2. **Download** Commons files with `curl -sSL --max-time 60 -o ref.jpg "https://commons.wikimedia.org/wiki/Special:FilePath/<File_name>?width=1600"`
+   (redirects to upload.wikimedia.org) and Read each image to look at it.
+3. **If every source fails** (`CONNECT tunnel failed, response 403/502`), the environment's network policy blocks the hosts.
+   Do not retry, and do not substitute descriptions for a comparison. Tell the user which hosts must be added under Allowed
+   domains in the environment's Network access settings, carry on with the rest, and say in the report and commit message that
+   proportions were **not** checked against photos.
+4. **Fit the outline** (the main check). Read each photo, note pixel coordinates of the nose tip and of the tip of the
+   upper caudal lobe, then
+   ```bash
+   cd pipeline && ../.venv/bin/python -I fit.py <species> <photo> "$SCRATCH"/fit_<n> --nose x,y --tail x,y [--flip] [--norot]
+   ```
+   (`--flip` when the shark faces left; `--norot` when the tail is swung far off the body axis.) It projects
+   `models/<species>.glb`, scales and rotates it onto your two points, cuts the shark out of the photo with GrabCut,
+   and prints, at fixed fractions from the nose, how far the photo's back line (`d_back`) and belly line (`d_belly`)
+   are from the model's, as fractions of length (positive = raise `up` / `down` there). Read `<out>_fit.png` first: red
+   is the model, green the cut-out, yellow ticks are tenths of length from the nose. If the green outline does not
+   follow the animal, fix the points or ignore that photo. Columns where the model has a fin are skipped, and columns
+   where a fin of the *photo* hangs out (pelvic/anal region, x of about 0.55 and beyond) are not reliable, so judge the
+   head and trunk from those numbers and the tail end from the picture.
+   The ticks also give you every fin's position: read first dorsal origin and apex, second dorsal, anal, pelvic and
+   pectoral off them, as fractions, for each photo.
+5. **Fix what is off.** Anything over about 0.02 of length in the outline, or 0.03 in a landmark, or any wrong
+   shape, gets fixed in the config (reshape `up`/`down` at the stations, not by a uniform scale; move `attach.x`; gills),
+   rebuilt with `make.py --fast`, and fitted again on every photo. Average the photos where they disagree, weighting
+   the cleanest lateral most. Stop after three rounds and report what is still off.
+6. **Also check by eye**, as photo vs model, as fractions of length: first dorsal origin and height; second dorsal and anal
+   positions and sizes; pectoral origin and length; pelvic position; caudal lobe lengths and ratio; where the body is deepest
+   and how the **back and belly lines differ** (nape rise, hump, belly sag, taper to the peduncle); snout length and profile
+   (conical, blunt, flat); eye position and size; mouth length against the eye; gill count and first-slit position; countershading
+   line height; colour and markings. `compare.py` still makes a quick side-by-side sheet for colour and markings:
    ```bash
    cd pipeline && ../.venv/bin/python -I compare.py <photo> ../renders/<species>_hero.png "$SCRATCH"/sheet.png \
-       --crop-photo x0,y0,x1,y1 --crop-render x0,y0,x1,y1 [--flip-photo]   # flip if the photo faces left
+       --crop-photo x0,y0,x1,y1 --crop-render x0,y0,x1,y1 [--flip-photo]
    ```
-   Put the sheet in the scratchpad, not the repo. Both sharks face right with a grid of tenths labelled as a fraction of
-   length from the nose, the same `x` the configs use. The render is 1920 px wide at full quality, 960 with `--fast`,
-   so read crops off the image you actually render. Use a lateral photo only; perspective in angled photos lies.
-5. **What to check** (write each as photo vs model, as fractions of length): first dorsal origin and height; second
-   dorsal and anal positions and sizes; pectoral origin and length; pelvic position; caudal lobe lengths and ratio;
-   body depth at its deepest and where that is; snout length and profile (conical, blunt, flat); eye position and
-   size; mouth length against the eye; gill count and position; countershading line height; colour and markings.
-   Anything off by more than about 0.03 of length, or any wrong shape, gets fixed in the config and re-rendered with
-   `--fast`, then compared again. Stop after three rounds and report what is still off.
-6. Check the head against the head-on or three-quarter photo the same way (snout shape from above, eye placement, mouth).
+   (the hero is a three-quarter view, so use it for colour only, not for proportions).
+7. Check the head against the head-on or three-quarter photo the same way (snout shape from above, eye placement, mouth).
 
 ## How it works (so you can fix it, not just run it)
 - `sharkgen/body.py` lofts superellipse cross-sections along the spine; poles at nose/tail; a duplicate
@@ -123,6 +151,11 @@ Commons file name, author and licence in the scratch note.
   (`Body.v_of_x`), and any pattern lattice must use arc length around the section, not theta.
 - Pale stripes: vertical + horizontal broken lines look like "+" signs. Use long horizontal lines only.
 **Silhouette and fins**
+- `up` and `down` are separate on purpose. Real sharks are not symmetric top to bottom: sand tiger has a deep back that climbs behind the
+  head to the first dorsal (+0.04 of length over a symmetric loft) and a flatter belly; hammerheads and whale sharks differ again.
+  A symmetric spindle looks like a generic shark. Reshape each side from the photo fit, never with one uniform scale.
+- Fin and gill positions drift in config because they are typed from memory: the sand tiger's gills were 0.08 too far forward and
+  every fin 0.04-0.10. Do not trust remembered numbers; fit them.
 - Caudal crescent needs the lobe tips well behind the notch: raise `sweep`, lower `chord_root`, and
   taper the body end. Keep span ~0.2 of length (hammerhead upper lobe is longer, ~0.27).
 - Pelvic/anal fins look like white spikes if they point straight down; tilt `span_dir` back and out
@@ -139,12 +172,13 @@ Commons file name, author and licence in the scratch note.
 
 ## Verification checklist before telling the user it is done
 1. `make.py` exits 0 and all PASS lines show.
-2. Silhouettes (top + side) identify the species, and the hero render has been compared with reference photos
-   (see above) with the remaining differences listed.
+2. Silhouettes (top + side) identify the species, and `fit.py` has been run against at least three lateral photos
+   (see above): the back and belly lines are within about 0.02 of length on the trunk, fin and gill landmarks within 0.03, and the
+   remaining differences are listed. If that was not possible, say the proportions are unchecked.
 3. Hero and head renders viewed; eyes recessed, mouth calm, no streaking, no floating dark smudges.
 4. `README.md` species list updated; commit GLB + renders + config; push to the working branch.
 5. Send the hero and head PNGs to the user and list real weaknesses plainly. Known gaps: no
-   fin-ray texture, no scars/individual marks, no teeth/open mouth, proportions are only as good as the photo comparison; if it could not be done, say they are unchecked.
+   fin-ray texture, no scars/individual marks, no teeth/open mouth, proportions are only as good as the photo fit; if it could not be done, say they are unchecked.
 
 ## The diver (and other props)
 The scale-reference diver is built by the same pipeline: `pipeline/make_diver.py` (geometry in `sharkgen/human.py`,
