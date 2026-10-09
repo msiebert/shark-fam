@@ -89,7 +89,8 @@ Add the species to the list in `pipeline/README.md` (name, length, what is disti
 
 ## 5. Verify
 1. `npm run content` passes (catches duplicate ids, missing parents, wrong ranks, missing model).
-2. `npm run typecheck && npm test` pass.
+2. `npm run typecheck && npm test` pass. `tests/core.test.ts` ("shows every drawable species when they fit") hardcodes the shipped species
+   ids sorted by length, shortest first; add the new species there in the right place, in the same commit.
 3. Re-read every file you wrote and **re-verify online each name and fact in it**, as a separate pass
    from step 1: Latin name spelling and authority, common name, every etymology, family/genus/order
    placement, length, depth, diet, range polygon vs. a range map, Wikipedia slug resolves. Fetch the
@@ -100,7 +101,7 @@ If a check fails, fix it before committing. Never commit a failing or unverified
 
 ## 6. Commit (atomic, one shark)
 Stage only this shark's files by explicit path (never `git add -A`):
-- `content/species/<id>.json`, any new/changed `content/clades/*.json`
+- `content/species/<id>.json`, any new/changed `content/clades/*.json`, `tests/core.test.ts`
 - `pipeline/species/<model>.json`, `pipeline/README.md`
 - `models/<model>.glb`, `public/models/<model>.glb`, `renders/<model>_*.png`
 - any pipeline code changed *specifically* for this shark (if the change is general, make it a separate
