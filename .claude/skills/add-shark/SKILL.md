@@ -30,7 +30,7 @@ names and classification), Florida Museum ISAF, Wikipedia (for the `wikipedia` s
 | Accepted scientific name | Current valid binomial (check WoRMS for synonyms; do not use a superseded name). Exactly two words. |
 | Order, family, genus | Current classification. This repo's tree has no superorder; it starts at order. |
 | Common name | The widely used English name; note common alternates. |
-| Etymology (`meaning`) | Genus and species epithets, from a source, not guessed. Mark uncertain ones with "possibly". Keep the repo's style: `Sphyrna “hammer” (Greek sphyra); mokarran, ...`. |
+| Etymology (`meaning`) | **Required** on every clade and species (the schema rejects a missing one). Genus and species epithets, from a source such as ETYFish or FishBase, never guessed or from memory; a Latin name copied from a parent is not enough. Mark uncertain ones with "possibly". An order or family named after a genus should say so (`From Orectolobus: ...`). Keep the repo's style: `Sphyrna “hammer” (Greek sphyra); mokarran, ...`. |
 | Typical adult length | Metres, typical adult (not record max). Cite which. Sets `lengthM` and `length_m`. |
 | Depth range | Matches the `depth` string style ("Surface to about 300 m"). |
 | Diet | Short list; the wording drives companions (`plankton`/`krill`, `rays`/`skates`, `fish`/`squid`). |
@@ -42,7 +42,7 @@ Write the findings to a scratch note (scratchpad dir, not the repo) as `claim ->
 sources disagree on a number, use the more authoritative one and say so in the note; if a name or
 classification cannot be confirmed, **stop and ask the user** rather than guessing.
 
-Also verify for each missing clade (order/family/genus): Latin name, common name, meaning, species
+Also verify for each missing clade (order/family/genus) a `meaning` (required) plus Latin name, common name, species
 count claims in descriptions ("Nine species..."). Only state counts you have confirmed.
 
 ## 2. Taxonomy
