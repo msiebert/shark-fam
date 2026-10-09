@@ -16,6 +16,10 @@ def fin_colors(f, attr, pal):
         col[under] = hex_to_linear(pal["ventral"])
     ew = f.get("edge_width", 0.14)
     col = mix(col, dark, f.get("edge_dark", 0.5) * smoothstep(1 - ew, 1.0, attr["s"]))
+    if f.get("rear_white"):
+        # pale free rear tip (porbeagle first dorsal): the trailing edge of the outer ~65% of the span
+        w = smoothstep(0.62, 0.8, attr["s"]) * smoothstep(0.25, 0.45, attr["v"])
+        col = mix(col, hex_to_linear("#E3E3DE"), f["rear_white"] * w)
     if f.get("tip_patch"):
         w = smoothstep(0.55, 0.78, attr["v"]) * under
         col = mix(col, dark, 0.92 * w)
