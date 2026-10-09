@@ -50,7 +50,7 @@ describe("navigation", () => {
     nav.down();
     nav.down();
     nav.down();
-    expect(nav.current.id).toBe("galeocerdo-cuvier");
+    expect(nav.current.id).toBe("carcharhinus-leucas");
     nav.up();
     nav.up();
     nav.up();
@@ -59,7 +59,7 @@ describe("navigation", () => {
     nav.step(-1);
     nav.step(1);
     nav.down();
-    expect(nav.current.id).toBe("galeocerdonidae");
+    expect(nav.current.id).toBe("carcharhinidae");
   });
 
   it("remembers the whole path after a jump", () => {
@@ -121,7 +121,7 @@ describe("lineup selection", () => {
   it("shows every drawable species when they fit", () => {
     const t = real();
     const ids = selectLineup(t, t.root).map((s) => s.id);
-    expect(ids).toEqual(["carcharias-taurus", "galeocerdo-cuvier", "sphyrna-mokarran", "carcharodon-carcharias", "rhincodon-typus"]);
+    expect(ids).toEqual(["carcharhinus-leucas", "carcharias-taurus", "galeocerdo-cuvier", "sphyrna-mokarran", "carcharodon-carcharias", "rhincodon-typus"]);
   });
 
   it("caps at the maximum and represents every branch before a second pick", () => {
