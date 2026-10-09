@@ -158,6 +158,10 @@ of different animals, because one animal can be fat, pregnant, bent or turned to
   every fin 0.04-0.10. Do not trust remembered numbers; fit them.
 - Caudal crescent needs the lobe tips well behind the notch: raise `sweep`, lower `chord_root`, and
   taper the body end. Keep span ~0.2 of length (hammerhead upper lobe is longer, ~0.27).
+- Fin planform: leading edge x = `sweep * v^le_pow`, trailing edge x = `chord_root + (sweep + tip_chord - chord_root) * v^te_pow` (v = 0 at
+  the root, 1 at the tip). A trailing edge that is concave (a real crescent) needs `chord_root` *smaller* than `sweep + tip_chord` and
+  `te_pow` above 1 (about 1.5-1.8); with `chord_root` close to `sweep` the trailing edge is a straight, boxy line whatever `te_pow` is.
+  Keep the total length fixed by moving `attach.x` forward as you raise `sweep`. Widening one lobe's root fills the notch.
 - Pelvic/anal fins look like white spikes if they point straight down; tilt `span_dir` back and out
   and keep them small.
 - Falcate pectorals: `te_pow` ~0.5-0.6, tiny `tip_chord`.
