@@ -100,35 +100,42 @@ const KEYS: { dir: Dir; glyph: string }[] = [
 
 /** Wordmark: a shark silhouette swims in, a family tree branches across it, then the name settles underneath. */
 const SHARK =
-  "M312 94 C290 74 255 64 218 64 C200 62 186 44 172 22 C166 44 160 62 146 66 C112 70 84 80 58 88 C44 66 30 46 12 34 C20 58 26 76 30 92 C26 108 20 128 12 150 C32 138 46 120 62 102 C96 108 130 112 160 112 C170 130 176 142 184 152 C196 138 204 122 210 112 C250 112 290 106 312 94 Z";
+  "M316 98 C300 84 268 70 232 62 C214 58 198 56 186 56 C178 40 166 22 150 4 C150 22 146 46 142 60 C110 66 80 76 54 88 C40 70 24 44 4 18 C12 40 22 62 28 86 C26 100 22 120 14 138 C30 126 44 112 56 100 C84 108 130 118 170 122 C162 134 152 148 140 160 C166 152 190 138 204 120 C240 122 286 116 316 98 Z";
+const GILLS = ["M246 76 C250 84 250 92 246 100", "M254 77 C258 85 258 93 254 101", "M262 78 C266 85 266 92 262 99"];
 // [path, delay in s]: trunk first, then each split a beat later.
 const BRANCHES: [string, number][] = [
-  ["M30 92 L100 92", 0.9],
-  ["M100 92 C125 92 135 76 160 76", 1.3],
-  ["M100 92 C125 92 135 108 160 108", 1.3],
-  ["M160 76 C185 76 195 68 225 68", 1.7],
-  ["M160 76 C185 76 195 84 225 84", 1.7],
-  ["M160 108 C185 108 195 100 225 100", 1.7],
-  ["M160 108 C185 108 195 112 225 112", 1.7],
+  ["M54 88 L104 88", 0.9],
+  ["M104 88 C128 88 128 80 150 80", 1.3],
+  ["M104 88 C128 88 128 108 150 108", 1.3],
+  ["M150 80 C190 80 196 74 232 74", 1.7],
+  ["M150 80 C190 80 196 88 232 88", 1.7],
+  ["M150 108 C190 108 196 102 232 102", 1.7],
+  ["M150 108 C190 108 196 114 232 114", 1.7],
 ];
 const LEAVES: [number, number][] = [
-  [225, 68],
-  [225, 84],
-  [225, 100],
-  [225, 112],
+  [232, 74],
+  [232, 88],
+  [232, 102],
+  [232, 114],
 ];
 
 function Logo() {
   return (
     <div class="logo" role="img" aria-label="Shark Fam">
       <svg class="logoshark" viewBox="0 0 324 168" aria-hidden="true">
-        <path class="sharkbody" d={SHARK} />
+        <g class="sharkbody">
+          <path class="sharkfill" d={SHARK} />
+          {GILLS.map((d) => (
+            <path key={d} class="gill" d={d} />
+          ))}
+          <circle class="eye" cx={288} cy={88} r={2.2} />
+        </g>
         {BRANCHES.map(([d, delay]) => (
           <path key={d} class="branch" pathLength={1} d={d} style={{ animationDelay: `${delay}s` }} />
         ))}
-        <circle class="node" cx={30} cy={92} r={3.2} style={{ animationDelay: "0.9s" }} />
-        {[160, 160].map((x, i) => (
-          <circle key={i} class="node" cx={x} cy={i ? 108 : 76} r={2.6} style={{ animationDelay: "1.6s" }} />
+        <circle class="node" cx={54} cy={88} r={3.2} style={{ animationDelay: "0.9s" }} />
+        {[80, 108].map((y) => (
+          <circle key={y} class="node" cx={150} cy={y} r={2.6} style={{ animationDelay: "1.6s" }} />
         ))}
         {LEAVES.map(([x, y]) => (
           <circle key={y} class="node" cx={x} cy={y} r={2.4} style={{ animationDelay: "2.1s" }} />
