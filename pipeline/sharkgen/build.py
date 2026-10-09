@@ -23,6 +23,13 @@ def fin_colors(f, attr, pal):
         # pale tip patch on both faces (oceanic whitetip): the outer ~25% of the span
         w = smoothstep(0.7, 0.82, attr["v"])
         col = mix(col, hex_to_linear("#E9E6DC"), f["tip_white"] * w)
+    if f.get("tip_black"):
+        # dark tip patch on both faces (blacktip reef shark), optionally with a pale band just inside it
+        if f.get("tip_band"):
+            wb = smoothstep(0.42, 0.48, attr["v"]) * (1 - smoothstep(0.58, 0.62, attr["v"]))
+            col = mix(col, hex_to_linear("#E9E6DC"), f["tip_band"] * wb)
+        w = smoothstep(0.6, 0.65, attr["v"])
+        col = mix(col, hex_to_linear("#111214"), f["tip_black"] * w)
     return col
 
 
