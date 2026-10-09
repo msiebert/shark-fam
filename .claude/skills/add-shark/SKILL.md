@@ -38,6 +38,15 @@ names and classification), Florida Museum ISAF, Wikipedia (for the `wikipedia` s
 | Wikipedia slug | Fetch `https://en.wikipedia.org/wiki/<slug>` and confirm it resolves to the right species page (not a redirect to a genus or disambiguation). |
 | Appearance | Head shape, snout, fin proportions (first dorsal, pectorals, caudal ratio), colour, pattern, countershading, eye size, mouth position, distinctive features. Needed for the model. |
 
+**Wikipedia is the reference for every `meaning`** (clades and species alike). Read the English Wikipedia
+article for each name (the species, genus, family and order articles; the etymology is usually in a
+"Taxonomy", "Etymology" or "Naming" section) and write the meaning as that article states it. Use FishBase
+and ETYFish as cross-checks, not as replacements. If they disagree with Wikipedia, keep Wikipedia's
+wording and tell the user about the disagreement (in the commit message too); do not silently override
+Wikipedia with another source. If an article does not state the etymology, say so and fall back to the
+authoritative source, marked "possibly" where uncertain. WebFetch and curl may be blocked from Wikipedia in
+cloud sessions; if so use WebSearch with `allowed_domains: ["wikipedia.org"]` and quote what comes back.
+
 Write the findings to a scratch note (scratchpad dir, not the repo) as `claim -> source URL`. If two
 sources disagree on a number, use the more authoritative one and say so in the note; if a name or
 classification cannot be confirmed, **stop and ask the user** rather than guessing.
