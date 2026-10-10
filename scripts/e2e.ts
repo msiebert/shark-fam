@@ -84,8 +84,10 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   await key(page, "ArrowRight", 1600);
   check((await here(page)) === "carcharhiniformes", "right moves to the next sibling");
   await key(page, "ArrowRight", 1600);
+  await key(page, "ArrowRight", 1600);
   await key(page, "ArrowRight");
-  check((await here(page)) === "orectolobiformes", "right stops at the last sibling and never flows into cousins");
+  check((await here(page)) === "heterodontiformes", "right stops at the last sibling and never flows into cousins");
+  await key(page, "ArrowLeft", 1600);
   await key(page, "ArrowLeft", 1600);
 
   // Sibling hop timing: the old text leaves (~0.3 s) before the new text arrives, never overlapping.
