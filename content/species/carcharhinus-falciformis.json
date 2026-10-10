@@ -1,0 +1,29 @@
+{
+  "id": "carcharhinus-falciformis",
+  "genus": "carcharhinus",
+  "latin": "Carcharhinus falciformis",
+  "common": "Silky shark",
+  "meaning": "Carcharhinus, from Greek karcharias “a kind of shark” (from karcharos “saw-like, jagged”, for its teeth) + rhinus, an ancient word for sharks; falciformis, from Latin falx “scythe, sickle” + formis “shape”, referring to the sickle-like shape of the pectoral fins",
+  "description": "A slender, dark grey to bronze-brown shark, white below, with a long rounded snout, a small low first dorsal fin, a tiny second dorsal with a very long trailing tip, and long, narrow, sickle-shaped pectoral fins. It is named for its smooth skin, which comes from tightly packed, tiny skin teeth. It roams the open ocean in warm water, often around floating objects, and preys mostly on schooling fish such as tuna and mackerel, and on squid.",
+  "lengthM": 2.5,
+  "depth": "Surface to about 500 m",
+  "eats": "Bony fish, squid and crabs",
+  "wikipedia": "Silky_shark",
+  "model": "silky_shark",
+  "swim": {
+    "cruise": 0.5,
+    "beatHz": 0.75,
+    "amplitude": 0.13
+  },
+  "distribution": {
+    "mode": "open",
+    "polygons": [
+      [
+        [-180, -40],
+        [180, -40],
+        [180, 40],
+        [-180, 40]
+      ]
+    ]
+  }
+}
