@@ -85,6 +85,15 @@ def paint_body(body, cfg, W=2048, H=4096, chunk=256):
         if br:
             col = _bars(col, X, theta, bnd, n_low, n_mid, br, hex_to_linear(br["color"]))
 
+        # ocelli: a dark disc with a pale ring on each flank (epaulette shark)
+        for oc in cfg.get("ocelli", []):
+            th0 = np.radians(oc["theta"])
+            dth = np.minimum(np.abs(theta - th0), np.abs(theta - (2 * np.pi - th0)))
+            rr = np.sqrt(((X - oc["x"]) / oc["rx"]) ** 2 + (dth * r_loc / oc["ry"]) ** 2)
+            ring = smoothstep(oc["ring"], oc["ring"] - 0.3, rr) * oc.get("ring_strength", 0.9)
+            col = mix(col, np.broadcast_to(hex_to_linear(oc["ring_color"]), col.shape), ring)
+            col = mix(col, np.broadcast_to(hex_to_linear(oc.get("color", "#141210")), col.shape), smoothstep(1.0, 0.85, rr) * 0.97)
+
         # gill slits: thin crisp dark lines
         if g:
             tt = (theta - np.radians(g["theta0"])) / (np.radians(g["theta1"]) - np.radians(g["theta0"]))

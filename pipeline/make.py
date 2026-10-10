@@ -18,7 +18,7 @@ def get_textures(cfg, species):
     from sharkgen.body import Body
     cache = HERE / ".cache"
     cache.mkdir(exist_ok=True)
-    key = hashlib.md5(json.dumps({k: cfg.get(k) for k in ("body", "palette", "gills", "mouth", "eye", "nostrils", "paint", "spots", "ridges")},
+    key = hashlib.md5(json.dumps({k: cfg.get(k) for k in ("body", "palette", "gills", "mouth", "eye", "nostrils", "paint", "spots", "bars", "ocelli", "ridges")},
                                  sort_keys=True).encode() + Path(skin.__file__).read_bytes()).hexdigest()[:10]
     paths = {"albedo": cache / f"{species}_{key}_albedo.png",
              "normal": cache / "micro_normal.png", "rough": cache / "micro_rough.png"}
