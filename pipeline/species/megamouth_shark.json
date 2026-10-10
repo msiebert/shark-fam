@@ -1,0 +1,363 @@
+{
+ "name": "Megamouth Shark",
+ "latin": "Megachasma pelagios",
+ "length_m": 5.0,
+ "ring": 64,
+ "body": {
+  "exponent": 2.3,
+  "x": [
+   0,
+   0.002,
+   0.006,
+   0.012,
+   0.022,
+   0.036,
+   0.055,
+   0.08,
+   0.11,
+   0.15,
+   0.2,
+   0.26,
+   0.33,
+   0.4,
+   0.47,
+   0.54,
+   0.61,
+   0.68,
+   0.74,
+   0.78
+  ],
+  "up": [
+   0,
+   0.007,
+   0.012,
+   0.0175,
+   0.025,
+   0.034,
+   0.043,
+   0.05,
+   0.057,
+   0.062,
+   0.064,
+   0.064,
+   0.062,
+   0.058,
+   0.052,
+   0.044,
+   0.036,
+   0.029,
+   0.022,
+   0.012
+  ],
+  "down": [
+   0,
+   0.007,
+   0.012,
+   0.0185,
+   0.027,
+   0.037,
+   0.048,
+   0.058,
+   0.066,
+   0.07,
+   0.07,
+   0.068,
+   0.062,
+   0.054,
+   0.045,
+   0.037,
+   0.03,
+   0.024,
+   0.018,
+   0.01
+  ],
+  "half_width": [
+   0,
+   0.007,
+   0.012,
+   0.018,
+   0.027,
+   0.038,
+   0.049,
+   0.058,
+   0.064,
+   0.067,
+   0.067,
+   0.064,
+   0.058,
+   0.05,
+   0.042,
+   0.034,
+   0.027,
+   0.02,
+   0.012,
+   0.004
+  ],
+  "z0": [
+   [
+    0,
+    -0.005
+   ],
+   [
+    0.1,
+    -0.003
+   ],
+   [
+    0.3,
+    0.0
+   ],
+   [
+    0.6,
+    0.004
+   ],
+   [
+    0.78,
+    0.008
+   ]
+  ]
+ },
+ "bend": {
+  "amp": 0.025,
+  "freq": 1.6,
+  "phase": -0.3
+ },
+ "gills": {
+  "count": 5,
+  "x0": 0.205,
+  "dx": 0.016,
+  "theta0": 8,
+  "theta1": 172,
+  "lean": 0.01,
+  "sigma": 0.0013,
+  "k": 0.02
+ },
+ "mouth": {
+  "x0": 0.003,
+  "x_peak": 0.035,
+  "x1": 0.07,
+  "theta_peak": 118,
+  "theta_corner": 127,
+  "p": 1.4,
+  "sigma": 0.0026,
+  "k": 0.02
+ },
+ "eye": {
+  "x": 0.045,
+  "theta": 72,
+  "radius": 0.0038,
+  "inset": 0.003,
+  "socket_sigma": 0.007,
+  "socket_k": 0.07,
+  "elong": 1.1
+ },
+ "palette": {
+  "dorsal": "#3A3532",
+  "deep": "#252120",
+  "ventral": "pearl-ventral",
+  "edge": "fin-edge-dark",
+  "demarcation": {
+   "points": [
+    [
+     0,
+     150
+    ],
+    [
+     0.1,
+     152
+    ],
+    [
+     0.25,
+     150
+    ],
+    [
+     0.45,
+     142
+    ],
+    [
+     0.7,
+     130
+    ]
+   ],
+   "softness": 0.1,
+   "wave": 2.5
+  }
+ },
+ "fins": [
+  {
+   "name": "dorsal1",
+   "attach": {
+    "x": 0.33,
+    "theta": 0
+   },
+   "span_dir": [
+    0.3,
+    0,
+    1
+   ],
+   "chord_root": 0.07,
+   "span": 0.052,
+   "sweep": 0.045,
+   "tip_chord": 0.006,
+   "le_pow": 1.2,
+   "te_pow": 0.8,
+   "thickness": 0.08,
+   "edge_dark": 0.5
+  },
+  {
+   "name": "dorsal2",
+   "attach": {
+    "x": 0.6,
+    "theta": 0
+   },
+   "span_dir": [
+    0.1,
+    0,
+    1
+   ],
+   "chord_root": 0.035,
+   "span": 0.025,
+   "sweep": 0.02,
+   "tip_chord": 0.003,
+   "le_pow": 1.2,
+   "te_pow": 0.7,
+   "thickness": 0.09,
+   "emb": 0.012
+  },
+  {
+   "name": "pectoral",
+   "paired": true,
+   "attach": {
+    "x": 0.265,
+    "theta": 132
+   },
+   "span_dir": [
+    0.18,
+    0.78,
+    -0.6
+   ],
+   "trail_dir": [
+    1,
+    0,
+    0.05
+   ],
+   "chord_root": 0.07,
+   "span": 0.15,
+   "sweep": 0.07,
+   "tip_chord": 0.012,
+   "le_pow": 1.15,
+   "te_pow": 0.7,
+   "thickness": 0.065,
+   "underside": "pearl",
+   "edge_dark": 0.4
+  },
+  {
+   "name": "pelvic",
+   "paired": true,
+   "color": "ventral",
+   "attach": {
+    "x": 0.53,
+    "theta": 140
+   },
+   "span_dir": [
+    0.55,
+    0.6,
+    -0.45
+   ],
+   "chord_root": 0.045,
+   "span": 0.05,
+   "sweep": 0.025,
+   "tip_chord": 0.004,
+   "le_pow": 1.2,
+   "te_pow": 0.7,
+   "thickness": 0.08,
+   "edge_dark": 0.0
+  },
+  {
+   "name": "anal",
+   "color": "ventral",
+   "attach": {
+    "x": 0.635,
+    "theta": 180
+   },
+   "span_dir": [
+    0.5,
+    0,
+    -1
+   ],
+   "chord_root": 0.03,
+   "span": 0.03,
+   "sweep": 0.02,
+   "tip_chord": 0.003,
+   "le_pow": 1.2,
+   "te_pow": 0.7,
+   "thickness": 0.09,
+   "emb": 0.012,
+   "edge_dark": 0.0
+  },
+  {
+   "name": "caudal_upper",
+   "attach": {
+    "x": 0.735,
+    "axis": true
+   },
+   "span_dir": [
+    0.87,
+    0,
+    0.5
+   ],
+   "chord_root": 0.07,
+   "span": 0.3,
+   "sweep": 0.0,
+   "tip_chord": 0.01,
+   "le_pow": 1.0,
+   "te_pow": 0.6,
+   "thickness": 0.055,
+   "emb": 0.02,
+   "edge_dark": 0.6
+  },
+  {
+   "name": "caudal_lower",
+   "attach": {
+    "x": 0.74,
+    "axis": true
+   },
+   "span_dir": [
+    0.7,
+    0,
+    -0.7
+   ],
+   "chord_root": 0.06,
+   "span": 0.13,
+   "sweep": 0.05,
+   "tip_chord": 0.006,
+   "le_pow": 1.1,
+   "te_pow": 1.4,
+   "thickness": 0.055,
+   "emb": 0.02,
+   "edge_dark": 0.6
+  }
+ ],
+ "nostrils": [
+  {
+   "x": 0.016,
+   "theta": 105,
+   "len": 0.004,
+   "wid": 0.0013
+  }
+ ],
+ "paint": {
+  "ragged_deg": 1.3,
+  "mottle": 0.085,
+  "speckle": 0.03,
+  "gill_sigma": 0.0009,
+  "mouth_sigma": 0.0016
+ },
+ "render": {
+  "head": {
+   "focus": 0.05,
+   "yaw": -35,
+   "dist_frac": 0.4,
+   "cam_z": 0.03
+  }
+ }
+}
