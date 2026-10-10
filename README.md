@@ -1,6 +1,6 @@
 # Shark Fam
 
-An interactive explorer for the shark family tree. One thing is on screen at a time; you move through the tree by click, arrow keys, swipe or scroll. Clades show a to-scale lineup of the sharks below them. At species level a 3D shark swims past a diver of known size.
+An interactive explorer for the shark family tree. One thing is on screen at a time; you move through the tree by click, arrow keys, swipe or scroll. Small clades (three sharks or fewer) show a to-scale lineup. At species level a 3D shark swims past a diver of known size (the diver appears only there).
 
 ## Run it
 
@@ -82,7 +82,7 @@ Everything about a species is data. You need an ancestor chain, one JSON file, a
 - `model`: base name of a GLB (see step 3). Leave it out if there is no model yet: the species still appears in the tree and has its page, but it is skipped in lineups.
 - `companions` (optional): what shares the water with it on its page. Leave it out and it is worked out for you: the nearest clade with a `companions` list (remoras for the carpet sharks) plus whatever `eats` suggests ("plankton" brings a plankton cloud, "fish" a baitfish school), at most three. Set a list to replace that, or `[]` for none. Names are in `src/core/companions.ts`.
 - `swim` (optional): `cruise` in body lengths per second, `beatHz` tail beats per second, `amplitude` tail swing as a fraction of length. Slow filter feeders want small numbers; fast hunters want larger ones.
-- `representative` (optional): marks it as the pick for its clade when a lineup has to choose.
+- `representative` (optional): marks it as the pick for its clade.
 
 **3. Add the model.** Generate it with the Blender pipeline (`.claude/skills/shark-model/SKILL.md`, `pipeline/README.md`): that writes `models/<name>.glb`. Then optimize it for the web:
 

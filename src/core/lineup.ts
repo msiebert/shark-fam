@@ -1,52 +1,24 @@
 import type { Tree, TreeNode } from "./tree";
 
-export const DIVER_M = 1.83; // six feet
-export const MAX_LINEUP = 6;
+export const MAX_LINEUP = 3;
 
 /**
  * Choose which species a clade's lineup shows.
  *
- * Only species with a model can be drawn. When there are more than `max`, take one from each child clade
- * first (so every branch is represented), best candidate first: curated `representative`, then the largest.
- * Remaining slots go round again. The result is sorted shortest first for drawing.
+ * Only species with a model can be drawn. A clade with more than `max` of them is too crowded to show: it gets no
+ * lineup. Otherwise every one is shown, sorted shortest first for drawing.
  */
 export function selectLineup(tree: Tree, node: TreeNode, max = MAX_LINEUP): TreeNode[] {
-  const drawable = (s: TreeNode) => !!s.model;
-  const best = (a: TreeNode, b: TreeNode) => Number(!!b.representative) - Number(!!a.representative) || (b.lengthM ?? 0) - (a.lengthM ?? 0);
-
-  let picked: TreeNode[];
-  if (node.rank === "species") {
-    picked = drawable(node) ? [node] : [];
-  } else {
-    const groups = (node.rank === "genus" ? node.childNodes.map((c) => [c]) : node.childNodes.map((c) => tree.species(c)))
-      .map((g) => g.filter(drawable).sort(best))
-      .filter((g) => g.length);
-    const total = groups.reduce((n, g) => n + g.length, 0);
-    if (total <= max) picked = groups.flat();
-    else {
-      // Strongest groups first, so a crowded clade drops its weakest branches rather than its best ones.
-      const order = groups.slice().sort((a, b) => best(a[0]!, b[0]!));
-      picked = [];
-      for (let round = 0; picked.length < max; round++) {
-        let added = false;
-        for (const g of order) {
-          const s = g[round];
-          if (s && picked.length < max) {
-            picked.push(s);
-            added = true;
-          }
-        }
-        if (!added) break;
-      }
-    }
-  }
+  const all = node.rank === "species" ? [node] : tree.species(node);
+  const picked = all.filter((s) => !!s.model);
+  if (picked.length > max) return [];
   return picked.sort((a, b) => (a.lengthM ?? 0) - (b.lengthM ?? 0) || a.latin.localeCompare(b.latin));
 }
 
 /* ---------- Layout of the bar chart ---------- */
 
 export interface LineupInput {
-  /** Real lengths in metres, shortest first. The diver is added as the first bar. */
+  /** Real lengths in metres, shortest first. */
   lengthsM: number[];
   /** Half extents of the view at the swim depth, in world units. */
   halfW: number;
@@ -75,7 +47,6 @@ export interface LineupRow {
 
 export interface LineupLayout {
   unitsPerM: number;
-  diver: LineupRow;
   rows: LineupRow[];
 }
 
@@ -88,8 +59,8 @@ export function layoutLineup(i: LineupInput): LineupLayout {
   const yAt = (f: number) => (0.5 - f) * 2 * halfH;
   const top = yAt(i.top);
   const zoneH = top - yAt(i.bottom);
-  // Body thickness in metres: a shark is roughly a fifth as deep as it is long; the diver is half a metre.
-  const items = [{ m: DIVER_M, th: 0.5, lab: 0 }, ...i.lengthsM.map((m) => ({ m, th: 0.2 * m, lab }))];
+  // Body thickness in metres: a shark is roughly a fifth as deep as it is long.
+  const items = i.lengthsM.map((m) => ({ m, th: 0.2 * m, lab }));
   const fixed = gap * (items.length - 1) + items.reduce((n, x) => n + x.lab, 0);
   const sumTh = items.reduce((n, x) => n + x.th, 0);
   const maxM = Math.max(...items.map((x) => x.m));
@@ -103,5 +74,5 @@ export function layoutLineup(i: LineupInput): LineupLayout {
     y -= it.lab + it.th * k + gap;
     return row;
   });
-  return { unitsPerM: k, diver: rows[0]!, rows: rows.slice(1) };
+  return { unitsPerM: k, rows };
 }

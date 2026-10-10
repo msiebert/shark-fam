@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { Tree } from "../src/core/tree";
 import { Navigator, type Move } from "../src/core/nav";
-import { layoutLineup, selectLineup, DIVER_M } from "../src/core/lineup";
+import { layoutLineup, selectLineup } from "../src/core/lineup";
 import { REF_HALF_W, speedScale, trackPose, trackShape } from "../src/core/racetrack";
 import { buildRail } from "../src/core/rail";
 import { layoutMap, pathOpenSet } from "../src/core/maplayout";
@@ -123,30 +123,23 @@ describe("navigation", () => {
 });
 
 describe("lineup selection", () => {
-  it("shows the lineup of the real tree, capped at six", () => {
+  it("shows nothing for a crowded clade such as the root", () => {
     const t = real();
-    const ids = selectLineup(t, t.root).map((s) => s.id);
-    expect(ids).toEqual(["squatina-squatina", "hexanchus-griseus", "somniosus-microcephalus", "sphyrna-mokarran", "carcharodon-carcharias", "rhincodon-typus"]);
+    expect(selectLineup(t, t.root)).toEqual([]);
   });
 
-  it("caps at the maximum and represents every branch before a second pick", () => {
-    const t = synth([4, 1, 1, 3]); // 4 orders x 3 species = 12
-    const picks = selectLineup(t, t.root, 6);
-    expect(picks).toHaveLength(6);
-    const orders = new Set(picks.map((p) => p.parentNode!.parentNode!.parentNode!.id));
-    expect(orders.size).toBe(4);
-  });
-
-  it("prefers curated representatives over bigger sharks", () => {
-    const t = synth([1, 1, 1, 8]);
+  it("shows every drawable species of a small clade, shortest first", () => {
+    const t = synth([1, 1, 1, 3], (i) => [5, 1, 3][i]!);
     const genus = t.get("r0.0.0")!;
-    genus.childNodes[2]!.representative = true;
-    const picks = selectLineup(t, genus, 3);
-    expect(picks.map((p) => p.id)).toContain(genus.childNodes[2]!.id);
-    expect(picks).toHaveLength(3);
+    expect(selectLineup(t, genus).map((s) => s.lengthM)).toEqual([1, 3, 5]);
   });
 
-  it("sorts shortest first and skips species without a model", () => {
+  it("shows nothing when more than three species would be shown", () => {
+    const t = synth([1, 1, 1, 4]);
+    expect(selectLineup(t, t.get("r0.0.0")!)).toEqual([]);
+  });
+
+  it("skips species without a model when counting", () => {
     const t = synth([1, 1, 1, 4], (i) => [5, 1, 3, 2][i]!);
     const genus = t.get("r0.0.0")!;
     delete genus.childNodes[1]!.model;
@@ -156,18 +149,16 @@ describe("lineup selection", () => {
 
 describe("lineup layout", () => {
   const base = { halfW: 2, halfH: 1.4, viewH: 800, top: 0.08, bottom: 0.47, labelPx: 36 };
-  it("draws to scale on a shared baseline, diver first", () => {
+  it("draws to scale on a shared baseline", () => {
     const l = layoutLineup({ ...base, lengthsM: [2, 4.5, 10] });
     expect(l.rows).toHaveLength(3);
-    expect(l.diver.tailX).toBeCloseTo(l.rows[0]!.tailX);
+    expect(new Set(l.rows.map((r) => r.tailX)).size).toBe(1);
     expect(new Set(l.rows.map((r) => r.unitsPerM)).size).toBe(1);
-    expect(l.diver.y).toBeGreaterThan(l.rows[0]!.y); // diver is the first, topmost bar
     for (let i = 1; i < l.rows.length; i++) expect(l.rows[i]!.y).toBeLessThan(l.rows[i - 1]!.y);
-    expect(DIVER_M * l.unitsPerM).toBeLessThan(2 * l.unitsPerM);
   });
-  it("fits six sharks inside the zone and the width", () => {
-    const l = layoutLineup({ ...base, lengthsM: [1, 2, 3, 4, 6, 12] });
-    const lowest = l.rows[5]!;
+  it("fits three sharks inside the zone and the width", () => {
+    const l = layoutLineup({ ...base, lengthsM: [1, 6, 12] });
+    const lowest = l.rows[2]!;
     const floor = (0.5 - 0.47) * 2 * base.halfH;
     expect(lowest.y - (0.2 * 12 * l.unitsPerM) / 2).toBeGreaterThanOrEqual(floor - 1e-9);
     expect(12 * l.unitsPerM).toBeLessThanOrEqual(2 * base.halfW * 0.6 + 1e-9);
