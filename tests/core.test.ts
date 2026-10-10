@@ -123,23 +123,28 @@ describe("navigation", () => {
 });
 
 describe("lineup selection", () => {
-  it("shows nothing for a crowded clade such as the root", () => {
+  it("shows only the top three of the real tree", () => {
     const t = real();
-    expect(selectLineup(t, t.root)).toEqual([]);
+    expect(selectLineup(t, t.root)).toHaveLength(3);
   });
 
-  it("shows every drawable species of a small clade, shortest first", () => {
-    const t = synth([1, 1, 1, 3], (i) => [5, 1, 3][i]!);
+  it("caps at the maximum and represents every branch before a second pick", () => {
+    const t = synth([4, 1, 1, 3]); // 4 orders x 3 species = 12
+    const picks = selectLineup(t, t.root, 3);
+    expect(picks).toHaveLength(3);
+    expect(new Set(picks.map((p) => p.parentNode!.parentNode!.parentNode!.id)).size).toBe(3);
+  });
+
+  it("prefers curated representatives over bigger sharks", () => {
+    const t = synth([1, 1, 1, 8]);
     const genus = t.get("r0.0.0")!;
-    expect(selectLineup(t, genus).map((s) => s.lengthM)).toEqual([1, 3, 5]);
+    genus.childNodes[2]!.representative = true;
+    const picks = selectLineup(t, genus);
+    expect(picks.map((p) => p.id)).toContain(genus.childNodes[2]!.id);
+    expect(picks).toHaveLength(3);
   });
 
-  it("shows nothing when more than three species would be shown", () => {
-    const t = synth([1, 1, 1, 4]);
-    expect(selectLineup(t, t.get("r0.0.0")!)).toEqual([]);
-  });
-
-  it("skips species without a model when counting", () => {
+  it("sorts shortest first and skips species without a model", () => {
     const t = synth([1, 1, 1, 4], (i) => [5, 1, 3, 2][i]!);
     const genus = t.get("r0.0.0")!;
     delete genus.childNodes[1]!.model;

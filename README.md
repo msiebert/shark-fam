@@ -1,6 +1,6 @@
 # Shark Fam
 
-An interactive explorer for the shark family tree. One thing is on screen at a time; you move through the tree by click, arrow keys, swipe or scroll. Small clades (three sharks or fewer) show a to-scale lineup. At species level a 3D shark swims past a diver of known size (the diver appears only there).
+An interactive explorer for the shark family tree. One thing is on screen at a time; you move through the tree by click, arrow keys, swipe or scroll. Clades show a to-scale lineup of their top three sharks. At species level a 3D shark swims past a diver of known size (the diver appears only there).
 
 ## Run it
 

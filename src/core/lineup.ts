@@ -5,13 +5,40 @@ export const MAX_LINEUP = 3;
 /**
  * Choose which species a clade's lineup shows.
  *
- * Only species with a model can be drawn. A clade with more than `max` of them is too crowded to show: it gets no
- * lineup. Otherwise every one is shown, sorted shortest first for drawing.
+ * Only species with a model can be drawn. When there are more than `max`, take one from each child clade
+ * first (so every branch is represented), best candidate first: curated `representative`, then the largest.
+ * Remaining slots go round again. The result is sorted shortest first for drawing.
  */
 export function selectLineup(tree: Tree, node: TreeNode, max = MAX_LINEUP): TreeNode[] {
-  const all = node.rank === "species" ? [node] : tree.species(node);
-  const picked = all.filter((s) => !!s.model);
-  if (picked.length > max) return [];
+  const drawable = (s: TreeNode) => !!s.model;
+  const best = (a: TreeNode, b: TreeNode) => Number(!!b.representative) - Number(!!a.representative) || (b.lengthM ?? 0) - (a.lengthM ?? 0);
+
+  let picked: TreeNode[];
+  if (node.rank === "species") {
+    picked = drawable(node) ? [node] : [];
+  } else {
+    const groups = (node.rank === "genus" ? node.childNodes.map((c) => [c]) : node.childNodes.map((c) => tree.species(c)))
+      .map((g) => g.filter(drawable).sort(best))
+      .filter((g) => g.length);
+    const total = groups.reduce((n, g) => n + g.length, 0);
+    if (total <= max) picked = groups.flat();
+    else {
+      // Strongest groups first, so a crowded clade drops its weakest branches rather than its best ones.
+      const order = groups.slice().sort((a, b) => best(a[0]!, b[0]!));
+      picked = [];
+      for (let round = 0; picked.length < max; round++) {
+        let added = false;
+        for (const g of order) {
+          const s = g[round];
+          if (s && picked.length < max) {
+            picked.push(s);
+            added = true;
+          }
+        }
+        if (!added) break;
+      }
+    }
+  }
   return picked.sort((a, b) => (a.lengthM ?? 0) - (b.lengthM ?? 0) || a.latin.localeCompare(b.latin));
 }
 
