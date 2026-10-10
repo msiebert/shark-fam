@@ -1,0 +1,95 @@
+{
+  "id": "squatina-squatina",
+  "genus": "squatina",
+  "latin": "Squatina squatina",
+  "common": "Angelshark",
+  "meaning": "Squatina, see genus; squatina, Latin squatum, a name for angel sharks dating to Pliny the Elder, a Latin synonym of rhinus, an ancient name for sharks, from Greek rhinos “skin or hide of a beast” or rhínē “rasp”, both apparently alluding to a shark's rough skin",
+  "description": "A flat, ray-like shark with broad wing-like pectoral fins, grey to brown above with small dark and pale markings, and eyes on top of its head. It lies half-buried in sand or mud and ambushes flatfish, skates, squid and crabs. Once widespread in the northeast Atlantic and Mediterranean, it is now Critically Endangered.",
+  "lengthM": 1.5,
+  "depth": "Shallow coastal water to about 150 m",
+  "eats": "Flatfish and other bottom fish, skates, squid and crabs",
+  "wikipedia": "Squatina_squatina",
+  "model": "angelshark",
+  "swim": {
+    "cruise": 0.2,
+    "beatHz": 0.5,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [
+          -18,
+          21
+        ],
+        [
+          -8,
+          21
+        ],
+        [
+          -8,
+          36
+        ],
+        [
+          -18,
+          36
+        ]
+      ],
+      [
+        [
+          -10,
+          36
+        ],
+        [
+          0,
+          36
+        ],
+        [
+          0,
+          50
+        ],
+        [
+          -10,
+          50
+        ]
+      ],
+      [
+        [
+          -8,
+          50
+        ],
+        [
+          12,
+          50
+        ],
+        [
+          12,
+          61
+        ],
+        [
+          -8,
+          61
+        ]
+      ],
+      [
+        [
+          -5.5,
+          31
+        ],
+        [
+          35,
+          31
+        ],
+        [
+          35,
+          45.5
+        ],
+        [
+          -5.5,
+          45.5
+        ]
+      ]
+    ]
+  }
+}
