@@ -1,0 +1,24 @@
+{
+  "id": "isistius-brasiliensis",
+  "genus": "isistius",
+  "latin": "Isistius brasiliensis",
+  "common": "Cookiecutter shark",
+  "meaning": "Isistius, see genus; brasiliensis, Latin suffix -ensis denoting place: off the coast of Brazil, the type locality",
+  "description": "A tiny, cigar-shaped, chocolate-brown shark with a short blunt snout, large green eyes and a dark collar around the throat; its belly glows with light-producing photophores. It rises toward the surface at night, latches on with suction-cup lips and cuts a round plug of flesh from tuna, whales and other larger animals with its saw-like lower teeth.",
+  "lengthM": 0.45,
+  "depth": "Surface to about 3,700 m; deep by day, shallower at night",
+  "eats": "Squid, crustaceans and small fish, plus plugs of flesh bitten from larger fish and marine mammals",
+  "wikipedia": "Cookiecutter_shark",
+  "model": "cookiecutter_shark",
+  "swim": {
+    "cruise": 0.25,
+    "beatHz": 1.0,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "open",
+    "polygons": [
+      [[-180, -40], [180, -40], [180, 35], [-180, 35]]
+    ]
+  }
+}

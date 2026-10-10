@@ -85,8 +85,10 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   check((await here(page)) === "carcharhiniformes", "right moves to the next sibling");
   await key(page, "ArrowRight", 1600);
   await key(page, "ArrowRight", 1600);
+  await key(page, "ArrowRight", 1600);
   await key(page, "ArrowRight");
-  check((await here(page)) === "heterodontiformes", "right stops at the last sibling and never flows into cousins");
+  check((await here(page)) === "squaliformes", "right stops at the last sibling and never flows into cousins");
+  await key(page, "ArrowLeft", 1600);
   await key(page, "ArrowLeft", 1600);
   await key(page, "ArrowLeft", 1600);
 
