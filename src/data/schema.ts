@@ -94,6 +94,8 @@ export interface IndexNode {
   speciesCount: number;
   /** Species only. */
   lengthM?: number;
+  /** Typical depth from the species' depth text, in metres. Colours the water. */
+  maxDepthM?: number;
   model?: string;
   swim?: SwimParams;
   /** Resolved from the clade, the diet and any override. */

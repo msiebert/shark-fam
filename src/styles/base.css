@@ -10,8 +10,9 @@
   --panel: #03141c;
   --display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
   --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
-  --w1: rgb(11, 71, 86);
-  --w2: rgb(4, 32, 43);
+  --w1: rgb(96, 205, 208);
+  --w2: rgb(46, 143, 163);
+  --w3: rgb(14, 82, 104);
   color-scheme: dark;
 }
 
@@ -65,7 +66,7 @@ button {
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  background: radial-gradient(ellipse 70% 60% at 50% 44%, var(--w1) 0%, var(--w2) 42%, var(--abyss) 100%);
+  background: radial-gradient(ellipse 70% 60% at 50% 44%, var(--w1) 0%, var(--w2) 42%, var(--w3) 100%);
 }
 #gl {
   position: absolute;
@@ -119,7 +120,7 @@ button {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse 58% 56% at 50% 45%, rgba(1, 10, 15, 0) 0%, rgba(1, 10, 15, 0.55) 62%, var(--abyss) 100%);
+  background: radial-gradient(ellipse 58% 56% at 50% 45%, transparent 0%, color-mix(in srgb, var(--w3) 55%, transparent) 62%, var(--w3) 100%);
 }
 .ui {
   position: absolute;
