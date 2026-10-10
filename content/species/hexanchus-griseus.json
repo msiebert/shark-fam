@@ -1,0 +1,34 @@
+{
+  "id": "hexanchus-griseus",
+  "genus": "hexanchus",
+  "latin": "Hexanchus griseus",
+  "common": "Bluntnose sixgill shark",
+  "meaning": "Hexanchus, see genus; griseus, Medieval Latin for gray, reflecting the French vernacular “Le Griset”, referring to its dark-gray coloration",
+  "description": "A heavy, grey-brown deepwater shark with a broad blunt head, six pairs of gill slits, green eyes and a pale line along each flank. A single dorsal fin sits far back above a long tail with a long upper lobe. It rests in deep water by day and rises toward the surface at night to hunt fishes, other sharks, squid and crustaceans.",
+  "lengthM": 3.5,
+  "depth": "Usually 180 to 1,100 m; recorded from the surface to about 2,500 m",
+  "eats": "Bony fishes, other sharks and rays, squid, crustaceans and carrion",
+  "wikipedia": "Bluntnose_sixgill_shark",
+  "model": "bluntnose_sixgill_shark",
+  "swim": {
+    "cruise": 0.25,
+    "beatHz": 0.5,
+    "amplitude": 0.12
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[-30, 28], [36, 28], [36, 65], [-30, 65]],
+      [[-100, 8], [-50, 8], [-50, 42], [-100, 42]],
+      [[-60, -48], [-35, -48], [-35, -5], [-60, -5]],
+      [[-20, -20], [14, -20], [14, 28], [-20, 28]],
+      [[10, -35], [50, -35], [50, -10], [10, -10]],
+      [[118, 20], [145, 20], [145, 43], [118, 43]],
+      [[112, -40], [155, -40], [155, -10], [112, -10]],
+      [[165, -48], [178, -48], [178, -34], [165, -34]],
+      [[-161, 18], [-154, 18], [-154, 23], [-161, 23]],
+      [[-140, 22], [-114, 22], [-114, 58], [-140, 58]],
+      [[-78, -45], [-68, -45], [-68, -18], [-78, -18]]
+    ]
+  }
+}
