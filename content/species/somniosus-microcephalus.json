@@ -1,0 +1,57 @@
+{
+  "id": "somniosus-microcephalus",
+  "genus": "somniosus",
+  "latin": "Somniosus microcephalus",
+  "common": "Greenland shark",
+  "meaning": "Somniosus, see genus; microcephalus, Greek mikrós “small” + kephalḗ “head”, allusion not explained, perhaps referring to its short, rounded snout compared with other sharks then included in the catch-all genus Squalus",
+  "description": "A huge, thick-bodied, sluggish shark of the cold North Atlantic and Arctic, grey to blackish-brown with a short rounded snout, small eyes and small dorsal and pectoral fins; the dorsals have no spines. It swims very slowly and eats fish, seals and carrion.",
+  "lengthM": 4,
+  "depth": "Surface to about 1,200 m; nearer the surface in winter",
+  "eats": "Fish, skates, squid, seals and carrion",
+  "wikipedia": "Greenland_shark",
+  "model": "greenland_shark",
+  "swim": {
+    "cruise": 0.2,
+    "beatHz": 0.4,
+    "amplitude": 0.11
+  },
+  "distribution": {
+    "mode": "open",
+    "polygons": [
+      [
+        [
+          -75,
+          40
+        ],
+        [
+          -10,
+          40
+        ],
+        [
+          15,
+          52
+        ],
+        [
+          40,
+          70
+        ],
+        [
+          45,
+          80
+        ],
+        [
+          -80,
+          83
+        ],
+        [
+          -95,
+          70
+        ],
+        [
+          -85,
+          55
+        ]
+      ]
+    ]
+  }
+}
