@@ -1,0 +1,24 @@
+{
+  "id": "rhizoprionodon-terraenovae",
+  "genus": "rhizoprionodon",
+  "latin": "Rhizoprionodon terraenovae",
+  "common": "Atlantic sharpnose shark",
+  "meaning": "Rhizoprionodon, from Greek rhíza “root” + príōn “saw” + odoús “tooth”, for teeth with serrated bases; terraenovae, from Latin terra “earth, land” + novus “new”, i.e. Newfoundland, Canada, where Richardson erroneously thought this shark occurred",
+  "description": "A small, slim grey shark with a long pointed snout longer than the width of its mouth and large eyes. Adults often have small white spots on their sides, and young sharks have black edges on the dorsal and tail fins. It feeds close to shore on small fish, shrimp and crabs, and moves into deeper water in winter, returning inshore in spring to mate.",
+  "lengthM": 0.95,
+  "depth": "Shallows to about 280 m",
+  "eats": "Small bony fish such as menhaden, silversides and filefish, also shrimp, crabs, worms and mollusks",
+  "wikipedia": "Atlantic_sharpnose_shark",
+  "model": "atlantic_sharpnose_shark",
+  "swim": {
+    "cruise": 0.6,
+    "beatHz": 0.9,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[-98, 18], [-70, 18], [-60, 36], [-60, 45], [-98, 45]]
+    ]
+  }
+}
