@@ -1,0 +1,26 @@
+{
+  "id": "carcharhinus-brevipinna",
+  "genus": "carcharhinus",
+  "latin": "Carcharhinus brevipinna",
+  "common": "Spinner shark",
+  "meaning": "Carcharhinus, from Greek karcharias “a kind of shark” (from karcharos “saw-like, jagged”, for its teeth) + rhinus, an ancient word for sharks; brevipinna, from Latin brevis “short” + pinna “fin”, referring to its small pectoral and first dorsal fins",
+  "description": "A slender, grey to bronze shark, white below with a pale band along each flank, with a long pointed snout, small round eyes and a small first dorsal fin. Adults have black tips on the second dorsal, anal and pectoral fins and on the lower tail lobe; the black anal tip tells it from the similar blacktip shark. It feeds by charging up through schools of small fish, spinning on its axis and often leaping clear of the water.",
+  "lengthM": 2.0,
+  "depth": "Surface to about 100 m",
+  "eats": "Mostly small bony fish such as sardines and anchovies, also squid, octopus, cuttlefish and small sharks",
+  "wikipedia": "Spinner_shark",
+  "model": "spinner_shark",
+  "swim": {
+    "cruise": 0.58,
+    "beatHz": 0.9,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[-100, -38], [-35, -38], [-35, 42], [-100, 42]],
+      [[-20, -28], [15, -28], [15, 40], [-20, 40]],
+      [[30, -38], [155, -38], [155, 40], [30, 40]]
+    ]
+  }
+}
