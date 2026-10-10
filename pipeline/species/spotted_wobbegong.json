@@ -1,0 +1,400 @@
+{
+ "name": "Spotted Wobbegong",
+ "latin": "Orectolobus maculatus",
+ "length_m": 1.8,
+ "ring": 64,
+ "body": {
+  "exponent": 2.6,
+  "x": [
+   0,
+   0.002,
+   0.006,
+   0.012,
+   0.022,
+   0.036,
+   0.055,
+   0.08,
+   0.11,
+   0.15,
+   0.2,
+   0.26,
+   0.33,
+   0.4,
+   0.47,
+   0.54,
+   0.61,
+   0.68,
+   0.8,
+   0.87,
+   0.9
+  ],
+  "up": [
+   0,
+   0.006,
+   0.01,
+   0.014,
+   0.018,
+   0.022,
+   0.026,
+   0.03,
+   0.034,
+   0.038,
+   0.04,
+   0.041,
+   0.04,
+   0.038,
+   0.035,
+   0.03,
+   0.025,
+   0.02,
+   0.014,
+   0.01,
+   0.006
+  ],
+  "down": [
+   0,
+   0.006,
+   0.009,
+   0.012,
+   0.014,
+   0.016,
+   0.018,
+   0.02,
+   0.021,
+   0.022,
+   0.023,
+   0.023,
+   0.022,
+   0.021,
+   0.02,
+   0.018,
+   0.015,
+   0.012,
+   0.009,
+   0.007,
+   0.004
+  ],
+  "half_width": [
+   0,
+   0.012,
+   0.022,
+   0.032,
+   0.044,
+   0.054,
+   0.063,
+   0.073,
+   0.085,
+   0.09,
+   0.088,
+   0.08,
+   0.068,
+   0.058,
+   0.05,
+   0.036,
+   0.024,
+   0.014,
+   0.009,
+   0.005,
+   0.003
+  ],
+  "z0": [
+   [
+    0,
+    -0.005
+   ],
+   [
+    0.06,
+    -0.004
+   ],
+   [
+    0.2,
+    0.0
+   ],
+   [
+    0.5,
+    0.0
+   ],
+   [
+    0.8,
+    0.006
+   ]
+  ]
+ },
+ "bend": {
+  "amp": 0.03,
+  "freq": 1.6,
+  "phase": -0.3
+ },
+ "gills": {
+  "count": 5,
+  "x0": 0.17,
+  "dx": 0.011,
+  "theta0": 45,
+  "theta1": 118,
+  "lean": 0.01,
+  "sigma": 0.0012,
+  "k": 0.02
+ },
+ "mouth": {
+  "x0": 0.004,
+  "x_peak": 0.02,
+  "x1": 0.04,
+  "theta_peak": 150,
+  "theta_corner": 152,
+  "p": 1.3,
+  "sigma": 0.0018,
+  "k": 0.018
+ },
+ "eye": {
+  "x": 0.07,
+  "theta": 40,
+  "radius": 0.0032,
+  "inset": 0.0014,
+  "socket_sigma": 0.006,
+  "socket_k": 0.045,
+  "elong": 1.0
+ },
+ "palette": {
+  "dorsal": "#5F5238",
+  "deep": "#33291B",
+  "ventral": "#CDBF9C",
+  "edge": "#2E261A",
+  "demarcation": {
+   "points": [
+    [
+     0,
+     125
+    ],
+    [
+     0.2,
+     125
+    ],
+    [
+     0.5,
+     120
+    ],
+    [
+     0.9,
+     110
+    ]
+   ],
+   "softness": 0.1,
+   "wave": 2.0
+  }
+ },
+ "fins": [
+  {
+   "name": "dorsal1",
+   "attach": {
+    "x": 0.5,
+    "theta": 0
+   },
+   "span_dir": [
+    0.05,
+    0,
+    1
+   ],
+   "chord_root": 0.09,
+   "span": 0.045,
+   "sweep": 0.035,
+   "tip_chord": 0.02,
+   "le_pow": 1.3,
+   "te_pow": 0.8,
+   "thickness": 0.08,
+   "edge_dark": 0.25
+  },
+  {
+   "name": "dorsal2",
+   "attach": {
+    "x": 0.585,
+    "theta": 0
+   },
+   "span_dir": [
+    0.05,
+    0,
+    1
+   ],
+   "chord_root": 0.08,
+   "span": 0.04,
+   "sweep": 0.03,
+   "tip_chord": 0.018,
+   "le_pow": 1.3,
+   "te_pow": 0.8,
+   "thickness": 0.09,
+   "emb": 0.012,
+   "edge_dark": 0.25
+  },
+  {
+   "name": "pectoral",
+   "paired": true,
+   "attach": {
+    "x": 0.15,
+    "theta": 100
+   },
+   "span_dir": [
+    0.15,
+    1,
+    0.0
+   ],
+   "trail_dir": [
+    1,
+    0,
+    0.05
+   ],
+   "chord_root": 0.1,
+   "span": 0.105,
+   "sweep": 0.05,
+   "tip_chord": 0.05,
+   "le_pow": 1.4,
+   "te_pow": 1.0,
+   "thickness": 0.065,
+   "underside": "pearl",
+   "tip_patch": false,
+   "edge_dark": 0.25
+  },
+  {
+   "name": "pelvic",
+   "paired": true,
+   "color": "ventral",
+   "attach": {
+    "x": 0.4,
+    "theta": 105
+   },
+   "span_dir": [
+    0.25,
+    1,
+    -0.05
+   ],
+   "chord_root": 0.085,
+   "span": 0.05,
+   "sweep": 0.03,
+   "tip_chord": 0.035,
+   "le_pow": 1.2,
+   "te_pow": 0.7,
+   "thickness": 0.08,
+   "edge_dark": 0.25
+  },
+  {
+   "name": "anal",
+   "color": "ventral",
+   "attach": {
+    "x": 0.64,
+    "theta": 180
+   },
+   "span_dir": [
+    0.5,
+    0,
+    -1
+   ],
+   "chord_root": 0.05,
+   "span": 0.04,
+   "sweep": 0.03,
+   "tip_chord": 0.02,
+   "le_pow": 1.2,
+   "te_pow": 0.7,
+   "thickness": 0.09,
+   "emb": 0.012,
+   "edge_dark": 0.25
+  },
+  {
+   "name": "caudal_upper",
+   "attach": {
+    "x": 0.72,
+    "axis": true
+   },
+   "span_dir": [
+    0.3,
+    0,
+    0.95
+   ],
+   "chord_root": 0.15,
+   "span": 0.065,
+   "sweep": 0.2,
+   "tip_chord": 0.015,
+   "le_pow": 1.2,
+   "te_pow": 1.1,
+   "thickness": 0.055,
+   "emb": 0.03,
+   "edge_dark": 0.25,
+   "trail_dir": [
+    1,
+    0,
+    0.5
+   ]
+  },
+  {
+   "name": "caudal_lower",
+   "attach": {
+    "x": 0.73,
+    "axis": true
+   },
+   "span_dir": [
+    0.2,
+    0,
+    -0.98
+   ],
+   "chord_root": 0.09,
+   "span": 0.025,
+   "sweep": 0.07,
+   "tip_chord": 0.01,
+   "le_pow": 1.2,
+   "te_pow": 0.7,
+   "thickness": 0.055,
+   "emb": 0.03,
+   "edge_dark": 0.25,
+   "trail_dir": [
+    1,
+    0,
+    -0.1
+   ]
+  }
+ ],
+ "nostrils": [
+  {
+   "x": 0.014,
+   "theta": 152,
+   "len": 0.003,
+   "wid": 0.0012
+  }
+ ],
+ "paint": {
+  "ragged_deg": 1.1,
+  "mottle": 0.06,
+  "speckle": 0.025,
+  "gill_sigma": 0.0007,
+  "mouth_sigma": 0.0011
+ },
+ "render": {
+  "hero": {
+   "yaw": 20,
+   "cam_z": 0.25
+  },
+  "head": {
+   "focus": 0.05,
+   "yaw": -30,
+   "dist_frac": 0.5,
+   "cam_z": 0.3,
+   "lift": 0.0
+  }
+ },
+ "spots": {
+  "color": "#B9AB84",
+  "sc": 0.012,
+  "sx": 0.013,
+  "r": [
+   0.28,
+   0.38
+  ],
+  "keep": 0.5,
+  "strength": 0.5
+ },
+ "bars": {
+  "color": "#2C2314",
+  "period": 0.09,
+  "width": 0.034,
+  "x0": 0.1,
+  "x1": 0.7,
+  "strength": 1.0,
+  "keep": 1.2
+ }
+}
