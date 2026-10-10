@@ -1,0 +1,41 @@
+{
+  "id": "carcharhinus-albimarginatus",
+  "genus": "carcharhinus",
+  "latin": "Carcharhinus albimarginatus",
+  "common": "Silvertip shark",
+  "meaning": "Carcharhinus, from Greek karcharias “a kind of shark” (from karcharos “saw-like, jagged”, for its teeth) + rhinus, an ancient word for sharks; albimarginatus, from Latin albus “white” + marginatus “bordered”, referring to its white fin tips",
+  "description": "A robust grey shark with a bronze sheen, a long broad snout, large round eyes and a ridge between the two dorsal fins. The first dorsal, pectoral and tail fins are all tipped and edged in bright white. It patrols reef drop-offs and offshore banks of the tropical Indian and Pacific oceans, eating mostly bony fish, with rays, small sharks and squid.",
+  "lengthM": 2.2,
+  "depth": "Surface to about 800 m",
+  "eats": "Bony fish, eagle rays, small sharks, squid and octopus",
+  "wikipedia": "Silvertip_shark",
+  "model": "silvertip_shark",
+  "swim": {
+    "cruise": 0.55,
+    "beatHz": 0.9,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [32, -31],
+        [180, -31],
+        [180, 32],
+        [32, 32]
+      ],
+      [
+        [-180, -25],
+        [-135, -25],
+        [-135, 25],
+        [-180, 25]
+      ],
+      [
+        [-115, -5],
+        [-77, -5],
+        [-77, 28],
+        [-115, 28]
+      ]
+    ]
+  }
+}

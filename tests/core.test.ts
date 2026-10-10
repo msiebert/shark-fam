@@ -50,7 +50,7 @@ describe("navigation", () => {
     nav.down();
     nav.down();
     nav.down();
-    expect(nav.current.id).toBe("carcharhinus-amblyrhynchos");
+    expect(nav.current.id).toBe("carcharhinus-albimarginatus");
     nav.up();
     nav.up();
     nav.up();
