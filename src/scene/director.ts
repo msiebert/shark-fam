@@ -367,7 +367,7 @@ export class SharkScene {
       }
     }
 
-    // The diver: always six feet. Beside one shark it floats behind and sets the scale; in a lineup it is the first bar.
+    // The diver: always six feet, and only beside a single species, where it floats behind and sets the scale.
     let dTarget: { x: number; y: number; z: number; s: number } | null = null;
     if (species) {
       const comp = (f.camZ + 1.15) / (f.camZ + 0.25);
@@ -377,9 +377,6 @@ export class SharkScene {
       const textTop = this.safeBottomPx > 0 ? this.safeBottomPx / this.h : 0.42;
       const scale = mpu * comp;
       dTarget = { x: pan - DIVER_CENTRE_M * scale, y: this.yAtScreenFraction(clamp(textTop - 0.04, 0.12, 0.6), -1.15, f), z: -1.15, s: scale };
-    } else if (this.view.kind === "lineup") {
-      const row = this.lineupFor(this.view.sharks).diver;
-      dTarget = { x: row.tailX, y: row.y + 0.06 * row.unitsPerM, z: ZS, s: row.unitsPerM };
     }
     this.diver.update(dt, t, dTarget, !!species);
 

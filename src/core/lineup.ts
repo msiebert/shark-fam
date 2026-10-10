@@ -1,7 +1,6 @@
 import type { Tree, TreeNode } from "./tree";
 
-export const DIVER_M = 1.83; // six feet
-export const MAX_LINEUP = 6;
+export const MAX_LINEUP = 3;
 
 /**
  * Choose which species a clade's lineup shows.
@@ -46,7 +45,7 @@ export function selectLineup(tree: Tree, node: TreeNode, max = MAX_LINEUP): Tree
 /* ---------- Layout of the bar chart ---------- */
 
 export interface LineupInput {
-  /** Real lengths in metres, shortest first. The diver is added as the first bar. */
+  /** Real lengths in metres, shortest first. */
   lengthsM: number[];
   /** Half extents of the view at the swim depth, in world units. */
   halfW: number;
@@ -75,7 +74,6 @@ export interface LineupRow {
 
 export interface LineupLayout {
   unitsPerM: number;
-  diver: LineupRow;
   rows: LineupRow[];
 }
 
@@ -88,8 +86,8 @@ export function layoutLineup(i: LineupInput): LineupLayout {
   const yAt = (f: number) => (0.5 - f) * 2 * halfH;
   const top = yAt(i.top);
   const zoneH = top - yAt(i.bottom);
-  // Body thickness in metres: a shark is roughly a fifth as deep as it is long; the diver is half a metre.
-  const items = [{ m: DIVER_M, th: 0.5, lab: 0 }, ...i.lengthsM.map((m) => ({ m, th: 0.2 * m, lab }))];
+  // Body thickness in metres: a shark is roughly a fifth as deep as it is long.
+  const items = i.lengthsM.map((m) => ({ m, th: 0.2 * m, lab }));
   const fixed = gap * (items.length - 1) + items.reduce((n, x) => n + x.lab, 0);
   const sumTh = items.reduce((n, x) => n + x.th, 0);
   const maxM = Math.max(...items.map((x) => x.m));
@@ -103,5 +101,5 @@ export function layoutLineup(i: LineupInput): LineupLayout {
     y -= it.lab + it.th * k + gap;
     return row;
   });
-  return { unitsPerM: k, diver: rows[0]!, rows: rows.slice(1) };
+  return { unitsPerM: k, rows };
 }

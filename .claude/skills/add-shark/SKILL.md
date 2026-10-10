@@ -30,7 +30,7 @@ names and classification), Florida Museum ISAF, Wikipedia (for the `wikipedia` s
 | Accepted scientific name | Current valid binomial (check WoRMS for synonyms; do not use a superseded name). Exactly two words. |
 | Order, family, genus | Current classification. This repo's tree has no superorder; it starts at order. |
 | Common name | The widely used English name; note common alternates. |
-| Etymology (`meaning`) | **Required** on every clade and species (the schema rejects a missing one). Genus and species epithets, from ETYFish (see below), never guessed or from memory; a Latin name copied from a parent is not enough. Mark uncertain ones with "possibly". An order or family named after a genus should say so (`From Orectolobus: ...`). Keep the repo's style: `Sphyrna “hammer” (Greek sphyra); mokarran, ...`. |
+| Etymology (`meaning`) | **Required** on every clade and species (the schema rejects a missing one). Genus and species epithets, from ETYFish (see below), never guessed or from memory; a Latin name copied from a parent is not enough. Mark uncertain ones with "possibly". An order or family named after a genus should say so (`From Orectolobus: ...`). Keep it short enough for one or two screen lines (about 70 characters): just the roots and their glosses, no backstory. Clades: `Greek sphyra “hammer”`, families/orders `From Sphyrna “hammer”; -idae “family of”`. Species give only the epithet (the genus has its own page): `mokarran: Arabic name for this shark`. |
 | Typical adult length | Metres, typical adult (not record max). Cite which. Sets `lengthM` and `length_m`. |
 | Depth range | Matches the `depth` string style ("Surface to about 300 m"). |
 | Diet | Short list; the wording drives companions (`plankton`/`krill`, `rays`/`skates`, `fish`/`squid`). |
@@ -67,8 +67,7 @@ update that description in the same commit.
 Create `content/species/<id>.json` where `<id>` is the Latin name, lowercase, dashed, matching the file
 name. Copy the shape of `content/species/sphyrna-mokarran.json`. Fields: `id, genus, latin, common,
 meaning, description, lengthM, depth, eats, wikipedia, model, representative, swim, distribution`.
-- `description`: 2-3 sentences for the screen, specific and checkable (what it looks like, one behaviour
-  or fact). No superlatives you have not verified.
+- `description`: one or two sentences, specific and checkable, never describing appearance (the 3D model shows that): behaviour, habitat, diet, one distinctive fact. No superlatives you have not verified.
 - `model`: snake_case base name matching `pipeline/species/<model>.json` (e.g. `tiger_shark`).
 - `representative`: `true` only if it should be the pick for its clade; leave it off otherwise.
 - `swim`: slow filter feeders small numbers, fast hunters larger; amplitude typically 0.10-0.17.
