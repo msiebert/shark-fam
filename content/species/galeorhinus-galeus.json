@@ -1,0 +1,30 @@
+{
+  "id": "galeorhinus-galeus",
+  "genus": "galeorhinus",
+  "latin": "Galeorhinus galeus",
+  "common": "Tope shark",
+  "meaning": "Galeorhinus, from galeo-, probably based on the species name, + rhinus, an ancient name for sharks (from Greek rhinós “skin, hide” or rhínē “rasp”), apparently alluding to rough skin; galeus, from Greek galeós “weasel”, used by Aristotle for a small shark or dogfish, perhaps alluding to the pointed snout, swift movements or rapacious feeding of small predatory sharks",
+  "description": "A slim, bluish-grey shark with a white belly, a long pointed snout, large eyes and a big triangular first dorsal fin. Young sharks have black marks on their fins. It lives mostly near the seabed in small schools and migrates far; tagged sharks have crossed from Australia to New Zealand. Also called school shark.",
+  "lengthM": 1.6,
+  "depth": "Shallows to about 550 m",
+  "eats": "Mostly fish such as sardines, herring, anchovies and hake, also squid, octopus and crabs",
+  "wikipedia": "School_shark",
+  "model": "tope_shark",
+  "swim": {
+    "cruise": 0.6,
+    "beatHz": 0.9,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[-20, 28], [10, 28], [36, 31], [36, 45], [12, 45], [10, 62], [-5, 64], [-20, 60]],
+      [[-68, -50], [-55, -50], [-42, -23], [-50, -23], [-65, -38]],
+      [[11, -17], [16, -17], [34, -28], [30, -35], [11, -35]],
+      [[-135, 25], [-110, 25], [-122, 50], [-132, 54]],
+      [[-86, -6], [-76, -6], [-70, -30], [-72, -55], [-78, -55], [-78, -30]],
+      [[113, -35], [130, -31], [151, -30], [151, -44], [113, -44]],
+      [[166, -47], [179, -47], [179, -34], [166, -34]]
+    ]
+  }
+}

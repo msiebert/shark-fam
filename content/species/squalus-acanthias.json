@@ -1,0 +1,203 @@
+{
+  "id": "squalus-acanthias",
+  "genus": "squalus",
+  "latin": "Squalus acanthias",
+  "common": "Spiny dogfish",
+  "meaning": "Squalus, see genus; acanthias, Latin for a spiny or prickly thing, referring to its dorsal-fin spines",
+  "description": "A small, slender grey shark with a pointed snout and white spots along its flanks that fade with age. It has a sharp spine in front of each of its two dorsal fins, no anal fin and a strongly lopsided tail, and it often forms large schools sorted by size and sex. Pregnancy lasts 18 to 24 months; the North Pacific population is now treated as a separate species, Squalus suckleyi.",
+  "lengthM": 1.0,
+  "depth": "Surface to nearly 2,000 m; usually 50 to 300 m",
+  "eats": "Fish such as herring and mackerel, squid, comb jellies, shrimps and crabs",
+  "wikipedia": "Spiny_dogfish",
+  "model": "spiny_dogfish",
+  "swim": {
+    "cruise": 0.5,
+    "beatHz": 0.9,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [
+          -75,
+          36
+        ],
+        [
+          -52,
+          40
+        ],
+        [
+          -52,
+          48
+        ],
+        [
+          -60,
+          52
+        ],
+        [
+          -70,
+          45
+        ],
+        [
+          -76,
+          38
+        ]
+      ],
+      [
+        [
+          -10,
+          37
+        ],
+        [
+          0,
+          44
+        ],
+        [
+          8,
+          48
+        ],
+        [
+          8,
+          57
+        ],
+        [
+          20,
+          56
+        ],
+        [
+          40,
+          70
+        ],
+        [
+          15,
+          70
+        ],
+        [
+          -20,
+          64
+        ],
+        [
+          -12,
+          52
+        ]
+      ],
+      [
+        [
+          -6,
+          36
+        ],
+        [
+          36,
+          31
+        ],
+        [
+          36,
+          45
+        ],
+        [
+          -5,
+          44
+        ]
+      ],
+      [
+        [
+          -64,
+          -30
+        ],
+        [
+          -50,
+          -30
+        ],
+        [
+          -57,
+          -52
+        ],
+        [
+          -67,
+          -52
+        ]
+      ],
+      [
+        [
+          11,
+          -35
+        ],
+        [
+          20,
+          -35
+        ],
+        [
+          34,
+          -28
+        ],
+        [
+          16,
+          -28
+        ]
+      ],
+      [
+        [
+          -76,
+          -25
+        ],
+        [
+          -71,
+          -25
+        ],
+        [
+          -72,
+          -45
+        ],
+        [
+          -76,
+          -55
+        ],
+        [
+          -80,
+          -45
+        ]
+      ],
+      [
+        [
+          113,
+          -35
+        ],
+        [
+          130,
+          -31
+        ],
+        [
+          151,
+          -30
+        ],
+        [
+          151,
+          -44
+        ],
+        [
+          113,
+          -44
+        ]
+      ],
+      [
+        [
+          166,
+          -47
+        ],
+        [
+          179,
+          -47
+        ],
+        [
+          179,
+          -34
+        ],
+        [
+          166,
+          -34
+        ]
+      ]
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "galeocerdo-cuvier",
+  "genus": "galeocerdo",
+  "latin": "Galeocerdo cuvier",
+  "common": "Tiger shark",
+  "meaning": "Galeocerdo, possibly galeo-, for Galeus, the genus in which it was first placed, + Greek kerdō “wily one”, “thief” or “weasel”; cuvier, almost certainly for French naturalist Georges Cuvier (1769–1832)",
+  "description": "A bulky shark with a blunt, broad head and a long upper tail lobe. Dark bars down its flanks give it its name and fade as it grows. It eats almost anything, from fish and rays to sea turtles and seabirds.",
+  "lengthM": 3.9,
+  "depth": "Surface to about 800 m",
+  "eats": "Fish, rays, sea turtles, seabirds and carrion",
+  "wikipedia": "Tiger_shark",
+  "model": "tiger_shark",
+  "swim": {
+    "cruise": 0.55,
+    "beatHz": 0.75,
+    "amplitude": 0.15
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [-180, -40],
+        [180, -40],
+        [180, 40],
+        [-180, 40]
+      ]
+    ]
+  }
+}

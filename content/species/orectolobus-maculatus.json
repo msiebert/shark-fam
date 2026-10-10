@@ -1,0 +1,26 @@
+{
+  "id": "orectolobus-maculatus",
+  "genus": "orectolobus",
+  "latin": "Orectolobus maculatus",
+  "common": "Spotted wobbegong",
+  "meaning": "Orectolobus, Greek orektós “stretched out” + Latin lobus “rounded projection”, for the long nasal barbels; maculatus, Latin “spotted”, for the large O-shaped markings that densely cover the back",
+  "description": "A very flat, broad-headed shark, green to brown, with pale O-shaped rings across darker saddles on its back and a fringe of branching skin lobes along each side of the head. It lies camouflaged on reefs and rocky seabed, hunting mostly at night, and ambushes fish, crabs, lobsters and octopuses. It can bite people who step on it or reach near its mouth.",
+  "lengthM": 1.8,
+  "depth": "Surface to about 110 m, occasionally deeper",
+  "eats": "Fish, crabs, lobsters and octopuses",
+  "wikipedia": "Spotted_wobbegong",
+  "model": "spotted_wobbegong",
+  "swim": {
+    "cruise": 0.2,
+    "beatHz": 0.5,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[112, -35], [122, -35], [122, -26], [112, -26]],
+      [[114, -39], [146, -39], [146, -32], [114, -32]],
+      [[146, -39], [154, -39], [154, -24], [146, -24]]
+    ]
+  }
+}

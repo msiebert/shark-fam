@@ -1,0 +1,26 @@
+{
+  "id": "ginglymostoma-cirratum",
+  "genus": "ginglymostoma",
+  "latin": "Ginglymostoma cirratum",
+  "common": "Nurse shark",
+  "meaning": "Ginglymostoma, from Greek gínglymos “hinge” + stóma “mouth”, presumably referring to how the corner of the mouth has a hinged appearance; cirratum, Latin “having tendrils”, referring to its elongated nasal barbels",
+  "description": "A stout, yellowish-brown to dark brown shark with a broad head, tiny eyes, two rounded dorsal fins and a long tail without a distinct lower lobe. It rests by day on sand or in crevices, then hunts at night, sucking fish, crustaceans and molluscs out of hiding with its large throat and small mouth, helped by a pair of barbels at the nostrils. Juveniles carry small dark spots that fade with age.",
+  "lengthM": 2.4,
+  "depth": "Surface to about 130 m",
+  "eats": "Fish, rays, crustaceans and molluscs",
+  "wikipedia": "Nurse_shark",
+  "model": "nurse_shark",
+  "swim": {
+    "cruise": 0.25,
+    "beatHz": 0.6,
+    "amplitude": 0.12
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[-98, 8], [-60, 8], [-60, 41], [-98, 41]],
+      [[-60, -25], [-34, -25], [-34, 8], [-60, 8]],
+      [[-26, -5], [12, -5], [12, 17], [-26, 17]]
+    ]
+  }
+}

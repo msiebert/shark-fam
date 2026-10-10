@@ -1,0 +1,27 @@
+{
+  "id": "heterodontus-portusjacksoni",
+  "genus": "heterodontus",
+  "latin": "Heterodontus portusjacksoni",
+  "common": "Port Jackson shark",
+  "meaning": "Heterodontus, from Greek héteros “different” + odontus “tooth”, for the pointed front teeth and rounded molar-like back teeth; portusjacksoni, “of Port Jackson”, Sydney, New South Wales, the type locality",
+  "description": "A pale grey-brown shark with a blunt, pig-like head, prominent ridges above the eyes and dark harness-like bands across the face, back and flanks. A spine stands in front of each of its two dorsal fins. It rests by day in sheltered spots and feeds at night, crushing sea urchins, shellfish and crustaceans with its flat back teeth.",
+  "lengthM": 1.4,
+  "depth": "Shallows to about 275 m",
+  "eats": "Sea urchins, crustaceans, molluscs and small fish",
+  "wikipedia": "Port_Jackson_shark",
+  "model": "port_jackson_shark",
+  "swim": {
+    "cruise": 0.25,
+    "beatHz": 0.6,
+    "amplitude": 0.12
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[112, -35.5], [134, -35.5], [134, -31.5], [114, -27]],
+      [[134, -38], [150, -38], [150, -33], [134, -35.5]],
+      [[148, -38], [154.5, -38], [154.5, -27], [150, -27]],
+      [[144, -43.8], [148.6, -43.8], [148.6, -40.5], [144, -40.5]]
+    ]
+  }
+}

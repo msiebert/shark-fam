@@ -1,0 +1,113 @@
+{
+  "id": "carcharhinus-brachyurus",
+  "genus": "carcharhinus",
+  "latin": "Carcharhinus brachyurus",
+  "common": "Copper shark",
+  "meaning": "Carcharhinus, from Greek karcharias \u201ca kind of shark\u201d (from karcharos \u201csaw-like, jagged\u201d, referring to its teeth) + rhinus, an ancient name for sharks; brachyurus, \u201cshort-tailed\u201d, from Greek brachys \u201cshort\u201d and oura \u201ctail\u201d, a probable misnomer since the caudal fin is not short (a quarter of the total length), and the type specimens were described from mounted skins and embryos (some sources say the name means \u201cshort-bodied\u201d)",
+  "description": "A slender shark with a long, pointed snout, long sickle-shaped pectoral fins and a tall, pointed first dorsal fin, usually with no ridge between the two dorsals. It is bronze to olive-grey above with a metallic sheen and white below, and its upper teeth are narrow and hooked. Also called the bronze whaler, it lives in scattered temperate populations, and off South Africa it feeds mostly on pilchards.",
+  "lengthM": 2.7,
+  "depth": "Surface to about 360 m",
+  "eats": "Bony fish, squid and octopus, small sharks and rays",
+  "wikipedia": "Copper_shark",
+  "model": "copper_shark",
+  "swim": {
+    "cruise": 0.5,
+    "beatHz": 0.75,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [
+          -20,
+          -36
+        ],
+        [
+          35,
+          -36
+        ],
+        [
+          35,
+          48
+        ],
+        [
+          -20,
+          48
+        ]
+      ],
+      [
+        [
+          -70,
+          -48
+        ],
+        [
+          -30,
+          -48
+        ],
+        [
+          -30,
+          -10
+        ],
+        [
+          -70,
+          -10
+        ]
+      ],
+      [
+        [
+          -125,
+          -30
+        ],
+        [
+          -70,
+          -30
+        ],
+        [
+          -70,
+          35
+        ],
+        [
+          -125,
+          35
+        ]
+      ],
+      [
+        [
+          112,
+          -48
+        ],
+        [
+          180,
+          -48
+        ],
+        [
+          180,
+          -10
+        ],
+        [
+          112,
+          -10
+        ]
+      ],
+      [
+        [
+          128,
+          28
+        ],
+        [
+          146,
+          28
+        ],
+        [
+          146,
+          45
+        ],
+        [
+          128,
+          45
+        ]
+      ]
+    ]
+  }
+}

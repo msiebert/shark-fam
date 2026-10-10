@@ -1,0 +1,95 @@
+{
+  "id": "carcharhinus-limbatus",
+  "genus": "carcharhinus",
+  "latin": "Carcharhinus limbatus",
+  "common": "Blacktip shark",
+  "meaning": "Carcharhinus, from Greek karcharias “a kind of shark” (from karcharos “saw-like, jagged”, for its teeth) + rhinus, an ancient word for sharks; limbatus, Latin for “edged” or “bordered”, referring to its black-edged fins",
+  "description": "A stout, streamlined shark with a pointed snout, grey-brown above and white below, with a pale stripe along each flank. Most of its fins have black tips or edges, though the anal fin is usually plain. It is usually found in groups over coastal shelves, and is known for leaping and spinning out of the water as it attacks schools of small fish.",
+  "lengthM": 1.5,
+  "depth": "Surface to about 140 m",
+  "eats": "Mostly bony fish, also rays, small sharks, squid and crustaceans",
+  "wikipedia": "Blacktip_shark",
+  "model": "blacktip_shark",
+  "swim": {
+    "cruise": 0.55,
+    "beatHz": 0.85,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [
+          -100,
+          -35
+        ],
+        [
+          -30,
+          -35
+        ],
+        [
+          -30,
+          42
+        ],
+        [
+          -100,
+          42
+        ]
+      ],
+      [
+        [
+          -20,
+          -35
+        ],
+        [
+          40,
+          -35
+        ],
+        [
+          40,
+          38
+        ],
+        [
+          -20,
+          38
+        ]
+      ],
+      [
+        [
+          30,
+          -38
+        ],
+        [
+          180,
+          -38
+        ],
+        [
+          180,
+          38
+        ],
+        [
+          30,
+          38
+        ]
+      ],
+      [
+        [
+          -180,
+          -20
+        ],
+        [
+          -75,
+          -20
+        ],
+        [
+          -75,
+          32
+        ],
+        [
+          -180,
+          32
+        ]
+      ]
+    ]
+  }
+}

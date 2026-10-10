@@ -1,0 +1,25 @@
+{
+  "id": "mustelus-mustelus",
+  "genus": "mustelus",
+  "latin": "Mustelus mustelus",
+  "common": "Common smooth-hound",
+  "meaning": "From mustela (Latin) “weasel”, an ancient name for sharks, possibly referring to the pointed snouts, swift movements and/or rapacious feeding behavior of smaller predatory sharks",
+  "description": "A fairly slender grey-brown shark with a white belly, a short head and snout and two large dorsal fins of similar size. It usually has no spots, unlike the starry smooth-hound it is often confused with. It lives on the seabed, mostly in the shallows, and feeds chiefly on crabs and other crustaceans.",
+  "lengthM": 1.1,
+  "depth": "Shallows to about 350 m",
+  "eats": "Mainly crabs and other crustaceans, also cephalopods such as squid and octopus, and bony fish",
+  "wikipedia": "Common_smooth-hound",
+  "model": "common_smooth_hound",
+  "swim": {
+    "cruise": 0.55,
+    "beatHz": 0.9,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[-12, 30], [36, 32], [36, 41], [28, 42], [12, 46], [2, 48], [-5, 52], [-10, 56], [-14, 50], [-12, 40]],
+      [[-18, 30], [-10, 30], [-8, 10], [8, 0], [13, -17], [17, -35], [29, -35], [33, -27], [14, -17], [8, -2], [-6, 8], [-17, 15]]
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "isurus-oxyrinchus",
+  "genus": "isurus",
+  "latin": "Isurus oxyrinchus",
+  "common": "Shortfin mako",
+  "meaning": "Isurus, from Greek ísos “equal” + ourá “tail”, for caudal-fin lobes described as equal in length (the upper is in fact clearly longer); oxyrinchus, Greek for “sharp-snouted” (oxýs “sharp” + rhýnchos “snout”), for its pointed snout",
+  "description": "A torpedo-shaped open-ocean shark with a pointed snout, large black eyes and a crescent tail. Its back is metallic blue, cut off sharply from a white underside. It hunts fast-moving fish and squid in warm and temperate seas worldwide.",
+  "lengthM": 2.8,
+  "depth": "Surface to about 150 m, rarely deeper",
+  "eats": "Fish, squid and other sharks",
+  "wikipedia": "Shortfin_mako_shark",
+  "model": "shortfin_mako",
+  "swim": {
+    "cruise": 0.62,
+    "beatHz": 0.85,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "open",
+    "polygons": [
+      [
+        [-180, -50],
+        [180, -50],
+        [180, 50],
+        [-180, 50]
+      ]
+    ]
+  }
+}

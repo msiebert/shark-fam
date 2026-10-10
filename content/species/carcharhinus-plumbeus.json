@@ -1,0 +1,47 @@
+{
+  "id": "carcharhinus-plumbeus",
+  "genus": "carcharhinus",
+  "latin": "Carcharhinus plumbeus",
+  "common": "Sandbar shark",
+  "meaning": "Carcharhinus, from Greek karcharias “a kind of shark” (from karcharos “saw-like, jagged”, for its teeth) + rhinus, an ancient word for sharks; plumbeus, Latin for “of or pertaining to lead”, i.e. lead-coloured, referring to its gray-brown coloration above",
+  "description": "A heavy-set grey-brown shark with a very tall, triangular first dorsal fin, long pectoral fins, a short rounded snout and a ridge between the two dorsal fins. It favours shallow bays, estuaries and river mouths, which serve as nurseries for the young, and eats mostly bony fish, rays, crabs and squid. It grows slowly and breeds only every two to three years.",
+  "lengthM": 2.0,
+  "depth": "Usually 20 to 65 m, sometimes deeper than 200 m",
+  "eats": "Bony fish, rays, crabs and squid",
+  "wikipedia": "Sandbar_shark",
+  "model": "sandbar_shark",
+  "swim": {
+    "cruise": 0.45,
+    "beatHz": 0.75,
+    "amplitude": 0.13
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [-98, -35],
+        [-34, -35],
+        [-34, 42],
+        [-98, 42]
+      ],
+      [
+        [-18, -35],
+        [60, -35],
+        [60, 45],
+        [-18, 45]
+      ],
+      [
+        [60, -38],
+        [180, -38],
+        [180, 40],
+        [60, 40]
+      ],
+      [
+        [-160, 18],
+        [-154, 18],
+        [-154, 23],
+        [-160, 23]
+      ]
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "heterodontus-francisci",
+  "genus": "heterodontus",
+  "latin": "Heterodontus francisci",
+  "common": "Horn shark",
+  "meaning": "Heterodontus, from Greek héteros “different” + odontus (from odoús) “tooth”, for the pointed front teeth and rounded molar-like back teeth; francisci, “of Francisco”, probably referring to San Francisco, California (although its range does not extend that far north of its type locality, Monterey Bay)",
+  "description": "A small, tan to grey-brown shark with a short, blunt head, low ridges over the eyes and many small dark spots scattered over the body. A stout spine stands in front of each of its two tall dorsal fins. It rests by day on rocky reefs and crushes sea urchins, crabs and other shelled prey with its flat back teeth.",
+  "lengthM": 1.0,
+  "depth": "Shallows to about 150 m",
+  "eats": "Sea urchins, crabs, molluscs and small fish",
+  "wikipedia": "Horn_shark",
+  "model": "horn_shark",
+  "swim": {
+    "cruise": 0.25,
+    "beatHz": 0.6,
+    "amplitude": 0.12
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[-122.2, 36.6], [-121.0, 36.6], [-117.5, 33.0], [-114.5, 29.5], [-113.5, 27.5], [-111.8, 25.5], [-112.8, 24.0], [-115.6, 28.0], [-117.5, 32.0], [-120.8, 34.3]],
+      [[-114.8, 31.0], [-113.6, 31.0], [-112.4, 28.5], [-111.2, 26.5], [-110.6, 24.5], [-112.2, 25.8], [-113.2, 28.0]]
+    ]
+  }
+}

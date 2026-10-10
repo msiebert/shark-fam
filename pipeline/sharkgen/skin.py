@@ -80,6 +80,20 @@ def paint_body(body, cfg, W=2048, H=4096, chunk=256):
             col = _spots(col, (body.v_of_x(X) * body.s_total).astype(np.float32), arc, theta, bnd, n_low, sp,
                          hex_to_linear(sp["color"]))
 
+        # dark broken vertical bars on the back and flanks (tiger shark style)
+        br = cfg.get("bars")
+        if br:
+            col = _bars(col, X, theta, bnd, n_low, n_mid, br, hex_to_linear(br["color"]))
+
+        # ocelli: a dark disc with a pale ring on each flank (epaulette shark)
+        for oc in cfg.get("ocelli", []):
+            th0 = np.radians(oc["theta"])
+            dth = np.minimum(np.abs(theta - th0), np.abs(theta - (2 * np.pi - th0)))
+            rr = np.sqrt(((X - oc["x"]) / oc["rx"]) ** 2 + (dth * r_loc / oc["ry"]) ** 2)
+            ring = smoothstep(oc["ring"], oc["ring"] - 0.3, rr) * oc.get("ring_strength", 0.9)
+            col = mix(col, np.broadcast_to(hex_to_linear(oc["ring_color"]), col.shape), ring)
+            col = mix(col, np.broadcast_to(hex_to_linear(oc.get("color", "#141210")), col.shape), smoothstep(1.0, 0.85, rr) * 0.97)
+
         # gill slits: thin crisp dark lines
         if g:
             tt = (theta - np.radians(g["theta0"])) / (np.radians(g["theta1"]) - np.radians(g["theta0"]))
@@ -144,6 +158,20 @@ def _spots(col, X, arc, theta, bnd, n_brk, sp, spot_col):
     zone = 1 - smoothstep(bnd - 0.16, bnd + 0.02, theta)
     m = np.clip(np.maximum(spot, stripe) * zone * sp["strength"], 0, 1).astype(np.float32)
     return mix(col, np.broadcast_to(spot_col, col.shape), m)
+
+
+def _bars(col, X, theta, bnd, n_low, n_mid, br, bar_col):
+    """Irregular dark bars running down the flank from the back, broken up and fading before the belly."""
+    x = X.astype(np.float64)
+    per = br["period"]
+    ph = x / per + br.get("wobble", 0.25) * n_low + br.get("slant", 0.12) * np.sin(2.2 * theta) + 0.08 * n_mid
+    d = np.abs(np.mod(ph + 0.5, 1.0) - 0.5) * per
+    line = smoothstep(br["width"], br["width"] * 0.45, d)
+    broken = smoothstep(-1.3, -0.5, n_low + 0.5 * n_mid + br.get("keep", 0.0))
+    xwin = smoothstep(br["x0"], br["x0"] + 0.05, x) * smoothstep(br["x1"], br["x1"] - 0.08, x)
+    zone = smoothstep(0.12, 0.3, theta) * (1 - smoothstep(bnd - 0.2, bnd - 0.02, theta))
+    m = np.clip(line * broken * xwin * zone * br["strength"], 0, 1).astype(np.float32)
+    return mix(col, np.broadcast_to(bar_col, col.shape), m)
 
 
 def _tileable_noise(n, beta, seed):

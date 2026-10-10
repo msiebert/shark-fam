@@ -1,0 +1,371 @@
+{
+ "name": "Angelshark",
+ "latin": "Squatina squatina",
+ "length_m": 1.5,
+ "ring": 64,
+ "body": {
+  "exponent": 2.6,
+  "x": [
+   0,
+   0.003,
+   0.008,
+   0.016,
+   0.03,
+   0.05,
+   0.08,
+   0.12,
+   0.17,
+   0.23,
+   0.3,
+   0.38,
+   0.46,
+   0.54,
+   0.6,
+   0.66,
+   0.72,
+   0.78,
+   0.85,
+   0.9,
+   0.93
+  ],
+  "up": [
+   0,
+   0.008,
+   0.014,
+   0.019,
+   0.025,
+   0.029,
+   0.032,
+   0.034,
+   0.035,
+   0.035,
+   0.034,
+   0.032,
+   0.03,
+   0.026,
+   0.022,
+   0.017,
+   0.014,
+   0.011,
+   0.008,
+   0.006,
+   0.004
+  ],
+  "down": [
+   0,
+   0.006,
+   0.01,
+   0.013,
+   0.016,
+   0.018,
+   0.02,
+   0.021,
+   0.022,
+   0.022,
+   0.021,
+   0.02,
+   0.018,
+   0.016,
+   0.014,
+   0.012,
+   0.01,
+   0.008,
+   0.006,
+   0.004,
+   0.003
+  ],
+  "half_width": [
+   0,
+   0.02,
+   0.04,
+   0.055,
+   0.068,
+   0.085,
+   0.098,
+   0.098,
+   0.094,
+   0.092,
+   0.1,
+   0.094,
+   0.086,
+   0.07,
+   0.05,
+   0.032,
+   0.024,
+   0.019,
+   0.014,
+   0.01,
+   0.006
+  ],
+  "z0": [
+   [
+    0,
+    -0.004
+   ],
+   [
+    0.1,
+    0.0
+   ],
+   [
+    0.5,
+    0.0
+   ],
+   [
+    0.9,
+    0.004
+   ]
+  ]
+ },
+ "bend": {
+  "amp": 0.02,
+  "freq": 1.6,
+  "phase": -0.3
+ },
+ "gills": {
+  "count": 5,
+  "x0": 0.2,
+  "dx": 0.013,
+  "theta0": 120,
+  "theta1": 135,
+  "lean": 0.0,
+  "sigma": 0.0012,
+  "k": 0.02
+ },
+ "mouth": {
+  "x0": 0.004,
+  "x_peak": 0.025,
+  "x1": 0.06,
+  "theta_peak": 118,
+  "theta_corner": 124,
+  "p": 1.3,
+  "sigma": 0.0018,
+  "k": 0.018
+ },
+ "eye": {
+  "x": 0.085,
+  "theta": 22,
+  "radius": 0.0032,
+  "inset": 0.0014,
+  "socket_sigma": 0.006,
+  "socket_k": 0.045,
+  "elong": 1.0
+ },
+ "palette": {
+  "dorsal": "#5E553F",
+  "deep": "#352E21",
+  "ventral": "#E4DDCC",
+  "edge": "#3A3427",
+  "demarcation": {
+   "points": [
+    [
+     0,
+     140
+    ],
+    [
+     0.3,
+     140
+    ],
+    [
+     0.6,
+     125
+    ],
+    [
+     0.9,
+     115
+    ]
+   ],
+   "softness": 0.09,
+   "wave": 2.0
+  }
+ },
+ "fins": [
+  {
+   "name": "dorsal1",
+   "attach": {
+    "x": 0.71,
+    "theta": 0
+   },
+   "span_dir": [
+    0.1,
+    0,
+    1
+   ],
+   "chord_root": 0.05,
+   "span": 0.04,
+   "sweep": 0.03,
+   "tip_chord": 0.012,
+   "le_pow": 1.3,
+   "te_pow": 0.8,
+   "thickness": 0.08,
+   "emb": 0.01,
+   "edge_dark": 0.2
+  },
+  {
+   "name": "dorsal2",
+   "attach": {
+    "x": 0.815,
+    "theta": 0
+   },
+   "span_dir": [
+    0.1,
+    0,
+    1
+   ],
+   "chord_root": 0.045,
+   "span": 0.035,
+   "sweep": 0.025,
+   "tip_chord": 0.01,
+   "le_pow": 1.3,
+   "te_pow": 0.8,
+   "thickness": 0.08,
+   "emb": 0.01,
+   "edge_dark": 0.2
+  },
+  {
+   "name": "pectoral",
+   "paired": true,
+   "attach": {
+    "x": 0.1,
+    "theta": 90
+   },
+   "span_dir": [
+    0.0,
+    1,
+    0.0
+   ],
+   "trail_dir": [
+    1,
+    0,
+    0.0
+   ],
+   "chord_root": 0.36,
+   "span": 0.165,
+   "sweep": 0.2,
+   "tip_chord": 0.07,
+   "le_pow": 1.0,
+   "te_pow": 0.8,
+   "thickness": 0.04,
+   "underside": "pearl",
+   "tip_patch": false,
+   "edge_dark": 0.2
+  },
+  {
+   "name": "pelvic",
+   "paired": true,
+   "color": "ventral",
+   "attach": {
+    "x": 0.39,
+    "theta": 95
+   },
+   "span_dir": [
+    0.0,
+    1,
+    0.0
+   ],
+   "trail_dir": [
+    1,
+    0,
+    0.0
+   ],
+   "chord_root": 0.22,
+   "span": 0.078,
+   "sweep": 0.12,
+   "tip_chord": 0.03,
+   "le_pow": 1.1,
+   "te_pow": 1.0,
+   "thickness": 0.045,
+   "edge_dark": 0.2
+  },
+  {
+   "name": "caudal_upper",
+   "attach": {
+    "x": 0.88,
+    "axis": true
+   },
+   "span_dir": [
+    0.3,
+    0,
+    0.95
+   ],
+   "chord_root": 0.1,
+   "span": 0.05,
+   "sweep": 0.07,
+   "tip_chord": 0.015,
+   "le_pow": 1.2,
+   "te_pow": 1.1,
+   "thickness": 0.05,
+   "emb": 0.03,
+   "edge_dark": 0.2,
+   "trail_dir": [
+    1,
+    0,
+    0.5
+   ]
+  },
+  {
+   "name": "caudal_lower",
+   "attach": {
+    "x": 0.88,
+    "axis": true
+   },
+   "span_dir": [
+    0.3,
+    0,
+    -0.95
+   ],
+   "chord_root": 0.1,
+   "span": 0.075,
+   "sweep": 0.1,
+   "tip_chord": 0.015,
+   "le_pow": 1.2,
+   "te_pow": 1.1,
+   "thickness": 0.05,
+   "emb": 0.03,
+   "edge_dark": 0.2,
+   "trail_dir": [
+    1,
+    0,
+    -0.5
+   ]
+  }
+ ],
+ "nostrils": [
+  {
+   "x": 0.018,
+   "theta": 120,
+   "len": 0.003,
+   "wid": 0.0012
+  }
+ ],
+ "paint": {
+  "ragged_deg": 1.1,
+  "mottle": 0.07,
+  "speckle": 0.03,
+  "gill_sigma": 0.0007,
+  "mouth_sigma": 0.0011
+ },
+ "render": {
+  "hero": {
+   "yaw": 25,
+   "cam_z": 0.9
+  },
+  "head": {
+   "focus": 0.05,
+   "yaw": -55,
+   "dist_frac": 0.45,
+   "cam_z": 0.5,
+   "lift": 0.0
+  }
+ },
+ "spots": {
+  "color": "#2B261B",
+  "sc": 0.02,
+  "sx": 0.022,
+  "r": [
+   0.15,
+   0.32
+  ],
+  "keep": 0.6,
+  "strength": 0.75
+ }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "notorynchus-cepedianus",
+  "genus": "notorynchus",
+  "latin": "Notorynchus cepedianus",
+  "common": "Broadnose sevengill shark",
+  "meaning": "Notorynchus, see genus; cepedianus, -ianus (Latin) “belonging to” Bernard Germain Étienne de La Ville-sur-Illon, comte de La Cépède (1756–1825), French naturalist and author of Histoire Naturelle des Poissons, and Péron’s “illustrious master” in ichthyology",
+  "description": "A stout silver-grey to brown shark with a broad, blunt head, small eyes and seven pairs of gill slits, where most sharks have five. Small black spots, and some white ones, are scattered over the back and flanks, and a single dorsal fin sits far back above a long tail. It hunts in bays and over shallow shelves, taking other sharks, rays, bony fishes and seals, and sometimes hunts in groups.",
+  "lengthM": 2.5,
+  "depth": "Surface to about 570 m, mostly shallower than 136 m",
+  "eats": "Other sharks, rays, bony fishes, seals and dolphins, and carrion",
+  "wikipedia": "Broadnose_sevengill_shark",
+  "model": "broadnose_sevengill_shark",
+  "swim": {
+    "cruise": 0.3,
+    "beatHz": 0.55,
+    "amplitude": 0.13
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[-66, -48], [-52, -48], [-52, -33], [-66, -33]],
+      [[13, -36], [33, -36], [33, -25], [13, -25]],
+      [[127, 30], [142, 30], [142, 40], [127, 40]],
+      [[113, -44], [154, -44], [154, -28], [113, -28]],
+      [[166, -47], [179, -47], [179, -35], [166, -35]],
+      [[-130, 33], [-117, 33], [-117, 52], [-130, 52]],
+      [[-76, -45], [-70, -45], [-70, -18], [-76, -18]]
+    ]
+  }
+}

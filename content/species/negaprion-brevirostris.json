@@ -1,0 +1,47 @@
+{
+  "id": "negaprion-brevirostris",
+  "genus": "negaprion",
+  "latin": "Negaprion brevirostris",
+  "common": "Lemon shark",
+  "meaning": "Negaprion, from Latin negatus “denied or refused” + Greek príōn “saw”, referring to the lack of saw-like serrations on the teeth cusps; brevirostris, from Latin brevis “short” + rostris, a Neo-Latin adjective of rostrum “snout”, referring to its short, flat and broadly rounded snout",
+  "description": "A stocky yellow-brown shark with a short, broad, flattened snout and a pale yellowish belly, which camouflages it over sandy bottoms. Its two dorsal fins are almost the same size, which separates it from the bull shark. It haunts shallow reefs, mangroves and bays of the Atlantic and eastern Pacific, where pups spend their first years in sheltered nurseries.",
+  "lengthM": 2.7,
+  "depth": "Surface to about 90 m",
+  "eats": "Bony fish, crustaceans, rays and small sharks",
+  "wikipedia": "Lemon_shark",
+  "model": "lemon_shark",
+  "swim": {
+    "cruise": 0.45,
+    "beatHz": 0.8,
+    "amplitude": 0.13
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [-98, 5],
+        [-60, 5],
+        [-60, 40],
+        [-98, 40]
+      ],
+      [
+        [-60, -30],
+        [-34, -30],
+        [-34, 5],
+        [-60, 5]
+      ],
+      [
+        [-118, -5],
+        [-77, -5],
+        [-77, 30],
+        [-118, 30]
+      ],
+      [
+        [-18, 4],
+        [-3, 4],
+        [-3, 16],
+        [-18, 16]
+      ]
+    ]
+  }
+}

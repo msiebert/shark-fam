@@ -16,9 +16,26 @@ def fin_colors(f, attr, pal):
         col[under] = hex_to_linear(pal["ventral"])
     ew = f.get("edge_width", 0.14)
     col = mix(col, dark, f.get("edge_dark", 0.5) * smoothstep(1 - ew, 1.0, attr["s"]))
+    if f.get("rear_white"):
+        # pale free rear tip (porbeagle first dorsal): the trailing edge of the outer ~65% of the span
+        w = smoothstep(0.62, 0.8, attr["s"]) * smoothstep(0.25, 0.45, attr["v"])
+        col = mix(col, hex_to_linear("#E3E3DE"), f["rear_white"] * w)
     if f.get("tip_patch"):
         w = smoothstep(0.55, 0.78, attr["v"]) * under
         col = mix(col, dark, 0.92 * w)
+    if f.get("tip_white"):
+        # pale tip patch on both faces (oceanic whitetip): the outer ~25% of the span;
+        # "tip_white_from" moves the start outward for a smaller cap (whitetip reef shark)
+        v0 = f.get("tip_white_from", 0.7)
+        w = smoothstep(v0, v0 + 0.12, attr["v"])
+        col = mix(col, hex_to_linear("#E9E6DC"), f["tip_white"] * w)
+    if f.get("tip_black"):
+        # dark tip patch on both faces (blacktip reef shark), optionally with a pale band just inside it
+        if f.get("tip_band"):
+            wb = smoothstep(0.42, 0.48, attr["v"]) * (1 - smoothstep(0.58, 0.62, attr["v"]))
+            col = mix(col, hex_to_linear("#E9E6DC"), f["tip_band"] * wb)
+        w = smoothstep(0.6, 0.65, attr["v"])
+        col = mix(col, hex_to_linear("#111214"), f["tip_black"] * w)
     return col
 
 

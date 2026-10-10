@@ -1,0 +1,28 @@
+{
+  "id": "chiloscyllium-plagiosum",
+  "genus": "chiloscyllium",
+  "latin": "Chiloscyllium plagiosum",
+  "common": "Whitespotted bambooshark",
+  "meaning": "Chiloscyllium, Greek cheîlos “lip” + skylion “small dog or whelp” (a small shark), for the broad membranous lower lip, presumably of this species; plagiosum, from Latin plaga “stripe” + -osum “full of”, for the dark transverse bands on the body",
+  "description": "A slender, brown shark with a rounded snout, a long thin tail and two similar dorsal fins set well back, marked with dark crossbands and scattered white spots. It is active at night on the bottom of rocky and coral reefs, crawling on its muscular pectoral fins and feeding on small fishes and crustaceans.",
+  "lengthM": 0.7,
+  "depth": "Surface to about 50 m",
+  "eats": "Small fish and crustaceans",
+  "wikipedia": "Whitespotted_bamboo_shark",
+  "model": "whitespotted_bambooshark",
+  "swim": {
+    "cruise": 0.18,
+    "beatHz": 0.8,
+    "amplitude": 0.15
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[68, 8], [82, 8], [82, 22], [68, 22]],
+      [[96, -7], [108, -7], [108, 14], [96, 14]],
+      [[105, -9], [121, -9], [121, 5], [105, 5]],
+      [[105, 5], [123, 5], [123, 24], [105, 24]],
+      [[119, 24], [135, 24], [135, 36], [119, 36]]
+    ]
+  }
+}

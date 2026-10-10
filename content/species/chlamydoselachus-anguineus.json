@@ -1,0 +1,30 @@
+{
+  "id": "chlamydoselachus-anguineus",
+  "genus": "chlamydoselachus",
+  "latin": "Chlamydoselachus anguineus",
+  "common": "Frilled shark",
+  "meaning": "Chlamydoselachus, see genus; anguineus, Latin “snake-like”, referring to its snake- or eel-like shape",
+  "description": "An eel-shaped, dark brown deep-water shark with six pairs of gill slits whose frilly edges give it its name, and a wide mouth at the very tip of the snout lined with rows of three-pointed teeth. A single small dorsal fin sits far back above a large anal fin, and the long tail has little or no lower lobe. It eats mostly squid, other sharks and bony fishes.",
+  "lengthM": 1.6,
+  "depth": "Usually 120 to 1,280 m; recorded from the surface to about 1,570 m",
+  "eats": "Squid, bony fishes and other sharks",
+  "wikipedia": "Frilled_shark",
+  "model": "frilled_shark",
+  "swim": {
+    "cruise": 0.35,
+    "beatHz": 0.6,
+    "amplitude": 0.15
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[-20, 30], [12, 30], [12, 72], [-20, 72]],
+      [[-80, 5], [-58, 5], [-58, 42], [-80, 42]],
+      [[118, 20], [145, 20], [145, 43], [118, 43]],
+      [[144, -48], [178, -48], [178, -30], [144, -30]],
+      [[-160, 18], [-154, 18], [-154, 23], [-160, 23]],
+      [[-126, 32], [-117, 32], [-117, 42], [-126, 42]],
+      [[-76, -36], [-69, -36], [-69, -18], [-76, -18]]
+    ]
+  }
+}

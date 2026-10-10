@@ -1,0 +1,29 @@
+{
+  "id": "prionace-glauca",
+  "genus": "prionace",
+  "latin": "Prionace glauca",
+  "common": "Blue shark",
+  "meaning": "Prionace, from Greek príōn “saw” + ace-, from akís “a pointed object or barb”, referring to the serrated cusps on the upper teeth; glauca, Latin for bluish green or gray (sea-colored), referring to its colour, blue above and whitish below",
+  "description": "A slender open-ocean shark with a long snout, large eyes and very long, narrow pectoral fins. Its back is deep indigo blue, fading to bright blue on the flanks and white below. It roams temperate and tropical seas worldwide, hunting mainly squid and small fish.",
+  "lengthM": 3,
+  "depth": "Surface to about 350 m",
+  "eats": "Squid, small bony fish and small sharks",
+  "wikipedia": "Blue_shark",
+  "model": "blue_shark",
+  "swim": {
+    "cruise": 0.55,
+    "beatHz": 0.8,
+    "amplitude": 0.13
+  },
+  "distribution": {
+    "mode": "open",
+    "polygons": [
+      [
+        [-180, -50],
+        [180, -50],
+        [180, 60],
+        [-180, 60]
+      ]
+    ]
+  }
+}

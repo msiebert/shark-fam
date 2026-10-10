@@ -1,0 +1,35 @@
+{
+  "id": "carcharhinus-melanopterus",
+  "genus": "carcharhinus",
+  "latin": "Carcharhinus melanopterus",
+  "common": "Blacktip reef shark",
+  "meaning": "Carcharhinus, from Greek karcharias “a kind of shark” (from karcharos “saw-like, jagged”, for its teeth) + rhinus, an ancient word for sharks; melanopterus, from Greek mélanos “black” + pterus “wing or fin”, referring to its black-tipped fins",
+  "description": "A small, sturdy reef shark with a short rounded snout, large eyes and a pale grey-brown back over a white belly, with a white band along each flank. Its fins carry sharp black tips, boldest on the first dorsal fin and the lower tail lobe. It cruises over shallow reefs and sand flats, eating small fish, squid and crustaceans.",
+  "lengthM": 1.6,
+  "depth": "Surface to about 75 m",
+  "eats": "Small bony fish, squid, octopus and crustaceans",
+  "wikipedia": "Blacktip_reef_shark",
+  "model": "blacktip_reef_shark",
+  "swim": {
+    "cruise": 0.45,
+    "beatHz": 0.9,
+    "amplitude": 0.14
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [
+        [32, -32],
+        [180, -32],
+        [180, 32],
+        [32, 32]
+      ],
+      [
+        [-180, -32],
+        [-135, -32],
+        [-135, 25],
+        [-180, 25]
+      ]
+    ]
+  }
+}

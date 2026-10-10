@@ -1,0 +1,29 @@
+{
+  "id": "alopias-superciliosus",
+  "genus": "alopias",
+  "latin": "Alopias superciliosus",
+  "common": "Bigeye thresher",
+  "meaning": "Alopias, Greek alṓpēx “fox”, from the ancient vernacular “fox shark”, for its long (and therefore fox-like) tail; superciliosus, Latin super “over and above” + ciliosus “haughty or having a raised eyebrow”, for its enormous upward-looking eyes set high on the head and/or the marked groove over the eyes",
+  "description": "A thresher with huge upward-looking eyes that reach onto the top of the head, with a deep groove on each side of the head running back from above the eye to the gills. Its whip-like upper tail lobe can be about half its total length. It stays deep, around 300 to 500 m, by day and rises to near the surface at night. The back is deep violet to purplish-brown and the belly creamy white.",
+  "lengthM": 3.5,
+  "depth": "Surface to about 730 m, usually 300 to 500 m by day",
+  "eats": "Fish and squid",
+  "wikipedia": "Bigeye_thresher",
+  "model": "bigeye_thresher",
+  "swim": {
+    "cruise": 0.5,
+    "beatHz": 0.8,
+    "amplitude": 0.13
+  },
+  "distribution": {
+    "mode": "open",
+    "polygons": [
+      [
+        [-180, -40],
+        [180, -40],
+        [180, 46],
+        [-180, 46]
+      ]
+    ]
+  }
+}

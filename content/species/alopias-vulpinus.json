@@ -1,0 +1,29 @@
+{
+  "id": "alopias-vulpinus",
+  "genus": "alopias",
+  "latin": "Alopias vulpinus",
+  "common": "Common thresher",
+  "meaning": "Alopias, Greek alṓpēx “fox”, from the ancient vernacular “fox shark”, for its long (and therefore fox-like) tail; vulpinus, Latin “fox-like”, for the same long tail",
+  "description": "A slender open-water shark whose whip-like upper tail lobe is about as long as the rest of its body. It swings the tail to stun schools of small fish before eating them. Its back is metallic grey to purplish-brown, with white on the belly that reaches up over the bases of the pectoral and pelvic fins.",
+  "lengthM": 4.5,
+  "depth": "Surface to about 650 m, usually shallower than 200 m",
+  "eats": "Schooling fish and squid",
+  "wikipedia": "Common_thresher",
+  "model": "common_thresher",
+  "swim": {
+    "cruise": 0.5,
+    "beatHz": 0.8,
+    "amplitude": 0.13
+  },
+  "distribution": {
+    "mode": "open",
+    "polygons": [
+      [
+        [-180, -50],
+        [180, -50],
+        [180, 50],
+        [-180, 50]
+      ]
+    ]
+  }
+}

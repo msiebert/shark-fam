@@ -74,7 +74,7 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   await page.mouse.wheel(0, 0);
   const first = await state(page);
   check((await here(page)) === "lamniformes", "the tree starts at the first order");
-  check(first.view === "lineup" && first.actors.filter((a) => a.visible).length === 2, "an order with two modelled sharks shows a lineup of two");
+  check(first.view === "lineup" && first.actors.filter((a) => a.visible).length === 6, "an order with twelve modelled sharks shows a lineup capped at six");
   await key(page, "ArrowUp", 300);
   check((await here(page)) === "lamniformes", "up from an order goes nowhere");
 
@@ -84,12 +84,22 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   await key(page, "ArrowRight", 1600);
   check((await here(page)) === "carcharhiniformes", "right moves to the next sibling");
   await key(page, "ArrowRight", 1600);
+  await key(page, "ArrowRight", 1600);
+  await key(page, "ArrowRight", 1600);
+  await key(page, "ArrowRight", 1600);
+  await key(page, "ArrowRight", 1600);
   await key(page, "ArrowRight");
-  check((await here(page)) === "orectolobiformes", "right stops at the last sibling and never flows into cousins");
+  check((await here(page)) === "squatiniformes", "right stops at the last sibling and never flows into cousins");
+  await key(page, "ArrowLeft", 1600);
+  await key(page, "ArrowLeft", 1600);
+  await key(page, "ArrowLeft", 1600);
+  await key(page, "ArrowLeft", 1600);
   await key(page, "ArrowLeft", 1600);
 
   // Sibling hop timing: the old text leaves (~0.3 s) before the new text arrives, never overlapping.
-  await key(page, "ArrowDown", 1600); // carcharhiniformes -> sphyrnidae
+  await key(page, "ArrowDown", 1600); // carcharhiniformes -> carcharhinidae
+  await key(page, "ArrowRight", 1600); // -> galeocerdonidae
+  await key(page, "ArrowRight", 1600); // -> sphyrnidae
   await key(page, "ArrowDown", 1600); // -> sphyrna
   check((await here(page)) === "sphyrna", "down returns through families");
   const timeline: { t: number; ghost: number; fresh: number }[] = [];
@@ -119,12 +129,12 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   await page.goto(`${base}#sphyrna`);
   await page.waitForFunction(() => (window as any).__scene?.debugState().actors.some((a: any) => a.visible && a.alpha > 0.99), null, { timeout: 20000 });
   await page.waitForTimeout(800);
-  const before = (await state(page)).actors.find((a) => a.id === "sphyrna-mokarran")!;
+  const before = (await state(page)).actors.find((a) => a.id === "sphyrna-lewini")!;
   await key(page, "ArrowDown", 60);
   const samples: { t: number; a: Actor }[] = [];
   for (let i = 0; i < 24; i++) {
     const s = await state(page);
-    const a = s.actors.find((x) => x.id === "sphyrna-mokarran")!;
+    const a = s.actors.find((x) => x.id === "sphyrna-lewini")!;
     samples.push({ t: s.time, a });
     await page.waitForTimeout(80);
   }
@@ -150,9 +160,9 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
   const yaws: number[] = [];
   const bends: number[] = [];
   const rolls: number[] = [];
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 110; i++) {
     await page.evaluate("window.__scene.debugAdvance(0.25)"); // scene time, not wall time: software GL is slow
-    const a = (await state(page)).actors.find((x) => x.id === "sphyrna-mokarran" && x.visible)!;
+    const a = (await state(page)).actors.find((x) => x.id === "sphyrna-lewini" && x.visible)!;
     xs.push(a.pose!.x);
     zs.push(a.pose!.z);
     ys.push(a.pose!.y);
@@ -170,17 +180,17 @@ async function run(browser: Browser, name: string, vp: { width: number; height: 
 
   // Species facts and the Wikipedia link.
   const link = await page.locator("a.wiki").getAttribute("href");
-  check(link === "https://en.wikipedia.org/wiki/Great_hammerhead", "species: Wikipedia link", String(link));
+  check(link === "https://en.wikipedia.org/wiki/Scalloped_hammerhead", "species: Wikipedia link", String(link));
   check((await page.locator("a.wiki").getAttribute("target")) === "_blank", "species: link opens in a new tab");
   check((await page.locator(".facts li").count()) === 2 && (await page.locator(".range svg").count()) === 1, "species: Depth, Eats and a distribution map");
 
   // Leaving a species: the shark swims off to the right while fading.
-  const x0 = (await state(page)).actors.find((a) => a.id === "sphyrna-mokarran")!.pose!.x;
+  const x0 = (await state(page)).actors.find((a) => a.id === "sphyrna-lewini")!.pose!.x;
   // Hop to a shark that is not in the old view (going up would carry the same shark into the genus lineup).
   await page.evaluate("window.__nav.go(window.__nav.tree.get('rhincodon-typus'))");
   await page.waitForTimeout(150);
   await page.evaluate("window.__scene.debugAdvance(0.35)");
-  const mid = (await state(page)).actors.find((a) => a.id === "sphyrna-mokarran")!;
+  const mid = (await state(page)).actors.find((a) => a.id === "sphyrna-lewini")!;
   check(mid.leaving && mid.alpha < 0.95 && mid.pose!.x > x0 - 0.05, "leaving: fading and drifting right", `alpha ${mid.alpha.toFixed(2)}, dx ${(mid.pose!.x - x0).toFixed(2)}`);
   await page.waitForTimeout(1200);
   await page.evaluate("window.__nav.go(window.__nav.tree.get('sphyrnidae'))");

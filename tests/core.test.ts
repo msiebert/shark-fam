@@ -50,7 +50,7 @@ describe("navigation", () => {
     nav.down();
     nav.down();
     nav.down();
-    expect(nav.current.id).toBe("sphyrna-mokarran");
+    expect(nav.current.id).toBe("carcharhinus-acronotus");
     nav.up();
     nav.up();
     nav.up();
@@ -59,7 +59,7 @@ describe("navigation", () => {
     nav.step(-1);
     nav.step(1);
     nav.down();
-    expect(nav.current.id).toBe("sphyrnidae");
+    expect(nav.current.id).toBe("carcharhinidae");
   });
 
   it("remembers the whole path after a jump", () => {
@@ -82,6 +82,11 @@ describe("navigation", () => {
     expect(o.step(-1)).toBe(false);
     expect(o.step(1)).toBe(true);
     expect(o.step(1)).toBe(true);
+    expect(o.step(1)).toBe(true);
+    expect(o.step(1)).toBe(true);
+    expect(o.step(1)).toBe(true);
+    expect(o.step(1)).toBe(true);
+    expect(o.current.id).toBe("squatiniformes");
     expect(o.step(1)).toBe(false);
   });
 
@@ -118,10 +123,10 @@ describe("navigation", () => {
 });
 
 describe("lineup selection", () => {
-  it("shows every drawable species when they fit", () => {
+  it("shows the lineup of the real tree, capped at six", () => {
     const t = real();
     const ids = selectLineup(t, t.root).map((s) => s.id);
-    expect(ids).toEqual(["carcharias-taurus", "sphyrna-mokarran", "carcharodon-carcharias", "rhincodon-typus"]);
+    expect(ids).toEqual(["squatina-squatina", "hexanchus-griseus", "somniosus-microcephalus", "sphyrna-mokarran", "carcharodon-carcharias", "rhincodon-typus"]);
   });
 
   it("caps at the maximum and represents every branch before a second pick", () => {

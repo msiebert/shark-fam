@@ -1,0 +1,27 @@
+{
+  "id": "hemiscyllium-ocellatum",
+  "genus": "hemiscyllium",
+  "latin": "Hemiscyllium ocellatum",
+  "common": "Epaulette shark",
+  "meaning": "Hemiscyllium, Greek hēmisys “half” + skylion “small dog”, presumably for its similarity or close affinity to Scyllium and/or Chiloscyllium; ocellatum, Latin “eyed”, for the conspicuous white-ringed black spot on the flank above each pectoral fin",
+  "description": "A small, slender, light brown shark with a short rounded head, broad paddle-like fins, a long tail and scattered dark spots, marked by a large black spot ringed in white above each pectoral fin. It is active mostly at night on coral reefs and reef flats, walking along the bottom on its fins and feeding on worms, crabs and small fish. It tolerates the low oxygen of stranded tide pools.",
+  "lengthM": 0.7,
+  "depth": "Surface to about 50 m",
+  "eats": "Worms, crabs and small fish",
+  "wikipedia": "Epaulette_shark",
+  "model": "epaulette_shark",
+  "swim": {
+    "cruise": 0.18,
+    "beatHz": 0.8,
+    "amplitude": 0.15
+  },
+  "distribution": {
+    "mode": "coast",
+    "polygons": [
+      [[131, -11], [150, -11], [150, -5.5], [131, -5.5]],
+      [[141.5, -17], [154, -17], [154, -10], [141.5, -10]],
+      [[146, -28], [154, -28], [154, -17], [146, -17]],
+      [[150, -34], [154, -34], [154, -28], [150, -28]]
+    ]
+  }
+}

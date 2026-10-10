@@ -1,0 +1,352 @@
+{
+ "name": "Bigeye Thresher",
+ "latin": "Alopias superciliosus",
+ "length_m": 3.5,
+ "ring": 64,
+ "body": {
+  "exponent": 2.3,
+  "x": [
+   0.0,
+   0.0022,
+   0.0065,
+   0.0129,
+   0.0237,
+   0.0388,
+   0.0592,
+   0.0862,
+   0.1185,
+   0.1615,
+   0.2154,
+   0.28,
+   0.3446,
+   0.4092,
+   0.4631,
+   0.5062,
+   0.5385,
+   0.56
+  ],
+  "up": [
+   0,
+   0.004,
+   0.0075,
+   0.011,
+   0.0165,
+   0.0263,
+   0.0376,
+   0.0464,
+   0.0564,
+   0.0678,
+   0.0753,
+   0.0694,
+   0.058,
+   0.047,
+   0.036,
+   0.026,
+   0.018,
+   0.015
+  ],
+  "down": [
+   0,
+   0.0035,
+   0.006,
+   0.009,
+   0.0135,
+   0.0224,
+   0.0301,
+   0.0378,
+   0.0472,
+   0.0566,
+   0.0637,
+   0.056,
+   0.052,
+   0.042,
+   0.031,
+   0.022,
+   0.015,
+   0.012
+  ],
+  "half_width": [
+   0,
+   0.004,
+   0.0075,
+   0.011,
+   0.0155,
+   0.0227,
+   0.0292,
+   0.0356,
+   0.0421,
+   0.0475,
+   0.0508,
+   0.048,
+   0.045,
+   0.038,
+   0.03,
+   0.022,
+   0.012,
+   0.004
+  ],
+  "z0": [
+   [
+    0,
+    -0.008
+   ],
+   [
+    0.06,
+    -0.006
+   ],
+   [
+    0.2,
+    -0.003
+   ],
+   [
+    0.35,
+    -0.004
+   ],
+   [
+    0.5,
+    -0.002
+   ]
+  ]
+ },
+ "bend": {
+  "amp": 0.03,
+  "freq": 1.6,
+  "phase": -0.3
+ },
+ "gills": {
+  "count": 5,
+  "x0": 0.105,
+  "dx": 0.0125,
+  "theta0": 40,
+  "theta1": 128,
+  "lean": 0.008,
+  "sigma": 0.0012,
+  "k": 0.025
+ },
+ "mouth": {
+  "x0": 0.026,
+  "x_peak": 0.05,
+  "x1": 0.066,
+  "theta_peak": 124,
+  "theta_corner": 129,
+  "p": 1.5,
+  "sigma": 0.0022,
+  "k": 0.02
+ },
+ "eye": {
+  "x": 0.045,
+  "theta": 54,
+  "radius": 0.0125,
+  "inset": 0.0085,
+  "socket_sigma": 0.011,
+  "socket_k": 0.09,
+  "elong": 1.15
+ },
+ "palette": {
+  "dorsal": "#58444F",
+  "deep": "#30262D",
+  "ventral": "pearl-ventral",
+  "edge": "#2A2030",
+  "demarcation": {
+   "points": [
+    [
+     0,
+     116
+    ],
+    [
+     0.1,
+     120
+    ],
+    [
+     0.2,
+     120
+    ],
+    [
+     0.3,
+     122
+    ],
+    [
+     0.4,
+     120
+    ],
+    [
+     0.5,
+     114
+    ]
+   ],
+   "softness": 0.05,
+   "wave": 2.5
+  }
+ },
+ "fins": [
+  {
+   "name": "dorsal1",
+   "attach": {
+    "x": 0.33,
+    "theta": 0
+   },
+   "span_dir": [
+    0.3,
+    0,
+    1
+   ],
+   "chord_root": 0.07,
+   "span": 0.08,
+   "sweep": 0.05,
+   "tip_chord": 0.008,
+   "le_pow": 1.3,
+   "te_pow": 0.65,
+   "thickness": 0.08,
+   "edge_dark": 0.5
+  },
+  {
+   "name": "dorsal2",
+   "attach": {
+    "x": 0.52,
+    "theta": 0
+   },
+   "span_dir": [
+    0.1,
+    0,
+    1
+   ],
+   "chord_root": 0.025,
+   "span": 0.02,
+   "sweep": 0.012,
+   "tip_chord": 0.003,
+   "le_pow": 1.2,
+   "te_pow": 0.7,
+   "thickness": 0.09,
+   "emb": 0.012
+  },
+  {
+   "name": "pectoral",
+   "paired": true,
+   "attach": {
+    "x": 0.14,
+    "theta": 120
+   },
+   "span_dir": [
+    0.18,
+    0.78,
+    -0.6
+   ],
+   "trail_dir": [
+    1,
+    0,
+    0.05
+   ],
+   "chord_root": 0.065,
+   "span": 0.21,
+   "sweep": 0.09,
+   "tip_chord": 0.004,
+   "le_pow": 1.15,
+   "te_pow": 0.5,
+   "thickness": 0.065,
+   "underside": "pearl",
+   "tip_patch": true,
+   "edge_dark": 0.4
+  },
+  {
+   "name": "pelvic",
+   "paired": true,
+   "color": "ventral",
+   "attach": {
+    "x": 0.43,
+    "theta": 135
+   },
+   "span_dir": [
+    0.55,
+    0.6,
+    -0.45
+   ],
+   "chord_root": 0.05,
+   "span": 0.06,
+   "sweep": 0.03,
+   "tip_chord": 0.004,
+   "le_pow": 1.2,
+   "te_pow": 0.7,
+   "thickness": 0.08,
+   "edge_dark": 0.0
+  },
+  {
+   "name": "anal",
+   "color": "ventral",
+   "attach": {
+    "x": 0.56,
+    "theta": 180
+   },
+   "span_dir": [
+    0.5,
+    0,
+    -1
+   ],
+   "chord_root": 0.025,
+   "span": 0.02,
+   "sweep": 0.012,
+   "tip_chord": 0.003,
+   "le_pow": 1.2,
+   "te_pow": 0.7,
+   "thickness": 0.09,
+   "emb": 0.012,
+   "edge_dark": 0.0
+  },
+  {
+   "name": "caudal_upper",
+   "attach": {
+    "x": 0.54,
+    "axis": true
+   },
+   "span_dir": [
+    0.95,
+    0,
+    0.31
+   ],
+   "chord_root": 0.045,
+   "span": 0.46,
+   "sweep": 0.0,
+   "tip_chord": 0.008,
+   "le_pow": 1.0,
+   "te_pow": 0.4,
+   "thickness": 0.05,
+   "emb": 0.015,
+   "edge_dark": 0.6
+  },
+  {
+   "name": "caudal_lower",
+   "attach": {
+    "x": 0.545,
+    "axis": true
+   },
+   "span_dir": [
+    0.55,
+    0,
+    -0.83
+   ],
+   "chord_root": 0.03,
+   "span": 0.07,
+   "sweep": 0.04,
+   "tip_chord": 0.004,
+   "le_pow": 1.0,
+   "te_pow": 1.6,
+   "thickness": 0.06,
+   "emb": 0.02,
+   "edge_dark": 0.6
+  }
+ ],
+ "nostrils": [
+  {
+   "x": 0.02,
+   "theta": 150,
+   "len": 0.0042,
+   "wid": 0.0013
+  }
+ ],
+ "paint": {
+  "ragged_deg": 1.1,
+  "mottle": 0.05,
+  "speckle": 0.025,
+  "gill_sigma": 0.0007,
+  "mouth_sigma": 0.0011
+ }
+}
