@@ -59,7 +59,7 @@ count claims in descriptions ("Nine species..."). Only state counts you have con
 Reuse existing files in `content/clades/` when the clade is already there. For each missing clade create
 `content/clades/<id>.json` (id = lowercase Latin name; rank `order|family|genus`; `parent` = id one rank
 up, `null` for an order). Fields: `id, rank, parent, latin, common, meaning, description` (+ optional
-`order` sort key, `companions`). `description` is one short line (it must fit on one or two screen lines, e.g. "The hammerhead shark family."): name the group and count its species if confirmed, never describe appearance. If adding a species makes
+`order` sort key, `companions`). Descriptions are one or two plain sentences. If adding a species makes
 an existing clade description false (e.g. "Eight of the nine hammerheads...", counts, "only species"),
 update that description in the same commit.
 
@@ -67,8 +67,7 @@ update that description in the same commit.
 Create `content/species/<id>.json` where `<id>` is the Latin name, lowercase, dashed, matching the file
 name. Copy the shape of `content/species/sphyrna-mokarran.json`. Fields: `id, genus, latin, common,
 meaning, description, lengthM, depth, eats, wikipedia, model, representative, swim, distribution`.
-- `description` (species only): 2-3 sentences for the screen, specific and checkable (what it looks like, one behaviour
-  or fact). No superlatives you have not verified.
+- `description`: one or two sentences, specific and checkable, never describing appearance (the 3D model shows that): behaviour, habitat, diet, one distinctive fact. No superlatives you have not verified.
 - `model`: snake_case base name matching `pipeline/species/<model>.json` (e.g. `tiger_shark`).
 - `representative`: `true` only if it should be the pick for its clade; leave it off otherwise.
 - `swim`: slow filter feeders small numbers, fast hunters larger; amplitude typically 0.10-0.17.
