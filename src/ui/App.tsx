@@ -51,8 +51,6 @@ export function App() {
         <i />
         <i />
         <i />
-        <i />
-        <i />
       </div>
       <div class="vignette" aria-hidden="true" />
       <button type="button" class="ui" id="mapBtn" ref={mapBtn} aria-haspopup="dialog" aria-expanded={mapState === "open"} onClick={openMap}>
