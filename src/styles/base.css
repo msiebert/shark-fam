@@ -100,25 +100,25 @@ button {
 .shafts i {
   position: absolute;
   top: -15%;
-  width: 26%;
+  width: 14%;
   height: 130%;
-  background: linear-gradient(180deg, rgba(190, 248, 240, 0.3), rgba(160, 235, 230, 0.08) 40%, rgba(160, 235, 230, 0) 75%);
-  filter: blur(40px);
+  background: linear-gradient(180deg, rgba(190, 248, 240, 0.34), rgba(160, 235, 230, 0.1) 40%, rgba(160, 235, 230, 0) 75%);
+  filter: blur(22px);
   transform-origin: 50% 0;
   animation: sway 12s ease-in-out infinite alternate;
 }
 .shafts i:nth-child(1) {
-  left: 12%;
+  left: 14%;
   --r: 10deg;
   opacity: 0.7;
 }
 .shafts i:nth-child(2) {
-  left: 37%;
+  left: 43%;
   --r: 0deg;
   animation-delay: -5s;
 }
 .shafts i:nth-child(3) {
-  left: 62%;
+  left: 70%;
   --r: -9deg;
   opacity: 0.8;
   animation-delay: -9s;
