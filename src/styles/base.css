@@ -10,7 +10,8 @@
   --panel: #03141c;
   --display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
   --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
-  --w1: rgb(96, 205, 208);
+  --light: 1;
+  --w1: rgb(120, 225, 225);
   --w2: rgb(46, 143, 163);
   --w3: rgb(14, 82, 104);
   color-scheme: dark;
@@ -66,7 +67,9 @@ button {
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  background: radial-gradient(ellipse 70% 60% at 50% 44%, var(--w1) 0%, var(--w2) 42%, var(--w3) 100%);
+  background:
+    radial-gradient(ellipse 130% 55% at 50% -8%, var(--w1) 0%, transparent 72%),
+    linear-gradient(180deg, var(--w2) 0%, var(--w3) 100%);
 }
 #gl {
   position: absolute;
@@ -88,39 +91,66 @@ button {
 .shafts {
   position: absolute;
   inset: 0;
+  overflow: hidden;
   pointer-events: none;
   mix-blend-mode: screen;
-  opacity: 0.5;
+  /* Sunlight dies with depth; --light is 1 at the surface and ~0.1 in the dark. */
+  opacity: var(--light, 1);
 }
 .shafts i {
   position: absolute;
-  top: -10%;
+  top: -15%;
   width: 14%;
-  height: 120%;
-  background: linear-gradient(180deg, rgba(160, 235, 230, 0.34), rgba(160, 235, 230, 0) 78%);
-  filter: blur(18px);
+  height: 130%;
+  background: linear-gradient(180deg, rgba(190, 248, 240, 0.34), rgba(160, 235, 230, 0.1) 40%, rgba(160, 235, 230, 0) 75%);
+  filter: blur(22px);
   transform-origin: 50% 0;
+  animation: sway 12s ease-in-out infinite alternate;
 }
 .shafts i:nth-child(1) {
-  left: 30%;
-  transform: rotate(9deg);
+  left: 14%;
+  --r: 10deg;
+  opacity: 0.7;
 }
 .shafts i:nth-child(2) {
-  left: 44%;
-  width: 18%;
-  transform: rotate(2deg);
-  opacity: 0.8;
+  left: 43%;
+  --r: 0deg;
+  animation-delay: -5s;
 }
 .shafts i:nth-child(3) {
-  left: 60%;
-  transform: rotate(-8deg);
-  opacity: 0.6;
+  left: 70%;
+  --r: -9deg;
+  opacity: 0.8;
+  animation-delay: -9s;
+}
+@media (max-width: 600px) {
+  .shafts i {
+    width: 24%;
+    filter: blur(16px);
+  }
+  .shafts i:nth-child(1) {
+    left: 4%;
+  }
+  .shafts i:nth-child(2) {
+    left: 38%;
+  }
+  .shafts i:nth-child(3) {
+    left: 72%;
+  }
+}
+@keyframes sway {
+  from {
+    transform: rotate(calc(var(--r) - 1.5deg));
+  }
+  to {
+    transform: rotate(calc(var(--r) + 1.5deg));
+  }
 }
 .vignette {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse 58% 56% at 50% 45%, transparent 0%, color-mix(in srgb, var(--w3) 55%, transparent) 62%, var(--w3) 100%);
+  background: radial-gradient(ellipse 80% 70% at 50% 35%, transparent 0%, color-mix(in srgb, var(--w3) 45%, transparent) 70%, var(--w3) 100%);
 }
 .ui {
   position: absolute;
@@ -332,7 +362,8 @@ button {
 
 @media (prefers-reduced-motion: reduce) {
   .nbin,
-  .nb .chev {
+  .nb .chev,
+  .shafts i {
     animation: none;
   }
 }
