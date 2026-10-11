@@ -102,6 +102,9 @@ export function compileContent(input: CompileInput): CompileResult {
       inherited = n.companions ?? inherited;
     } else {
       node.lengthM = n.lengthM;
+      const m = maxDepthMetres(n.depth);
+      if (m) node.maxDepthM = m;
+      else warnings.push(`${n.id}: no metre figure in depth "${n.depth}"`);
       if (n.model) node.model = n.model;
       else warnings.push(`${n.id}: no model yet; it will appear in the tree but not in lineups`);
       if (n.swim) node.swim = n.swim;
@@ -125,4 +128,15 @@ export function compileContent(input: CompileInput): CompileResult {
 
   if (problems.length) throw new ContentError(problems);
   return { index: { version: 1, roots: orderedRoots.map((r) => r.id), nodes }, details, warnings };
+}
+
+/**
+ * The depth the water should look like: the far end of the "usually/mostly" range when the text gives one, else the
+ * deepest figure. "Usually 120 to 1,280 m; recorded to about 1,570 m" gives 1,280.
+ */
+export function maxDepthMetres(text: string): number | undefined {
+  const figures = (t: string) => [...t.matchAll(/(\d[\d,]*)\s*(?:to\s*(\d[\d,]*)\s*)?m\b/g)].flatMap((m) => [m[1]!, m[2]].filter(Boolean).map((v) => Number(v!.replace(/,/g, ""))));
+  const usual = /\b(?:usually|mostly)\b.*?(?=[;.]|,\s*(?:recorded|rarely|occasionally|sometimes|down|deeper)|$)/i.exec(text);
+  const nums = (usual ? figures(usual[0]) : []).concat(usual ? [] : figures(text));
+  return nums.length ? Math.max(...nums) : undefined;
 }

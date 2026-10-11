@@ -102,6 +102,11 @@ export class SharkScene {
     this.safeBottomPx = px;
   }
 
+  /** Water colour for the fog, so sharks fade into the same blue as the background. */
+  setFog(css: string): void {
+    (this.scene.fog as THREE.FogExp2).color.set(css);
+  }
+
   setPointer(clientX: number, clientY: number): void {
     const r = this.opts.host.getBoundingClientRect();
     this.pointer.x = ((clientX - r.left) / r.width - 0.5) * 2;
