@@ -7,14 +7,14 @@ const ease = (u: number) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 
 
 type RGB = [number, number, number];
 /** Water colour at the surface and in the dark. Centre of the glow, its falloff, and the edge. */
-const SHALLOW: RGB[] = [[96, 205, 208], [46, 143, 163], [14, 82, 104]];
-const DEEP: RGB[] = [[11, 58, 72], [4, 26, 36], [1, 10, 15]];
-const FOG_SHALLOW: RGB = [30, 110, 130];
-const FOG_DEEP: RGB = [3, 22, 29];
-const DEEPEST_M = 1200;
+const SHALLOW: RGB[] = [[120, 225, 225], [38, 150, 178], [10, 92, 122]];
+const DEEP: RGB[] = [[18, 40, 92], [4, 14, 38], [0, 3, 12]];
+const FOG_SHALLOW: RGB = [30, 120, 145];
+const FOG_DEEP: RGB = [2, 10, 26];
+const DEEPEST_M = 1000;
 
-/** 0 at the surface, 1 at and beyond ~2 km. Logarithmic: the first 100 m change the light more than the next 1000. */
-export const darkness = (m: number) => Math.min(1, Math.log1p(m / 15) / Math.log1p(DEEPEST_M / 15));
+/** 0 at the surface, 1 at ~1 km. Square root so a reef (40 m) and open water (300 m) are clearly different shades. */
+export const darkness = (m: number) => Math.sqrt(Math.min(1, m / DEEPEST_M));
 
 const metresCache = new WeakMap<Tree, Map<string, number>>();
 /** Species: its deepest depth. Clades: the mean of the species beneath them. */
@@ -45,6 +45,7 @@ export function useAmbient(target: HTMLElement | null) {
       target.style.setProperty("--w1", mix(SHALLOW[0]!, DEEP[0]!, k));
       target.style.setProperty("--w2", mix(SHALLOW[1]!, DEEP[1]!, k));
       target.style.setProperty("--w3", mix(SHALLOW[2]!, DEEP[2]!, k));
+      target.style.setProperty("--light", String(1 - 0.88 * k));
       sceneRef.current?.setFog(mix(FOG_SHALLOW, FOG_DEEP, k));
     };
     const to = darkness(metres(tree, current));
