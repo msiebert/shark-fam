@@ -123,6 +123,21 @@ button {
   opacity: 0.8;
   animation-delay: -9s;
 }
+@media (max-width: 600px) {
+  .shafts i {
+    width: 24%;
+    filter: blur(16px);
+  }
+  .shafts i:nth-child(1) {
+    left: 4%;
+  }
+  .shafts i:nth-child(2) {
+    left: 38%;
+  }
+  .shafts i:nth-child(3) {
+    left: 72%;
+  }
+}
 @keyframes sway {
   from {
     transform: rotate(calc(var(--r) - 1.5deg));
