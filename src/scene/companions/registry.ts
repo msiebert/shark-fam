@@ -8,5 +8,4 @@ import type { CreatureFactory } from "./types";
 export const REGISTRY: Record<CompanionId, () => Promise<CreatureFactory>> = {
   baitfish: () => import("./baitfish").then((m) => m.create),
   plankton: () => import("./plankton").then((m) => m.create),
-  remora: () => import("./remora").then((m) => m.create),
 };

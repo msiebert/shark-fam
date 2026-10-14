@@ -4,7 +4,7 @@
  */
 
 /** Every creature the scene knows how to draw. Adding one means a new entry here and one in the scene registry. */
-export const COMPANION_IDS = ["baitfish", "plankton", "remora"] as const;
+export const COMPANION_IDS = ["baitfish", "plankton"] as const;
 export type CompanionId = (typeof COMPANION_IDS)[number];
 
 /** Most kinds on screen at once, so a species page never costs more than a few flocks. */
@@ -27,7 +27,7 @@ export function companionsFromEats(eats: string): CompanionId[] {
  * The companions for one species.
  *   1. The species' own list, if it has one, is used as written.
  *   2. Otherwise the nearest ancestor clade with a list supplies companions that go with the whole group
- *      (remoras for the big filter feeders), followed by whatever its diet suggests.
+ *      (a shared reef cleaner, say), followed by whatever its diet suggests.
  * Duplicates are dropped and the result is capped at `MAX_COMPANIONS`.
  */
 export function resolveCompanions(own: readonly CompanionId[] | undefined, inherited: readonly CompanionId[] | undefined, eats: string): CompanionId[] {
