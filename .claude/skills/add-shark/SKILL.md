@@ -33,7 +33,7 @@ names and classification), Florida Museum ISAF, Wikipedia (for the `wikipedia` s
 | Etymology (`meaning`) | **Required** on every clade and species (the schema rejects a missing one). Genus and species epithets, from ETYFish (see below), never guessed or from memory; a Latin name copied from a parent is not enough. Mark uncertain ones with "possibly". An order or family named after a genus should say so (`From Orectolobus: ...`). Keep it short enough for one or two screen lines (about 70 characters): just the roots and their glosses, no backstory. Clades: `Greek sphyra “hammer”`, families/orders explain the root too, then the suffix: `Sphyrna (Greek sphyra “hammer”) + -idae “family of”`. Species give only the epithet (the genus has its own page): `mokarran: Arabic name for this shark`. |
 | Typical adult length | Metres, typical adult (not record max). Cite which. Sets `lengthM` and `length_m`. |
 | Depth range | Matches the `depth` string style ("Surface to about 300 m"). |
-| Diet | Short list; the wording drives companions (`plankton`/`krill`, `rays`/`skates`, `fish`/`squid`). |
+| Diet | Short list. |
 | Range | Enough to draw a rough `coast` or `open` polygon in lon/lat. Approximate is fine; it must not be wrong in kind (e.g. do not shade the Atlantic for an Indo-Pacific shark). |
 | Wikipedia slug | Fetch `https://en.wikipedia.org/wiki/<slug>` and confirm it resolves to the right species page (not a redirect to a genus or disambiguation). |
 | Appearance | Head shape, snout, fin proportions (first dorsal, pectorals, caudal ratio), colour, pattern, countershading, eye size, mouth position, distinctive features. Needed for the model. |
@@ -59,7 +59,7 @@ count claims in descriptions ("Nine species..."). Only state counts you have con
 Reuse existing files in `content/clades/` when the clade is already there. For each missing clade create
 `content/clades/<id>.json` (id = lowercase Latin name; rank `order|family|genus`; `parent` = id one rank
 up, `null` for an order). Fields: `id, rank, parent, latin, common, meaning, description` (+ optional
-`order` sort key, `companions`). Descriptions are one or two plain sentences. If adding a species makes
+`order` sort key). Descriptions are one or two plain sentences. If adding a species makes
 an existing clade description false (e.g. "Eight of the nine hammerheads...", counts, "only species"),
 update that description in the same commit.
 
@@ -71,7 +71,6 @@ meaning, description, lengthM, depth, eats, wikipedia, model, representative, sw
 - `model`: snake_case base name matching `pipeline/species/<model>.json` (e.g. `tiger_shark`).
 - `representative`: `true` only if it should be the pick for its clade; leave it off otherwise.
 - `swim`: slow filter feeders small numbers, fast hunters larger; amplitude typically 0.10-0.17.
-- `companions`: omit unless the derived ones would be wrong.
 - `distribution`: polygons as `[lon, lat]` rings; keep them coarse and check they match the verified range.
 
 ## 4. Model

@@ -1,4 +1,3 @@
-import { resolveCompanions, type CompanionId } from "../core/companions";
 import { CladeSource, SpeciesSource, type IndexNode, type SpeciesDetail, type TaxonomyIndex } from "./schema";
 
 export interface CompileInput {
@@ -82,7 +81,7 @@ export function compileContent(input: CompileInput): CompileResult {
   const nodes: IndexNode[] = [];
   const details: SpeciesDetail[] = [];
   const seen = new Set<string>();
-  const walk = (n: CladeSource | SpeciesSource, inherited?: CompanionId[]): number => {
+  const walk = (n: CladeSource | SpeciesSource): number => {
     if (seen.has(n.id)) return 0; // a cycle; reported below
     seen.add(n.id);
     const ordered = (kids.get(n.id) ?? []).slice().sort(cmp);
@@ -99,7 +98,6 @@ export function compileContent(input: CompileInput): CompileResult {
     nodes.push(node);
     if ("rank" in n) {
       node.description = n.description;
-      inherited = n.companions ?? inherited;
     } else {
       node.lengthM = n.lengthM;
       const m = maxDepthMetres(n.depth);
@@ -108,13 +106,11 @@ export function compileContent(input: CompileInput): CompileResult {
       if (n.model) node.model = n.model;
       else warnings.push(`${n.id}: no model yet; it will appear in the tree but not in lineups`);
       if (n.swim) node.swim = n.swim;
-      const companions = resolveCompanions(n.companions, inherited, n.eats);
-      if (companions.length) node.companions = companions;
       if (n.representative) node.representative = true;
       details.push({ id: n.id, description: n.description, depth: n.depth, eats: n.eats, wikipedia: n.wikipedia, distribution: n.distribution });
     }
     let count = "rank" in n ? 0 : 1;
-    for (const k of ordered) count += walk(k, inherited);
+    for (const k of ordered) count += walk(k);
     node.speciesCount = count;
     return count;
   };
