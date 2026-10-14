@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { useServices } from "../app/context";
 
 /** A quick "how to move" splash: the tree in miniature, with a light walking it the way the real controls would. */
-const TITLE_MS = 3000;
-const SHOW_MS = 6000;
+const TITLE_MS = 3400;
+const SHOW_MS = 4000;
 /** Input this soon after the controls appear is ignored, so a tap/keypress meant for the logo can't dismiss them. */
 const GRACE_MS = 700;
 const SEEN_KEY = "sharkfam:controls-seen";
@@ -169,6 +169,8 @@ export function Intro() {
     "title",
   );
   const controlsAt = useRef(0);
+  // Whether the controls ever appeared: a returning visitor fades out from the logo and must never flash them.
+  const shownControls = useRef(false);
   const touch =
     typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches;
 
@@ -185,6 +187,7 @@ export function Intro() {
     if (phase !== "controls") return;
     markSeen();
     controlsAt.current = performance.now();
+    shownControls.current = true;
     const t = window.setTimeout(
       () => setPhase("fade"),
       reducedMotion ? 1800 : SHOW_MS,
@@ -220,6 +223,8 @@ export function Intro() {
     reducedMotion ? undefined : { animation: `${name} ${dur} linear infinite` };
   const start = NODES.a;
 
+  const showLogo = phase === "title" || (phase === "fade" && !shownControls.current);
+
   return (
     <div
       class={"intro" + (phase === "fade" ? " out" : "")}
@@ -227,8 +232,8 @@ export function Intro() {
       aria-hidden="true"
     >
       <style>{KEYFRAMES}</style>
-      {phase === "title" && <Logo />}
-      {phase !== "title" && (
+      {showLogo && <Logo />}
+      {!showLogo && (
         <div class="introbody">
           <svg class="introtree" viewBox="0 0 120 190" width="120" height="190">
             {LINKS.map(([p, c]) => {
