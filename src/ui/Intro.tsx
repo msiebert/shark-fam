@@ -1,9 +1,11 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { useServices } from "../app/context";
 
 /** A quick "how to move" splash: the tree in miniature, with a light walking it the way the real controls would. */
-const TITLE_MS = 3400;
-const SHOW_MS = 4000;
+const TITLE_MS = 3000;
+const SHOW_MS = 6000;
+/** Input this soon after the controls appear is ignored, so a tap/keypress meant for the logo can't dismiss them. */
+const GRACE_MS = 700;
 const SEEN_KEY = "sharkfam:controls-seen";
 const FADE_MS = 600;
 const SEG_MS = 600;
@@ -166,6 +168,7 @@ export function Intro() {
   const [phase, setPhase] = useState<"title" | "controls" | "fade" | "gone">(
     "title",
   );
+  const controlsAt = useRef(0);
   const touch =
     typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches;
 
@@ -181,6 +184,7 @@ export function Intro() {
   useEffect(() => {
     if (phase !== "controls") return;
     markSeen();
+    controlsAt.current = performance.now();
     const t = window.setTimeout(
       () => setPhase("fade"),
       reducedMotion ? 1800 : SHOW_MS,
@@ -189,7 +193,14 @@ export function Intro() {
   }, [phase]);
   // Any key or tap skips whatever is showing.
   useEffect(() => {
-    const skip = () => setPhase((p) => (p === "gone" ? p : "fade"));
+    const skip = () =>
+      setPhase((p) => {
+        if (p === "title") return seenControls() ? "fade" : "controls";
+        if (p === "controls") {
+          return performance.now() - controlsAt.current < GRACE_MS ? p : "fade";
+        }
+        return p;
+      });
     window.addEventListener("keydown", skip);
     window.addEventListener("pointerdown", skip);
     return () => {
